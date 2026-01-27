@@ -1,4 +1,9 @@
-# Node / Angular
+# OS / editor
+.DS_Store
+.vscode/
+.idea/
+
+# Angular / Node
 node_modules/
 dist/
 .angular/
@@ -12,6 +17,21 @@ yarn-error.log*
 *.user
 *.suo
 
-# OS
-.DS_Store
+# Flutter / Dart
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+build/
+ios/Pods/
+ios/.symlinks/
+ios/Flutter/Flutter.framework
+ios/Flutter/Flutter.podspec
+android/.gradle/
+android/local.properties
+*.keystore
+
+# Secrets
+*.env
+appsettings.*.json.user
 
