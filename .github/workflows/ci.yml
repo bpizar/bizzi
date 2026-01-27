@@ -1,0 +1,87 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      backend: ${{ steps.filter.outputs.backend }}
+      angular: ${{ steps.filter.outputs.angular }}
+      flutter: ${{ steps.filter.outputs.flutter }}
+      db: ${{ steps.filter.outputs.db }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            backend:
+              - 'backend-dotnet/**'
+            angular:
+              - 'frontend-angular/**'
+            flutter:
+              - 'frontend-flutter/**'
+            db:
+              - 'db/**'
+
+  backend:
+    needs: changes
+    if: needs.changes.outputs.backend == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Restore
+        run: dotnet restore backend-dotnet/Jaygor.People.Api/Jaygor.People.Api.csproj
+      - name: Build
+        run: dotnet build backend-dotnet/Jaygor.People.Api/Jaygor.People.Api.csproj -c Release --no-restore
+
+  angular:
+    needs: changes
+    if: needs.changes.outputs.angular == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '14'
+          cache: 'npm'
+          cache-dependency-path: frontend-angular/package-lock.json
+      - name: Install
+        working-directory: frontend-angular
+        run: npm ci
+      - name: Build
+        working-directory: frontend-angular
+        run: npm run build --if-present
+
+  flutter:
+    needs: changes
+    if: needs.changes.outputs.flutter == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 'stable'
+      - name: Pub get
+        working-directory: frontend-flutter
+        run: flutter pub get
+      - name: Build (analyze only)
+        working-directory: frontend-flutter
+        run: flutter analyze
+
+  db:
+    needs: changes
+    if: needs.changes.outputs.db == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: DB scripts present
+        run: ls -la db/migrations
+
