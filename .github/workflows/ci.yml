@@ -75,11 +75,6 @@ jobs:
       - name: Build (analyze only)
         working-directory: frontend-flutter
         run: flutter analyze
-      - name: Set up Flutter
-        uses: subosito/flutter-action@v2
-  	with:
-    	channel: 'stable'
-    	cache: true
 
   db:
     needs: changes
