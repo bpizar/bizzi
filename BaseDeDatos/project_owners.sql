@@ -1,0 +1,25 @@
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET NAMES utf8 */;
+/*!50503 SET NAMES utf8mb4 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+
+DROP TABLE IF EXISTS `project_owners`;
+CREATE TABLE IF NOT EXISTS `project_owners` (
+  `Id` bigint(10) NOT NULL AUTO_INCREMENT,
+  `IdfProject` bigint(10) NOT NULL,
+  `IdfOwner` bigint(10) NOT NULL,
+  `State` varchar(2) NOT NULL,
+  `IdfPeriod` bigint(10) NOT NULL,
+  PRIMARY KEY (`Id`),
+  KEY `ProjectOwnerProject_idx` (`IdfProject`),
+  KEY `ProjectOwnerStaff_idx` (`IdfOwner`),
+  KEY `fk_project:owners_periods_idx` (`IdfPeriod`),
+  CONSTRAINT `ProjectOwnerProject` FOREIGN KEY (`IdfProject`) REFERENCES `projects` (`Id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `ProjectOwnerStaff` FOREIGN KEY (`IdfOwner`) REFERENCES `staff` (`Id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_project:owners_periods` FOREIGN KEY (`IdfPeriod`) REFERENCES `periods` (`Id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
+/*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

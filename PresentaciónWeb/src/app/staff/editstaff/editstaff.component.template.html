@@ -1,0 +1,736 @@
+<glowmessages #glowmessage></glowmessages>
+
+<div class="menuContainer">
+  <menu></menu>
+</div>
+
+<div class="appContainer">
+  <jqxLoader
+    #loaderReference
+    [width]="140"
+    [height]="140"
+    [isModal]="true"
+    [theme]="'bootstrap'"
+    [html]="'<div class=\'loadingdiv\'><div class=\'loader\'></div></div>'"
+    [imagePosition]='"top"'
+  ></jqxLoader>
+
+  <div class="auxMenuBar">
+    <div class="titleHeaderSpace" [hidden]="CurrentItem<0" style="float: left;">
+      {{'staff_edit' | translate}}
+    </div>
+    <div
+      class="titleHeaderSpace"
+      [hidden]="CurrentItem>=0"
+      style="float: left;"
+    >
+      {{'staff_new' | translate}}
+    </div>
+
+    <saveactiondisplay (mustSave)="onMustSave($event)"></saveactiondisplay>
+
+    <div
+      class="blockMinRight"
+      [hidden]="hiddenWhenIsNew()"
+      style="margin-top: 3px;"
+    >
+      <div class="textHeaderSpace">
+        {{'global_period' | translate}}
+      </div>
+
+      <jqxDropDownList
+        #periodsDropDown
+        [width]="180"
+        (onBindingComplete)="periodsBindingComplete($event)"
+        (onSelect)="PeriodSelectDrowDown($event)"
+        [height]="25"
+        [theme]='"bootstrap"'
+        [displayMember]="'dateJoin'"
+        [valueMember]="'id'"
+        ([scrollBarSize])="5"
+        [placeHolder]="placeHolderPeriod"
+        style="float: left;"
+        [source]="dataAdapterPeriod"
+      ></jqxDropDownList>
+    </div>
+
+    <div class="blockMinRight">
+      <button class="button buttonSave" [hidden]="true" (click)="Save($event)">
+        <!-- <i class="icon ion-ios-save" ></i>  {{'global_save' | translate}} -->
+        <i class="icon ion-ios-checkmark-circle-outline"></i>
+        {{'global_save' | translate}}
+      </button>
+      <button
+        #buttonStateAccount
+        [hidden]="hiddenWhenIsNew() || !canDeleteOrSave"
+        class="button buttonSave"
+        (click)="EnableDisableAccont($event)"
+      >
+        <i class="icon ion-ios-unlock"></i>
+        {{btnEnableDisbleAccountText}}
+      </button>
+      <button
+        class="button buttonSave"
+        [hidden]="hiddenWhenIsNew() || !canDeleteOrSave"
+        (click)="ResetPassword($event)"
+      >
+        <i class="icon ion-ios-key"></i>
+        {{'global_reset_password' | translate}}
+      </button>
+
+      <button
+        class="button buttonSave"
+        (click)="createNew($event)"
+        [hidden]="hiddenWhenIsNew() || !canDeleteOrSave"
+        style="margin-right: 10px; float: left;"
+      >
+        <i class="icon ion-ios-add"></i>
+        {{'staff_create_new' | translate}}
+      </button>
+    </div>
+  </div>
+
+  <div style="margin: 0 3% 0 3%;">
+    <div style="padding-top: 10px;">
+      <div class="blockMin" style="width: 990px;">
+        <ul class="ultable">
+          <li style="width: 490px;">
+            <ul class="ultable">
+              <li style="width: 120px;">
+                <div class="textTitle">{{'global_email' | translate}}</div>
+              </li>
+              <li style="width: 360px;">
+                <jqxInput
+                  #txtemail
+                  [disabled]="isEditing()"
+                  [width]="360"
+                  [(ngModel)]="user.email"
+                  [theme]="'bootstrap'"
+                  (onChange)="onAnyChange($event)"
+                  [height]="25"
+                  [minLength]="1"
+                  [placeHolder]="placeHolderEmail"
+                ></jqxInput>
+              </li>
+            </ul>
+
+            <ul class="ultable">
+              <li style="width: 120px;">
+                <div class="textTitle">{{'staff_firstname' | translate}}</div>
+              </li>
+              <li style="width: 360px;">
+                <jqxInput
+                  #txtFirstName
+                  [width]="360"
+                  [theme]="'bootstrap'"
+                  [height]="25"
+                  (onChange)="onAnyChange($event)"
+                  [minLength]="1"
+                  [(ngModel)]="user.firstName"
+                  [placeHolder]="placeHolderFirstName"
+                ></jqxInput>
+              </li>
+            </ul>
+            <br />
+            <ul class="ultable">
+              <li style="width: 120px;">
+                <div class="textTitle">{{'staff_lastname' | translate}}</div>
+              </li>
+              <li style="width: 360px;">
+                <jqxInput
+                  #txtLastName
+                  [width]="360"
+                  [theme]="'bootstrap'"
+                  [height]="25"
+                  (onChange)="onAnyChange($event)"
+                  [minLength]="1"
+                  [(ngModel)]="user.lastName"
+                  [placeHolder]="placeHolderLastName"
+                ></jqxInput>
+              </li>
+            </ul>
+
+            <ul class="ultable" style="margin-top: 4px;">
+              <li style="width: 120px;">
+                <div class="textTitle" style="line-height: 15px;">
+                  {{'staff_autogeotracking' | translate}}
+                </div>
+              </li>
+              <li style="width: 360px;">
+                <ul class="ultable" style="width: 100%; margin-top: 0px;">
+                  <li style="width: 50px;">
+                    <!-- <div class="textTitle">X</div> -->
+                    <input
+                      [disabled]="!canDeleteOrSave"
+                      style="margin-top: 8px;"
+                      [checked]="autoGeoTracking"
+                      type="checkbox"
+                      (change)="changeGeoTracking($event); onAnyChange($event,'check');"
+                    />
+                  </li>
+                  <!-- <li [hidden]="!autoGeoTracking" style="width:50px; ">
+                                    <div class="textTitle">{{'staff_every' | translate}}</div>
+                                </li> -->
+
+                  <!-- <li [hidden]="!autoGeoTracking" style="width:50px; ">                                  
+                                    <jqxDropDownList  #minsDropDown
+                                        [width]='50'                                      
+                                        [height]='25'
+                                        [theme]='"bootstrap"'                                                                            
+                                        ([scrollBarSize])="5"
+                                        style="float:left;"
+                                        [source]='sourceMinutes'>
+                                    </jqxDropDownList>
+
+                                </li> -->
+
+                  <!-- <li [hidden]="!autoGeoTracking" style="width:145px; padding-left: 5px;">
+                                    <div class="textTitle">Mins</div>
+                                </li> -->
+                </ul>
+              </li>
+            </ul>
+
+            <!-- <ul class="ultable">
+                        <li style="width:120px;">
+                            <div class="textTitle" style="line-height: 15px;">Program Assigned To</div>
+                        </li>
+                        <li style="width:360px;">                            
+                            {{assignedPrograms}}
+                        </li>
+                    </ul> -->
+          </li>
+
+          <li
+            style="float: left; width: 500px; height: 200px; overflow: hidden;"
+          >
+            <div style="width: 30%; float: left;">
+              <label for="upload-photo">
+                <figure>
+                  <img
+                    [hidden]="imgSet"
+                    style="border-radius: 50%;"
+                    height="120"
+                    width="120"
+                    src="{{ImagePath}}"
+                  />
+                  <img
+                    [hidden]="!imgSet"
+                    style="border-radius: 50%;"
+                    [src]="croppedImage"
+                    [hidden]="!imgSet"
+                  />
+                  <figcaption>{{user.firstName}}</figcaption>
+                </figure>
+              </label>
+
+              <input
+                [hidden]="imgSet"
+                (change)="fileChangeEvent($event)"
+                style="
+                  float: left;
+                  opacity: 0;
+                  position: absolute;
+                  z-index: -1;
+                "
+                #fileInput
+                type="file"
+                id="upload-photo"
+                width="100"
+              />
+
+              <jqxCheckBox
+                #checkBoxUsePicture
+                [hidden]="!selectAtLeastOne || true"
+                (onChange)="checkBoxUseThisPictureChange($event)"
+                style="margin-left: 10px; float: left;"
+                [width]="120"
+                [height]="25"
+                [checked]="false"
+              >
+                <span>{{'global_change_picture' | translate}}</span>
+              </jqxCheckBox>
+            </div>
+
+            <div style="width: 70%; float: left;">
+              <div [hidden]="!imgSet" style="padding: 0px;">
+                <image-cropper
+                  [imageChangedEvent]="imageChangedEvent"
+                  [maintainAspectRatio]="true"
+                  [aspectRatio]="1 / 1"
+                  [resizeToWidth]="128"
+                  format="jpeg,png"
+                  (imageCroppedBase64)="imageCroppedBase64($event)"
+                  (imageLoaded)="imageLoaded()"
+                  (loadImageFailed)="imageLoadFailed()"
+                  style="max-height: 20vh;"
+                  [style.display]="cropperReady ? null : 'none'"
+                ></image-cropper>
+
+                <div
+                  style="
+                    text-align: center;
+                    padding-left: 0px;
+                    width: 100%;
+                    height: 30px;
+                  "
+                ></div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- <div class="blockMin" style="width:auto; height:auto; max-height:35px; margin-top:0px;clear:both;  ">
+            <ul class="ultable" [hidden]="!isEditing()">
+                <li style="margin-left:0px;">
+                    <div class="textTitle"> {{'staff_scheduled_hours' | translate}}</div>
+                </li>
+
+                <li style="width:80px; text-align: left; ">
+                    <div class="textTitle">{{this.CommonHelper.convertMinsToHrsMins(assignedHours)}}</div>
+                </li>
+
+                <li style="width:150px;  ">
+                    <div class="textTitle">{{'staff_assigned_tasks_hours' | translate}}</div>
+                </li>
+
+                <li style="width:80px; ">
+                     <div class="textTitle">{{this.CommonHelper.convertMinsToHrsMins(this.availableHours)}}</div>
+                </li>
+
+                <li style="width:140px; ">
+                    <div class="textTitle">{{'staff_available_hours' | translate}}</div>
+                     
+                </li>
+
+                <li style="width:82px; ">
+                   <div class="textTitle">{{CommonHelper.convertMinsToHrsMins(assignedHours - availableHours)}}</div>                     
+                </li>
+            </ul>
+        </div> -->
+    </div>
+
+    <!-- <div  [hidden]="!isEditing()" class="titleBodySpace">Assigned Tasks</div>
+        
+    <div  [hidden]="!isEditing()" class="divMinusTitle">
+            
+        <jqxListBox #listBoxTasks
+                    [checkboxes]="false"
+                    [filterable]="true"
+                    [scrollBarSize]="5"
+                    [width]="'100%'"
+                    [searchMode]="'containsignorecase'"
+                    [renderer]="rendererListBoxTasks"
+                    [height]='"99%"'
+                    [theme]='"bootstrap"'
+                    [displayMember]="'subject'"
+                    [valueMember]="'id'"
+                    [source]='dataAdapterTasksListBox'>
+        </jqxListBox>
+                                    
+        </div>
+    </div> -->
+
+    <!-- [hidden]="!isEditing()" -->
+
+    <jqxTabs
+      #tabsReference
+      [initTabContent]="initWidgets"
+      [width]='"100%"'
+      [theme]='"bootstrap"'
+      style="margin-top: 5px;"
+      [position]='"top"'
+      [animationType]='"none"'
+      [selectionTracker]="false"
+    >
+      <ul style="list-style-type: none;">
+        <li>Work Info</li>
+        <li>Permissions</li>
+        <li>More&nbsp;Info</li>
+        <li>Accreditations</li>
+        <li>Forms</li>
+      </ul>
+      <div style="overflow: hidden; padding-left: 1%; padding-right: 0%;">
+        <ul class="ultable">
+          <li style="width: 200px;">
+            <div class="textTitle">{{'staff_working_hours' | translate}}</div>
+          </li>
+          <li style="width: 360px;">
+            <jqxNumberInput
+              #numberInputWorkingHours
+              [(ngModel)]="workingHours"
+              [width]="100"
+              [spinButtons]="true"
+              [decimalDigits]="0"
+              (onChange)="onAnyChange($event)"
+              [inputMode]="'simple'"
+              [theme]="'bootstrap'"
+              [height]="25"
+              [placeHolder]="placeHolderWorkingHours"
+            ></jqxNumberInput>
+          </li>
+        </ul>
+
+        <ul class="ultable" style="margin-top: 20px;">
+          <li style="width: 200px;">
+            <div class="textTitle" style="line-height: 15px;">
+              Program Assigned per period
+            </div>
+          </li>
+          <li style="width: auto;">
+            {{assignedPrograms}}
+          </li>
+        </ul>
+
+        <ul class="ultable">
+          <li style="width: 200px;">
+            <div class="textTitle" style="line-height: 15px;">
+              {{'staff_scheduled_hours' | translate}}
+            </div>
+          </li>
+          <li style="width: auto;">
+            {{this.CommonHelper.convertMinsToHrsMins(assignedHours)}}
+          </li>
+        </ul>
+
+        <ul class="ultable">
+          <li style="width: 200px;">
+            <div class="textTitle" style="line-height: 15px;">
+              {{'staff_assigned_tasks_hours' | translate}}
+            </div>
+          </li>
+          <li style="width: auto;">
+            {{this.CommonHelper.convertMinsToHrsMins(this.availableHours)}}
+          </li>
+        </ul>
+
+        <ul class="ultable">
+          <li style="width: 200px;">
+            <div class="textTitle" style="line-height: 15px;">
+              {{'staff_available_hours' | translate}}
+            </div>
+          </li>
+          <li style="width: auto;">
+            {{CommonHelper.convertMinsToHrsMins(assignedHours -
+            availableHours)}}
+          </li>
+        </ul>
+
+        <ul class="ultable" style="margin-top: 20px;">
+          <li style="width: 200px;">
+            <div class="textTitle" style="line-height: 15px;">
+              Assigned Tasks per period
+            </div>
+          </li>
+          <!-- <li style="width:auto;">                            
+                                    {{assignedPrograms}}
+                                </li> -->
+        </ul>
+
+        <jqxListBox
+          #listBoxTasks
+          [checkboxes]="false"
+          [filterable]="true"
+          [scrollBarSize]="5"
+          [width]="'100%'"
+          [searchMode]="'containsignorecase'"
+          [renderer]="rendererListBoxTasks"
+          [height]='"60%"'
+          [theme]='"bootstrap"'
+          [displayMember]="'subject'"
+          [valueMember]="'id'"
+          [filterPlaceHolder]="PlaceHolderLookingFor"
+          [source]="dataAdapterTasksListBox"
+        ></jqxListBox>
+      </div>
+      <div style="overflow: hidden; padding-left: 1%; padding-right: 1%;">
+        <jqxListBox
+          #listBoxRoles
+          [checkboxes]="true"
+          [filterable]="true"
+          [scrollBarSize]="5"
+          [width]="'98%'"
+          [height]='"95%"'
+          [theme]='"bootstrap"'
+          (onCheckChange)="onAnyChange($event,'other')"
+          [displayMember]="'displayShortName'"
+          [valueMember]="'id'"
+          [filterPlaceHolder]="PlaceHolderLookingFor"
+          [source]="dataAdapterRolesListBox"
+        ></jqxListBox>
+      </div>
+
+      <div style="overflow: hidden; padding-left: 1%; padding-right: 1%;">
+        <!-- <ul class="ultable">
+                        <li style="width:160px;">
+                            <div class="textTitle">{{'staff_working_hours' | translate}}</div>
+                        </li>
+                        <li style="width:360px;">
+                            
+
+                            <jqxNumberInput #numberInputWorkingHours [(ngModel)]="workingHours" 
+                                            [width]="100" 
+                                            [spinButtons]="true"
+                                            [decimalDigits]="0"
+                                            (onChange)="onAnyChange($event)"
+                                            [inputMode]="'simple'"
+                                            [theme]="'bootstrap'"
+                                            [height]="25" 
+                                            [placeHolder]="placeHolderWorkingHours">
+                            </jqxNumberInput>
+                        </li>
+                    </ul> -->
+
+        <ul class="ultable">
+          <li style="width: 160px;">
+            <div class="textTitle">Work anniversary</div>
+          </li>
+          <li style="width: 360px;">
+            <jqxDateTimeInput
+              #txtDate
+              [width]="100"
+              [theme]="'bootstrap'"
+              [formatString]="'d'"
+              (onChange)="onAnyChange($event)"
+              [height]="25"
+              [placeHolder]=""
+            ></jqxDateTimeInput>
+          </li>
+        </ul>
+
+        <ul class="ultable">
+          <li style="width: 160px;">
+            <div class="textTitle">Social Insurance Number</div>
+          </li>
+          <li style="width: 360px;">
+            <jqxInput
+              #txtsocialinsurance
+              [width]="270"
+              [theme]="'bootstrap'"
+              [height]="25"
+              (onChange)="onAnyChange($event)"
+              [(ngModel)]="staff.socialInsuranceNumber"
+              [minLength]="1"
+              [placeHolder]=""
+            ></jqxInput>
+          </li>
+        </ul>
+
+        <ul class="ultable">
+          <li style="width: 160px;">
+            <div class="textTitle">Health Insurance Number</div>
+          </li>
+          <li style="width: 360px;">
+            <!-- [(ngModel)]="Client.email" -->
+
+            <jqxInput
+              #txthealtinsurance
+              [width]="270"
+              [theme]="'bootstrap'"
+              [height]="25"
+              (onChange)="onAnyChange($event)"
+              [(ngModel)]="staff.healthInsuranceNumber"
+              [minLength]="1"
+              [placeHolder]=""
+            ></jqxInput>
+          </li>
+        </ul>
+
+        <ul class="ultable">
+          <li style="width: 160px;">
+            <div class="textTitle">Home Address</div>
+          </li>
+          <li style="width: 360px;">
+            <jqxInput
+              #txthomeaddress
+              [width]="270"
+              [theme]="'bootstrap'"
+              [(ngModel)]="staff.homeAddress"
+              [height]="25"
+              (onChange)="onAnyChange($event)"
+              [minLength]="1"
+              [placeHolder]=""
+            ></jqxInput>
+          </li>
+
+          <li style="width: 50px; line-height: 25px; text-indent: 10px;">
+            <div class="textTitle">City</div>
+          </li>
+          <li style="width: 360px;">
+            <jqxInput
+              #txtCity
+              [width]="190"
+              [theme]="'bootstrap'"
+              [(ngModel)]="staff.city"
+              [height]="25"
+              (onChange)="onAnyChange($event)"
+              [minLength]="1"
+              [placeHolder]=""
+            ></jqxInput>
+          </li>
+        </ul>
+
+        <ul class="ultable">
+          <li style="width: 160px;">
+            <div class="textTitle">Home Phone</div>
+          </li>
+          <li style="width: 360px;">
+            <!-- [(ngModel)]="Client.email" -->
+
+            <jqxInput
+              #txtHomePhone
+              [width]="270"
+              [theme]="'bootstrap'"
+              [height]="25"
+              (onChange)="onAnyChange($event)"
+              [(ngModel)]="staff.homePhone"
+              [minLength]="1"
+              [placeHolder]=""
+            ></jqxInput>
+          </li>
+        </ul>
+
+        <ul class="ultable">
+          <li style="width: 160px;">
+            <div class="textTitle">Cell Number</div>
+          </li>
+          <li style="width: 360px;">
+            <!-- [(ngModel)]="Client.email" -->
+
+            <jqxInput
+              #txtCellNumber
+              [width]="270"
+              [theme]="'bootstrap'"
+              [height]="25"
+              (onChange)="onAnyChange($event)"
+              [(ngModel)]="staff.cellNumber"
+              [minLength]="1"
+              [placeHolder]=""
+            ></jqxInput>
+          </li>
+        </ul>
+
+        <ul class="ultable">
+          <li style="width: 160px;">
+            <div class="textTitle">Spouse Name</div>
+          </li>
+          <li style="width: 360px;">
+            <!-- [(ngModel)]="Client.email" -->
+
+            <jqxInput
+              #txtSpouseName
+              [width]="270"
+              [theme]="'bootstrap'"
+              [height]="25"
+              (onChange)="onAnyChange($event)"
+              [(ngModel)]="staff.spouceName"
+              [minLength]="1"
+              [placeHolder]=""
+            ></jqxInput>
+          </li>
+        </ul>
+
+        <ul class="ultable">
+          <li style="width: 160px;">
+            Emergency Person
+          </li>
+          <li style="width: 270px;">
+            <jqxInput
+              #txtEmergencyPerson
+              [width]="270"
+              [theme]="'bootstrap'"
+              [height]="25"
+              (onChange)="onAnyChange($event)"
+              [(ngModel)]="staff.emergencyPerson"
+              [minLength]="1"
+              [placeHolder]=""
+            ></jqxInput>
+          </li>
+
+          <li style="width: 140px; line-height: 25px; text-indent: 10px;">
+            Emergency Number
+          </li>
+          <li style="width: 250px;">
+            <jqxInput
+              #txtEmergencyNumber
+              [width]="190"
+              [theme]="'bootstrap'"
+              [height]="25"
+              (onChange)="onAnyChange($event)"
+              [(ngModel)]="staff.emergencyPersonInfo"
+              [minLength]="1"
+              [placeHolder]=""
+            ></jqxInput>
+          </li>
+        </ul>
+
+        <ul class="ultable" style="margin-top: 0px; margin-top: 40px;">
+          <li style="width: 160px; line-height: 25px;">
+            &nbsp;
+          </li>
+          <li style="width: 340px;">
+            <jqxCheckBox
+              style="margin-left: 0px; float: left;"
+              [theme]='"bootstrap"'
+              [disabled]="!canDeleteOrSave"
+              [(ngModel)]="availableForManyPrograms"
+              [checked]="availableForManyPrograms"
+              (onChange)="onAnyChange($event,'check')"
+              [width]='"100%"'
+              [height]="25"
+            >
+              <span>Available for other programs</span>
+            </jqxCheckBox>
+          </li>
+        </ul>
+      </div>
+
+      <div style="overflow: hidden; padding-left: 1%; padding-right: 1%;">
+        <ul class="ultable" style="margin-top: 20px;">
+          <li style="width: 100%;">
+            Accreditations
+          </li>
+          <li style="width: 100%;">
+            <!-- <jqxTextArea  
+                                    [width]="'100%'" 
+                                    [height]="'85%'"                           
+                                    [theme]='"bootstrap"'                                       
+                                    [minLength]="1" 
+                                    (onChange)="onAnyChange($event)"
+                                    [(ngModel)]="staff.tmpAccreditations"
+                                    style="margin-top:10px; float:left;"
+                                    [placeHolder]="''">
+                            </jqxTextArea> -->
+
+            <!-- [createCommand]="createCommand" -->
+
+            <jqxEditor
+              #myEditor
+              [width]="'100%'"
+              (onChange)="onAnyChange($event)"
+              [height]="'90%'"
+              [tools]="tools"
+              [disabled]="!canDeleteOrSave"
+            ></jqxEditor>
+          </li>
+        </ul>
+      </div>
+
+      <div
+        style="
+          overflow: hidden;
+          padding-left: 1%;
+          padding-right: 1%;
+          height: auto;
+        "
+      >
+        <ul class="ultable" style="margin-top: 20px;">
+          <li style="width: 100%;">
+            <app-staff-forms-list-by-staff></app-staff-forms-list-by-staff>
+          </li>
+        </ul>
+      </div>
+    </jqxTabs>
+  </div>
+</div>

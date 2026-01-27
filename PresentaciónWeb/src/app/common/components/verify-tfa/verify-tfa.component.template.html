@@ -1,0 +1,59 @@
+<glowmessages #glowmessage></glowmessages>
+
+<jqxWindow
+  #modalWindow
+  [width]="400"
+  [height]="300"
+  [theme]='"bootstrap"'
+  [resizable]="false"
+  [hidden]="true"
+  [autoOpen]="false"
+  [title]='"Two Factor Authentication"'
+  [isModal]="true"
+  [showCloseButton]="false"
+>
+  <div id="windowPeriodContent" style="overflow: hidden;">
+    <div style="height: 220px; margin-top: 10px;">
+      <div style="display: flex; flex-direction: column; text-align: center;">
+        <span
+          style="
+            color: rgb(118, 118, 118);
+            font-size: 16px;
+            height: 25px;
+            line-height: 25px;
+            margin-top: 25px;
+          "
+        >
+          Enter the Secret
+        </span>
+        <img
+          src="/assets/authenticator.png"
+          class="center"
+          height="100px"
+          width="100px"
+        />
+        <div style="margin-top: 10px;"></div>
+        <div style="text-align: center;">
+          <input
+            #secretInput
+            [(ngModel)]="secret"
+            (keypress)="onKeyPress($event)"
+            placeholder="Secret Key"
+            style="width: 130px; text-align: center;"
+          />
+        </div>
+      </div>
+    </div>
+
+    <div class="footerButtons">
+      <button class="button button" (click)="cancel()">
+        <i class="icon ion-ios-close-circle-outline"></i>
+        Cancel
+      </button>
+      <button class="button button" (click)="Verify()">
+        <i class="icon ion-ios-checkmark-circle-outline"></i>
+        Verify
+      </button>
+    </div>
+  </div>
+</jqxWindow>

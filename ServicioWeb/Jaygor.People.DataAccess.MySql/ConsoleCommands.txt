@@ -1,0 +1,61 @@
+﻿
+// GENERA LAS CLASES NECESARIAS EF EN EL PROYECTO ENTIDADES BASADO EN LA ESTRUCTURA DE BDD
+==========================================================================================
+
+0) Asegurarse que el proyecto compila OK y que al darle el comando   > dotnet --version  la version indicada sea la 2.0.0
+
+1) EJECUTAR EN LA CONSOLA desde el proyecto UnsoGaia.AccesoDatos.MySql
+
+    dotnet ef dbcontext scaffold "Server=localhost;User Id=root;Password=P@ssW0rd;Database=people.qa" "Pomelo.EntityFrameworkCore.MySql" -f -o "Entities" --project "../Jaygor.People.Entities" -c "MySqlContextDB" --use-database-names
+    dotnet ef dbcontext scaffold "Server=localhost;User Id=root;Password=P@ssW0rd;Database=calendar6" "Pomelo.EntityFrameworkCore.MySql" -f -o "Entities" --project "../Jaygor.People.Entities" -c "MySqlContextDB" --use-database-names
+    dotnet ef dbcontext scaffold "Server=52.60.139.58;User Id=root;Password=Jaygor12345!;Database=people_v4" "Pomelo.EntityFrameworkCore.MySql" -f -o "Entities" --project "../Jaygor.People.Entities" -c "MySqlContextDB" --use-database-names
+
+2) UNA VEZ GENERADAS LAS CLASES
+
+    2.1 Mover la clase generada  MySqlContextDB.cs  hacia este proyecto. (Jaygor.People.DataAccess.Mysql)
+
+    2.2 Cambirle el namespace de archivo MySqlContextDB.cs  por este  namespace JayGor.People.DataAccess.MySql
+
+    2.3 Agregarle a MySqlContextDB.cs  el using JayGor.People.Entities.Entities; 
+
+    2.4 Agregar la siguiente linea dentro de la clase MySqlContextDB.
+
+    public MySqlContextDB(DbContextOptions<MySqlContextDB> options) : base(options) { }
+
+3 ) NO OLVIDE AGREGAR A LA SOLUCION SI EXISTEN ENTIDADES NUEVAS.
+4) Eliminar MySqlContextDB.cs del proyecto UnsoGaia.Entidades carpeta Entidades
+
+
+
+
+
+
+
+============= ACORTE ====================
+
+using JayGor.People.Entities.Entities; 
+
+namespace JayGor.People.DataAccess.MySql
+{
+    public partial class MySqlContextDB : DbContext
+    {
+        public MySqlContextDB(DbContextOptions<MySqlContextDB> options) : base(options) { }
+
+
+
+
+
+
+
+
+
+
+  Clave del KeyStore para firmar la App
+
+  !Jaygor12345
+
+
+  PUBLICAR
+
+
+  dotnet publish Jaygor.People.Api.csproj --output /Users/napilex/TFS/JAYGOR/PEOPLE/BACKEND/publish

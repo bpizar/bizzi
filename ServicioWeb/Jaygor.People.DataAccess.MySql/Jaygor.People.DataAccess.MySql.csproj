@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\JayGor.People.Entities\JayGor.People.Entities.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <!-- <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.1" /> -->
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.2.6" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="8.0.2" />
+  </ItemGroup>
+  <ItemGroup>
+    <!-- <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.3" /> -->
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="MySqlServerFactoryDB.cs" />
+  </ItemGroup>
+</Project>

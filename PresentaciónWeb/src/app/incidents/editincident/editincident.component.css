@@ -1,0 +1,30 @@
+﻿[hidden] {
+  display: none;
+}
+
+.box50 {
+  width: 48%;
+  float: left;
+  padding-top: 2%;
+  padding-left: 1%;
+  padding-right: 1%;
+  min-width: 400px;
+  height: 1350px;
+}
+
+.box50_2 {
+  width: 48%;
+  float: left;
+  padding-top: 2%;
+  padding-left: 1%;
+  padding-right: 1%;
+  /* min-width: 400px; */
+  /* height: 1350px; */
+}
+
+.subtitle1 {
+  float: left;
+  font-weight: bold;
+  font-size: 14px !important;
+  width: 100%;
+}

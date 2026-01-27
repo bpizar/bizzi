@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Jaygor.People.DataAccess.MySql\Jaygor.People.DataAccess.MySql.csproj" />
+    <ProjectReference Include="..\JayGor.People.Entities\JayGor.People.Entities.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+      <!-- <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.1" /> -->
+      <!-- <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.2.0" /> -->
+      <!-- <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.2.0" /> -->
+      <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
+      <PackageReference Include="System.Text.Json" Version="8.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="EmptyClass.cs" />
+    <Compile Remove="Interfaces\IFactoriesAD.cs" />
+    <Compile Remove="FactoriesAD.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Factories\MySqlServer\MySqlDatabaseService.StaffForm.cs" />
+  </ItemGroup>
+</Project>

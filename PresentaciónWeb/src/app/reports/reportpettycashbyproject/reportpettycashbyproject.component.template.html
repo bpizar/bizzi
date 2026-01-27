@@ -1,0 +1,281 @@
+<glowmessages #glowmessage></glowmessages>
+
+<div class="menuContainer">
+  <menu></menu>
+</div>
+
+<script>
+  // var OneSignal = window.OneSignal || [];
+  // OneSignal.push(function() {
+  //   OneSignal.init({
+  //     appId: "216ebdba-0d63-47c7-af2d-8b3b1c604d23",
+
+  //   });
+
+  //   // OneSignal.on("subscriptionChange", function(isSubscribed) {
+  //   //         /* If the user's subscription state changes during the page's session, update the button text */
+  //   //         //updateMangeWebPushSubscriptionButton(buttonSelector);
+  //   //         alert(isSubscribed);
+  //   //     });
+
+  //       // OneSignal.on("idsavailable", function(userId, pushToken) {
+  //       //     /* If the user's subscription state changes during the page's session, update the button text */
+  //       //     //updateMangeWebPushSubscriptionButton(buttonSelector);
+  //       //     alert(userId);
+  //       // });
+
+  //       OneSignal.getUserId(function(userId) {
+  //         // (Output) OneSignal User ID: 270a35cd-4dda-4b3f-b04e-41d7463a2316
+  //       });
+
+  //   // OneSignal.IdsAvailable((userId, pushToken) => {
+  // 	// 			//DialogManager.ShowAlert(userId,"Error", MaterialIconHelper.GetIcon("error"));
+  // 	// 			//this.oneSignalId = userId;
+  //   //       //this.StartAux();
+  //   //       alert("userid >> " + userId);
+  //   //     });
+
+  // });
+</script>
+
+<jqxLoader
+  #loaderReference
+  [width]="140"
+  [height]="140"
+  [isModal]="true"
+  [theme]="'bootstrap'"
+  [html]="'<div class=\'loadingdiv\'><div class=\'loader\'></div></div>'"
+  [imagePosition]='"top"'
+></jqxLoader>
+
+<div class="appContainer">
+  <div class="auxMenuBar">
+    <div style="width: 20%;" class="titleHeaderSpace">
+      {{'report_title' | translate}} - {{'report_name_4' | translate}}
+    </div>
+
+    <div
+      class="blockMinRight"
+      style="
+        background: var(--second-color);
+        width: 75%;
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+      "
+    >
+      <div style="float: left; width: 300px; height: 25px;">
+        <i
+          class="icon ion-ios-search"
+          style="color: var(--first-color); float: left; margin-top: 5px;"
+        ></i>
+
+        <jqxButton
+          #lessZoom
+          [width]='"25px"'
+          [height]='"27px"'
+          style="float: left; margin-left: 4px;"
+          (onClick)="LessZoom($event)"
+          [theme]='"metro"'
+        >
+          <i class="icon ion-ios-remove" style="color: var(--first-color);"></i>
+        </jqxButton>
+
+        <jqxButton
+          #moreZoom
+          [width]='"25px"'
+          [height]='"27px"'
+          (onClick)="MoreZoom($event)"
+          style="float: left; margin-left: 4px;"
+          [theme]='"metro"'
+        >
+          <i class="icon ion-ios-add" style="color: var(--first-color);"></i>
+        </jqxButton>
+
+        <span class="zoomValue" style="margin-left: 4px;">
+          {{getZommText()}}
+        </span>
+
+        <span class="pagesSpan">{{'report_print_bar' | translate}}</span>
+
+        <jqxButton
+          #PrintButton
+          [width]='"25px"'
+          [height]='"27px"'
+          style="float: left; margin-left: 4px;"
+          (onClick)="Print($event)"
+          [theme]='"metro"'
+        >
+          <i class="icon ion-ios-print" style="color: var(--first-color);"></i>
+        </jqxButton>
+      </div>
+
+      <!-- <div style="float:right;  width:300px; height: 25px;">
+
+                  <i class="icon ion-ios-search" style="color:#465790; float:left;  margin-top: 5px; "></i>
+
+                  <jqxButton #lessZoom
+                      [width]='"25px"'
+                      [height]='"27px"'
+                      style="float:left; margin-left: 4px;"
+                      (onClick)="LessZoom($event)"
+                      [theme]='"metro"'>
+                      <i class="icon ion-ios-remove" style="color:#465790;"></i>
+                  </jqxButton>
+
+                  <jqxButton #moreZoom
+                    [width]='"25px"'
+                    [height]='"27px"'
+                    (onClick)="MoreZoom($event)"
+                    style="float:left; margin-left: 4px;"
+                    [theme]='"metro"'>
+                    <i class="icon ion-ios-add" style="color:#465790;"></i>
+                  </jqxButton>
+
+                  <span class="zoomValue" style="margin-left: 4px;">{{getZommText()}}</span>
+
+                  <span class="pagesSpan">{{'report_print_bar' | translate}}</span>
+                  
+                  <jqxButton #PrintButton
+                    [width]='"25px"'
+                    [height]='"27px"'
+                    style="float:left; margin-left:4px;"
+                    (onClick)="Print($event)"
+                    [theme]='"metro"'>
+                    <i class="icon ion-ios-print" style="color:#465790;"></i>
+                  </jqxButton>
+            </div> -->
+
+      <div style="float: right; width: 300px; height: 25px;">
+        <span style="float: left; margin-right: 4px;" class="pagesSpan">
+          {{'report_category_bar' | translate}}
+        </span>
+
+        <jqxDropDownList
+          #categoryDropDown
+          [width]="220"
+          [height]="25"
+          style="float: left; margin-right: 4px;"
+          [theme]='"bootstrap"'
+          (onBindingComplete)="categoriesBindingComplete($event)"
+          (onSelect)="CategoriesSelectDropDown($event)"
+          [displayMember]="'description'"
+          [valueMember]="'id'"
+          ([scrollBarSize])="10"
+          [placeHolder]="selectHolder"
+          [source]="dataAdapterCategories"
+        ></jqxDropDownList>
+      </div>
+
+      <div style="float: right; width: 300px; height: 25px;">
+        <span style="float: left; margin-right: 4px;" class="pagesSpan">
+          {{'report_projects_bar' | translate}}
+        </span>
+
+        <jqxDropDownList
+          #projectsDropDown
+          [width]="220"
+          [height]="25"
+          style="float: left; margin-left: 6px;"
+          [theme]="'bootstrap'"
+          (onBindingComplete)="projectsBindingComplete($event)"
+          (onSelect)="ProjectSelectDropDown($event)"
+          [displayMember]="'projectName'"
+          [valueMember]="'id'"
+          ([scrollBarSize])="10"
+          [placeHolder]="selectHolder"
+          [source]="dataAdapterProjects"
+        ></jqxDropDownList>
+      </div>
+
+      <div style="float: right; width: 300px; height: 25px;">
+        <span style="float: left; margin-right: 0px;" class="pagesSpan">
+          {{'report_periods_bar' | translate}}
+        </span>
+
+        <jqxDropDownList
+          #periodsDropDown
+          [width]="220"
+          [height]="25"
+          style="float: left; margin-left: 10px;"
+          [theme]='"bootstrap"'
+          (onBindingComplete)="periodsBindingComplete($event)"
+          (onSelect)="PeriodsSelectDropDown($event)"
+          [displayMember]="'dateJoin'"
+          [valueMember]="'id'"
+          ([scrollBarSize])="10"
+          [placeHolder]="selectHolder"
+          [source]="dataAdapterPeriod"
+        ></jqxDropDownList>
+      </div>
+    </div>
+  </div>
+
+  <div class="reportMainLeft">
+    <reportmenu></reportmenu>
+  </div>
+
+  <div class="reportMainRight">
+    <div
+      *ngIf="report.pages.length==0"
+      [ngClass]="'contentReport scrollable section'"
+    >
+      <div
+        [ngClass]="layout=='portrait'? 'page pageA4Portrait ' + zoom() : 'page pageA4 ' + zoom()"
+      >
+        <p class="centerMiddle">
+          {{'report_no_data_display' | translate}}
+        </p>
+      </div>
+    </div>
+    <div
+      *ngIf="report.pages.length>0"
+      id="vscrollable"
+      [ngClass]="'contentReport scrollable section'"
+    >
+      <div
+        id="page{i+1}"
+        *ngFor="let p of report.pages; let i = index"
+        [ngClass]="layout=='portrait'? 'page pageA4Portrait ' + zoom() : 'page pageA4 ' + zoom()"
+      >
+        <!-- <div *ngIf="p.title.length>0" class="titleReport">
+              {{p.title}}
+              </div> -->
+
+        <div *ngIf="p.title.length>0" class="titleReport">
+          {{p.title}}
+          <br />
+          <div class="subtitle">{{subtitleReport}}</div>
+          <br />
+          <div class="subtitle">{{subtitleReport2}}</div>
+        </div>
+
+        <div *ngIf="p.title.length>0" class="line"></div>
+        <div *ngIf="p.groupLabels.length>0">
+          <div *ngFor="let gl of p.groupLabels;let ix = index">
+            <div [ngClass]="ix==0? 'boldGroup boldGroupFirst':'boldGroup'">
+              {{gl }} : {{p.groupsValues[ix]}}
+            </div>
+          </div>
+        </div>
+        <table>
+          <tr>
+            <th *ngFor="let item of columns; let i = index">
+              {{item}}
+            </th>
+          </tr>
+          <tr *ngFor="let item of p.rows; let ci = index">
+            <td
+              [style.width.px]="columnsWidth[cn]"
+              *ngFor="let c of item.cells; let cn = index"
+            >
+              <p>{{c.value}}</p>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <br />
+      <br />
+      <br />
+    </div>
+  </div>
+</div>

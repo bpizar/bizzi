@@ -1,0 +1,183 @@
+﻿/* .headerLogin
+{
+    background-color: rgba(173, 169, 156, 0.753);
+    height: 200px;
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+} */
+
+.vertical-container-login {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* background: rgb(91,192,222);
+  background: radial-gradient(circle, rgba(91,192,222,1) 5%, rgba(230,242,246,1) 100%); */
+
+  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#168be5+0,465790+25,465790+75,168be5+100 */
+  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#0080e2+0,465790+25,465790+75,0080e2+100 */
+  /* background: #0080e2; 
+background: -moz-linear-gradient(left, #0080e2 0%, #465790 25%, #465790 75%, #0080e2 100%);
+background: -webkit-linear-gradient(left, #0080e2 0%,#465790 25%,#465790 75%,#0080e2 100%); 
+background: linear-gradient(to right, #0080e2 0%,#465790 25%,#465790 75%,#0080e2 100%); 
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0080e2', endColorstr='#0080e2',GradientType=1 ); IE6-9
+ */
+  background: rgb(181, 178, 178);
+  background: -moz-linear-gradient(
+    90deg,
+    rgba(181, 178, 178, 1) 6%,
+    rgba(241, 234, 234, 1) 40%,
+    rgba(241, 234, 234, 1) 60%,
+    rgba(181, 178, 178, 1) 94%
+  );
+  background: -webkit-linear-gradient(
+    90deg,
+    rgba(181, 178, 178, 1) 6%,
+    rgba(241, 234, 234, 1) 40%,
+    rgba(241, 234, 234, 1) 60%,
+    rgba(181, 178, 178, 1) 94%
+  );
+  background: linear-gradient(
+    90deg,
+    rgba(181, 178, 178, 1) 6%,
+    rgba(241, 234, 234, 1) 40%,
+    rgba(241, 234, 234, 1) 60%,
+    rgba(181, 178, 178, 1) 94%
+  );
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#b5b2b2",endColorstr="#b5b2b2",GradientType=1);
+}
+
+.vertical-content-login {
+  width: 350px;
+  margin-bottom: 20%;
+  margin-top: 2%;
+  height: 64vh;
+}
+
+.loginWindow {
+  padding: 40px;
+  border-radius: 2%;
+  border: 1px solid rgb(226, 221, 221);
+}
+
+.loginWindow i {
+  /* color:#465790; */
+  color: var(--first-color);
+  font-size: 18px;
+}
+
+.loginWindow input {
+  outline: none !important;
+}
+
+.containerinputdiv input {
+  /* color:#465790; */
+  color: var(--first-color);
+  margin-left: 10px;
+}
+
+.message {
+  /* color:#465790; */
+  color: var(--first-color);
+  font-size: 18px;
+}
+
+.Titulo {
+  /* color:#465790 !important; */
+  color: var(--first-color) !important;
+  /* font-size:34px;  */
+  font-size: 32px;
+  float: left;
+  line-height: 20px;
+  margin-right: 20px;
+  width: 150px;
+}
+
+.iconoTitulo {
+  /* color:#465790 !important; */
+  color: var(--first-color) !important;
+}
+
+.containerinputdiv {
+  border-bottom: 1px solid var(--thirteenth-color);
+  /* border-radius:2px;    */
+  height: 30px;
+  display: inline-block;
+  padding-left: 1%;
+  width: 99%;
+}
+
+.containerinputdiv input {
+  width: 90%;
+  outline: none;
+  border: none;
+  background-color: transparent;
+}
+
+/* Change the white to any color ;) */
+input:-webkit-autofill {
+  /* -webkit-box-shadow: 0 0 0 30px #465790 inset; */
+
+  -webkit-box-shadow: 0 0 0 30px #f1eaea inset;
+
+  /* -webkit-box-shadow: 0 0 0 30px #bfeaff inset; */
+}
+
+input:-webkit-autofill {
+  -webkit-text-fill-color: var(--first-color) !important;
+}
+
+.copyright {
+  color: var(--thirteenth-color);
+  position: fixed;
+  bottom: 0px;
+  left: 0px;
+  width: 100%;
+  height: 30px;
+  padding: 5px;
+  font-size: 12px;
+  line-height: 20px;
+}
+
+.copyright1 {
+  color: var(--thirteenth-color);
+  position: fixed;
+  bottom: 40px;
+  left: 0px;
+  width: 100%;
+  height: 30px;
+  padding: 5px;
+  font-size: 12px;
+  text-align: right;
+}
+
+#loginButton {
+  background-color: var(--first-color) !important;
+  color: var(--thirteenth-color) !important;
+}
+
+.panelHelper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: var(--first-color);
+  height: 100%;
+  width: 25%;
+  text-align: center;
+  padding: 5%;
+}
+
+.panelHelper span {
+  color: var(--thirteenth-color);
+  font-size: 24px;
+}
+
+.onesignal-customlink-container {
+  height: 100px;
+  top: 100px;
+  position: absolute;
+  left: 100px;
+}

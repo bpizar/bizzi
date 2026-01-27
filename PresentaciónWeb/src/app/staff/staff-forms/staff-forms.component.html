@@ -1,0 +1,92 @@
+<glowmessages #glowmessage></glowmessages>
+
+<div class="menuContainer">
+  <menu [loaderReference]="myLoader"></menu>
+</div>
+
+<div class="appContainer">
+  <jqxLoader
+    #loaderReference
+    [width]="140"
+    [height]="140"
+    [isModal]="true"
+    [theme]="'bootstrap'"
+    [html]="'<div class=\'loadingdiv\'><div class=\'loader\'></div></div>'"
+    [imagePosition]="'top'"
+  ></jqxLoader>
+
+  <div class="auxMenuBar">
+    <div class="titleHeaderSpace">Reports</div>
+
+    <div class="blockMinRight">
+      <!-- 
+      <button class="button buttonSave"
+        style="float:right;">
+        <i class="icon ion-ios-briefcase"></i>&nbsp;Title
+      </button>
+
+      <button class="button buttonSave" [hidden]="!canAddNew()" (click)="createNew($event)"
+        style="margin-right:10px; float:right;">
+        <i class="icon ion-ios-add"></i> {{'staff_create_new' | translate}}
+      </button> -->
+    </div>
+  </div>
+
+  <div class="headerSpace"></div>
+
+  <div class="bodySpace">
+    <div style="margin: 0 20% 0 20%;">
+      <jqxButton
+        [routerLink]="['/staff/staff-form', '-1']"
+        type="button"
+        [theme]="'bootstrap'"
+      >
+        <i class="fa fa-plus"></i>
+        Add Form
+      </jqxButton>
+
+      <!-- | paginate: { itemsPerPage: 10, currentPage: pagina } -->
+      <table class="table-simple">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Recurrence</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let staffForm of staffForms">
+            <td>
+              {{ staffForm.name }}
+            </td>
+            <td>
+              {{ staffForm.description }}
+            </td>
+            <td>
+              {{ recurrenceList[staffForm.idfRecurrence]
+              }}{{
+                getRecurrenceDetail(
+                  staffForm.idfRecurrence,
+                  staffForm.idfRecurrenceDetail
+                )
+              }}
+            </td>
+            <td>
+              <jqxButton
+                [routerLink]="['/staff/staff-form', staffForm.id]"
+                class="btn btn-primary"
+              >
+                <i class="fa fa-edit"></i>
+              </jqxButton>
+
+              <jqxButton (click)="delete(staffForm)" class="btn btn-secondary">
+                <i class="fa fa-trash-o"></i>
+              </jqxButton>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

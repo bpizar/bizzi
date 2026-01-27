@@ -1,0 +1,387 @@
+<ul class="navigation" (window:resize)="OnWindowResize($event)">
+  <li>
+    <div class="titleMenu">Bizzi</div>
+  </li>
+
+  <li [class.selected]="isSelected('/dashboard')">
+    <jqxTooltip
+      [position]="'bottom'"
+      [disabled]="disabledToolTip"
+      [content]="'Dashboard'"
+    >
+      <a routerLink="/dashboard">
+        <i class="icon ion-ios-speedometer iconmenu"></i>
+        <span>{{'menu_dashboard' | translate}}</span>
+      </a>
+    </jqxTooltip>
+  </li>
+
+  <li [class.selected]="isSelected('/scheduling')">
+    <jqxTooltip
+      [position]="'bottom'"
+      [disabled]="disabledToolTip"
+      [content]="'Scheduling'"
+    >
+      <a [routerLink]="['/scheduling']">
+        <i class="icon ion-ios-grid iconmenu"></i>
+        <span>{{'menu_scheduling' | translate}}</span>
+      </a>
+    </jqxTooltip>
+  </li>
+
+  <li
+    [class.selected]="isSelected('/geotracking')"
+    [hidden]="hiddenGeoTracking"
+  >
+    <jqxTooltip
+      [position]="'bottom'"
+      [disabled]="disabledToolTip"
+      [content]="'Geotracking'"
+    >
+      <a [routerLink]="['/geotracking']">
+        <i class="icon ion-ios-pin iconmenu"></i>
+        <span>{{'menu_geotracking' | translate}}</span>
+      </a>
+    </jqxTooltip>
+  </li>
+
+  <li [class.selected]="isSelected('/projects')" [hidden]="hiddenProjects">
+    <jqxTooltip
+      [position]="'bottom'"
+      [disabled]="disabledToolTip"
+      [content]="'Programs'"
+    >
+      <a routerLink="/projects">
+        <i class="icon ion-ios-filing iconmenu"></i>
+        <span>{{'menu_projects' | translate}}</span>
+      </a>
+    </jqxTooltip>
+  </li>
+  <li [class.selected]="isSelected('/staff')" [hidden]="hiddenStaff">
+    <jqxTooltip
+      [position]="'bottom'"
+      [disabled]="disabledToolTip"
+      [content]="'Staff'"
+    >
+      <a routerLink="/staff">
+        <i class="icon ion-ios-people iconmenu"></i>
+        <span>{{'menu_staff' | translate}}</span>
+      </a>
+    </jqxTooltip>
+  </li>
+  <li [class.selected]="isSelected('/clients')" [hidden]="hiddenClients">
+    <jqxTooltip
+      [position]="'bottom'"
+      [disabled]="disabledToolTip"
+      [content]="'Clients'"
+    >
+      <a routerLink="/clients">
+        <i class="icon ion-ios-person iconmenu"></i>
+        <span>{{'menu_clients' | translate}}</span>
+      </a>
+    </jqxTooltip>
+  </li>
+  <li [class.selected]="isSelected('/finance')" [hidden]="hiddenFinance">
+    <jqxTooltip
+      [position]="'bottom'"
+      [disabled]="disabledToolTip"
+      [content]="'Time Tracker'"
+    >
+      <a routerLink="/finance">
+        <i class="icon ion-ios-alarm iconmenu"></i>
+        <span>{{'menu_finance' | translate}}</span>
+      </a>
+    </jqxTooltip>
+  </li>
+
+  <li [class.selected]="isSelected('/incidents')" [hidden]="hiddenFinance">
+    <jqxTooltip
+      [position]="'bottom'"
+      [disabled]="disabledToolTip"
+      [content]="'Incidents'"
+    >
+      <a routerLink="/incidents">
+        <i class="icon ion-ios-warning iconmenu"></i>
+        <!-- <span>{{'menu_finance' | translate}}</span>          -->
+        <span>Incidents</span>
+      </a>
+    </jqxTooltip>
+  </li>
+
+  <li [class.selected]="isSelected('/reports')" [hidden]="hiddenReports">
+    <jqxTooltip
+      [position]="'bottom'"
+      [disabled]="disabledToolTip"
+      [content]="'Reports'"
+    >
+      <a routerLink="/staff/staff-forms">
+        <i class="icon ion-ios-paper iconmenu"></i>
+        <span>{{'menu_reports' | translate}}</span>
+      </a>
+    </jqxTooltip>
+  </li>
+
+  <li style="margin-left: 40px; float: left; padding-top: 13px;">
+    <jqxTooltip [position]="'bottom'" [content]="'Notifications'">
+      <i
+        [hidden]="!notificationEnabled"
+        (click)="displayNotificationPanel = !displayNotificationPanel"
+        class="icon ion-ios-notifications-outline iconmenu"
+        style="color: var(--thirteenth-color);"
+      ></i>
+      <i
+        [hidden]="notificationEnabled"
+        (click)="displayNotificationPanel = !displayNotificationPanel"
+        class="icon ion-ios-notifications-off iconmenu"
+        style="color: var(--twelfth-color);"
+      ></i>
+    </jqxTooltip>
+  </li>
+
+  <li
+    [hidden]="true"
+    style="margin-left: 40px; float: left; padding-top: 13px;"
+  >
+    <jqxTooltip [position]="'bottom'" [content]="'Notifications'">
+      <!-- <i [hidden]="!notificationEnabled" (click)="displayNotificationPanel = !displayNotificationPanel" class='icon ion-ios-notifications-outline iconmenu' style="color:white;"></i>    -->
+      <!-- <i [hidden]="notificationEnabled" (click)="displayNotificationPanel = !displayNotificationPanel" class='icon ion-ios-notifications-off iconmenu' style="color:var(--twelfth-color);"></i>    -->
+      <i
+        (click)="displayNotificationPanel = !displayNotificationPanel"
+        class="icon ion-ios-chatboxes iconmenu"
+        style="color: var(--thirteenth-color);"
+      ></i>
+    </jqxTooltip>
+  </li>
+
+  <li [class.selected]="isSelected('/myaccount')" style="margin-left: auto;">
+    <jqxTooltip
+      [position]="'bottom'"
+      [disabled]="disabledToolTip"
+      [content]="'Settings'"
+    >
+      <a routerLink="/myaccount">
+        <i class="icon ion-ios-settings iconmenu"></i>
+      </a>
+    </jqxTooltip>
+  </li>
+</ul>
+
+<!-- -->
+
+<p-sidebar
+  [(visible)]="displayChatPanel"
+  [position]="'right'"
+  [modal]="false"
+  [showCloseIcon]="false"
+  [dismissible]="false"
+>
+  <div class="roomPanel">
+    <div class="chatArrowLeft">
+      <i
+        [hidden]="roomfrom==0"
+        (click)="clickLeftChat()"
+        class="icon ion-ios-arrow-back iconmenu"
+        style="color: var(--twelfth-color);"
+      ></i>
+    </div>
+    <div class="roomcontainer" *ngFor="let r of rooms; let i = index">
+      <div
+        *ngIf="i>=roomfrom && i<=roomto"
+        [ngClass]="{'room':i!=currentChat,'roomSelected':i==currentChat}"
+      >
+        <img (click)="clickChatRoom(i)" [src]="r.imgRoom | image:'users'" />
+      </div>
+    </div>
+    <div class="chatArrowRight">
+      <i
+        [hidden]="roomto==rooms.length"
+        (click)="clickRightChat()"
+        class="icon ion-ios-arrow-forward iconmenu"
+        style="color: var(--twelfth-color); margin-top: 30px; float: ri;"
+      ></i>
+    </div>
+  </div>
+
+  <div class="roomcontainer" *ngFor="let r of rooms; let i = index">
+    <div class="panelInfoRoom" *ngIf="i==currentChat">Room {{i}}</div>
+
+    <div class="msgcontainer" *ngIf="i==currentChat">
+      <div *ngFor="let m of r.messages; let j = index">
+        <div [ngClass]="{'leftchat':!m.isYou,'rightchat':m.isYou}">
+          <span class="senderName">{{m.senderName}}</span>
+          <span class="dateSent">{{m.dateSent}}</span>
+          <div class="msg">{{m.msg}}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- *ngIf="i==currentChat" -->
+  </div>
+
+  <div class="panelSendRoom">
+    <jqxInput
+      #txtSend
+      [width]="220"
+      [(ngModel)]="sendText"
+      [theme]="'bootstrap'"
+      [height]="25"
+      style="margin-top: 10px;"
+      [minLength]="1"
+      [placeHolder]='"Write something..."'
+    ></jqxInput>
+
+    <div class="chatSendButton">
+      <!-- style="color:white; margin-top:30px; margin-left:15px; " -->
+
+      <i (click)="clickRightChat()" class="icon ion-ios-send iconmenu"></i>
+    </div>
+  </div>
+
+  <jqxListBox
+    #editGenGlobalPositions
+    [width]='"100%"'
+    [hidden]="!displayGlobalParticipants"
+    [height]='"100%"'
+    [checkboxes]="true"
+    [filterable]="true"
+    [theme]='"bootstrap"'
+    [displayMember]="'name'"
+    [valueMember]="'id'"
+    [searchMode]="'containsignorecase'"
+    [renderer]="rendererListBoxChatGlobalWindow"
+    [filterPlaceHolder]="'Find'"
+    [scrollBarSize]="5"
+    [source]="dataAdapterGlobalParticipants"
+  ></jqxListBox>
+</p-sidebar>
+
+<p-sidebar
+  [(visible)]="displayNotificationPanel"
+  [position]="'right'"
+  [showCloseIcon]="false"
+  [dismissible]="true"
+>
+  Reminders
+  <i
+    (click)="displayNotificationPanel = false"
+    class="icon ion-ios-close iconmenu"
+    style="color: var(--twelfth-color); float: right;"
+  ></i>
+  <br />
+  <br />
+
+  <div *ngIf="remindersForToday.length>0" class="titlePanelreminder">Today</div>
+  <br *ngIf="remindersForToday.length>0" />
+
+  <div class="panelRemindersScrool">
+    <div *ngFor="let today of remindersForToday">
+      <div
+        class="remidnerforpanel"
+        [ngStyle]="{'border-color': today.color}"
+        style="
+          float: left;
+          height: 45px;
+          border: none;
+          border-left-width: 3px;
+          border-left-style: solid;
+        "
+      >
+        <div class="time">
+          <i
+            class="icon ion-ios-notifications-outline iconmenu"
+            style="color: var(--twelfth-color);"
+          ></i>
+          {{today.deadLine}}
+        </div>
+        <div class="name">{{today.name}}</div>
+      </div>
+    </div>
+
+    <div *ngIf="remindersForTomorrow.length>0" class="titlePanelreminder">
+      Tomorrow
+    </div>
+
+    <br *ngIf="remindersForTomorrow.length>0" />
+
+    <div *ngFor="let today of remindersForTomorrow">
+      <div
+        class="remidnerforpanel"
+        [ngStyle]="{'border-color': today.color}"
+        style="
+          float: left;
+          height: 45px;
+          border: none;
+          border-left-width: 3px;
+          border-left-style: solid;
+        "
+      >
+        <div class="time">
+          <i
+            class="icon ion-ios-notifications-outline iconmenu"
+            style="color: var(--twelfth-color);"
+          ></i>
+          {{today.deadLine}}
+        </div>
+        <div class="name">{{today.name}}</div>
+      </div>
+    </div>
+
+    <div *ngIf="remindersOthers.length>0" class="titlePanelreminder">Later</div>
+
+    <br *ngIf="remindersOthers.length>0" />
+
+    <div *ngFor="let today of remindersOthers">
+      <div
+        class="remidnerforpanel"
+        [ngStyle]="{'border-color': today.color}"
+        style="
+          float: left;
+          height: 45px;
+          border: none;
+          border-left-width: 3px;
+          border-left-style: solid;
+        "
+      >
+        <div class="time">
+          <i
+            class="icon ion-ios-calendar iconmenu"
+            style="color: var(--twelfth-color);"
+          ></i>
+          {{today.deadLine}}
+        </div>
+        <!-- <i  class='icon ion-ios-notifications-outline iconmenu' style="color:var(--twelfth-color);"></i>  -->
+        <div class="name">{{today.name}}</div>
+        <!-- <div class="description">{{today.description}}</div> -->
+      </div>
+    </div>
+
+    <br *ngIf="remindersMedicals.length>0" />
+
+    <div *ngIf="remindersMedicals.length>0" class="titlePanelreminder">
+      Medication Reminders
+    </div>
+
+    <div *ngFor="let today of remindersMedicals">
+      <div
+        class="remidnerforpanel"
+        [ngStyle]="{'border-color': today.color}"
+        style="
+          float: left;
+          height: 45px;
+          border: none;
+          border-left-width: 3px;
+          border-left-style: solid;
+        "
+      >
+        <!-- <jqxTooltip [position]="'bottom'" [content]="'Dashboard'">                     -->
+        <div class="timered">
+          <i class="icon ion-ios-thermometer iconmenu" style="color: red;"></i>
+          {{today.deadLine}}
+        </div>
+        <div class="name">{{today.name}}</div>
+        <div class="description">{{today.description}}</div>
+        <!-- </jqxTooltip> -->
+      </div>
+    </div>
+  </div>
+</p-sidebar>

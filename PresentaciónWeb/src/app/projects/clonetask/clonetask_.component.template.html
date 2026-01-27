@@ -1,0 +1,324 @@
+<jqxWindow
+  #appointmentWindow
+  [width]="650"
+  [height]="365"
+  [maxHeight]="365"
+  [minHeight]="365"
+  [theme]='"bootstrap"'
+  [maxWidth]="700"
+  [minWidth]="650"
+  [resizable]="false"
+  [autoOpen]="false"
+  style="padding: 0px !important; margin: 0px !important;"
+  [isModal]="true"
+>
+  <div id="windowContent">
+    <!-- [initTabContent] = "initWidgets" -->
+
+    <jqxTabs
+      #tabsReference
+      [width]='"100%"'
+      [height]='"100%"'
+      [theme]='"bootstrap"'
+      style="margin: 0px !important;"
+      [position]='"top"'
+      [animationType]='"none"'
+      [initTabContent]="initWidgets"
+      [selectionTracker]="false"
+    >
+      <ul style="list-style-type: none;">
+        <li>Action</li>
+        <li>Preview</li>
+      </ul>
+
+      <div>
+        <div class="ultable" style="margin-top: 0px;">
+          <li style="width: 100px;">
+            <div class="textTitle"></div>
+          </li>
+          <li style="width: 450px;">
+            <div style="float: left; width: 100px;">
+              <span id="x_copy" style="line-height: 25px;">&nbsp;</span>
+
+              <jqxRadioButton
+                #radioButtonCopy
+                [width]="40"
+                [height]="25"
+                [checked]="false"
+                style="float: left;"
+              ></jqxRadioButton>
+            </div>
+
+            <div style="float: left; width: 140px;">
+              <span id="x_move" style="line-height: 25px;">&nbsp;</span>
+
+              <jqxRadioButton
+                #radioButtonMove
+                [width]="40"
+                [height]="25"
+                [checked]="false"
+                style="float: left;"
+              ></jqxRadioButton>
+            </div>
+          </li>
+        </div>
+
+        <ul class="ultable">
+          <li style="width: 100px;">
+            <div class="textTitle">
+              {{'projects_copy_move_to_project' | translate}}
+            </div>
+          </li>
+          <li style="width: 450px;">
+            <!-- [scrollBarSize]="5" -->
+
+            <jqxDropDownList
+              #projectDropDown
+              [width]="'100%'"
+              [height]="25"
+              (onChange)="onProject_or_PeriodDropDownChange($event)"
+              [filterable]="true"
+              [theme]='"bootstrap"'
+              [displayMember]="'projectName'"
+              [valueMember]="'id'"
+              [searchMode]="'containsignorecase'"
+              [filterPlaceHolder]="PlaceHolderLookingFor"
+              [placeHolder]="PlaceHolderSelectProject"
+              [source]="dataAdapterProjectListBox"
+            ></jqxDropDownList>
+          </li>
+        </ul>
+        <ul class="ultable">
+          <li style="width: 100px;">
+            <div class="textTitle">
+              {{'projects_copy_move_to_period' | translate}}
+            </div>
+          </li>
+          <li style="width: 450px;">
+            <!-- [scrollBarSize]="5" -->
+            <jqxDropDownList
+              #periodDropDown
+              [width]="'100%'"
+              [height]="25"
+              (onChange)="onProject_or_PeriodDropDownChange($event)"
+              [filterable]="true"
+              [theme]='"bootstrap"'
+              [displayMember]="'dateJoin'"
+              [valueMember]="'id'"
+              [searchMode]="'containsignorecase'"
+              [filterPlaceHolder]="PlaceHolderLookingFor"
+              [placeHolder]="PlaceHolderSelectPeriod"
+              [source]="dataAdapterPeriodListBox"
+            ></jqxDropDownList>
+          </li>
+        </ul>
+
+        <div class="buttonWindowDiv" style="margin-top: 130px;">
+          <button class="button buttonSave" (click)="OkNext($event)">
+            <i class="icon ion-ios-arrow-dropright"></i>
+            {{'global_next' | translate}}
+          </button>
+        </div>
+      </div>
+
+      <div>
+        <ul class="ultable">
+          <li style="width: 120px;">
+            <div class="textTitle">
+              {{'projects_participant_window' | translate}}
+            </div>
+          </li>
+          <li style="width: 40px;">
+            <jqxButton
+              [theme]='"bootstrap"'
+              (onClick)="deleteStaff($event)"
+              style="margin-left: 0px; float: left;"
+            >
+              <i class="icon ion-ios-close" style="font-size: 18px;"></i>
+            </jqxButton>
+          </li>
+          <li style="width: 160px;">
+            <jqxDropDownList
+              #editGenStaff
+              [width]="160"
+              (onChange)="onEditGenStaffChange($event)"
+              [height]="25"
+              [filterable]="true"
+              [theme]='"bootstrap"'
+              [displayMember]="'fullName'"
+              [valueMember]="'id'"
+              [searchMode]="'containsignorecase'"
+              [renderer]="rendererListBoxStaff"
+              ([scrollBarSize])="5"
+              [filterPlaceHolder]="PlaceHolderLookingFor"
+              [placeHolder]="PlaceHolderParticipant"
+              [source]="dataAdapterStaffListBox_"
+            ></jqxDropDownList>
+          </li>
+          <li style="width: 90px; margin-left: 10px;">
+            <div class="textTitle">
+              {{'projects_assignable_to' | translate}}
+            </div>
+          </li>
+          <li style="width: 40px;">
+            <jqxButton
+              [theme]='"bootstrap"'
+              (onClick)="deletePosition($event)"
+              style="margin-left: 0px; float: left;"
+            >
+              <i class="icon ion-ios-close" style="font-size: 18px;"></i>
+            </jqxButton>
+          </li>
+          <li style="width: 160px;">
+            <jqxDropDownList
+              #positionsDropDown
+              [width]="160"
+              [height]="25"
+              (onChange)="onPositionsDropDownChange($event)"
+              [theme]='"bootstrap"'
+              [displayMember]="'name'"
+              [valueMember]="'id'"
+              ([scrollBarSize])="5"
+              [placeHolder]="PlaceHolderPosition"
+              [source]="dataAdapterPositions"
+            ></jqxDropDownList>
+          </li>
+        </ul>
+        <ul class="ultable">
+          <li style="width: 120px;">
+            <div class="textTitle">{{'global_state' | translate}}</div>
+          </li>
+          <li style="width: 180px;">
+            <jqxDropDownList
+              #statusDropDown
+              [width]="180"
+              [height]="25"
+              [filterable]="true"
+              [theme]='"bootstrap"'
+              [displayMember]="'status'"
+              [valueMember]="'id'"
+              [searchMode]="'containsignorecase'"
+              [renderer]="rendererListBoxStatus"
+              ([scrollBarSize])="5"
+              [placeHolder]="PlaceHolderStatus"
+              [source]="dataAdapterStatusListBox"
+            ></jqxDropDownList>
+          </li>
+        </ul>
+        <ul class="ultable">
+          <li style="width: 120px;">
+            <div class="textTitle">{{'global_name' | translate}}</div>
+          </li>
+          <li style="width: 500px;">
+            <jqxInput
+              #editGenTaskName
+              [width]="500"
+              [theme]='"bootstrap"'
+              [height]="25"
+              [minLength]="1"
+              [placeHolder]="PlaceHolderName"
+            ></jqxInput>
+          </li>
+        </ul>
+
+        <ul class="ultable">
+          <li style="width: 120px;">
+            <div class="textTitle">{{'global_description' | translate}}</div>
+          </li>
+          <li style="width: 500px;">
+            <jqxInput
+              #editGenTaskDescription
+              [width]="500"
+              [theme]='"bootstrap"'
+              [height]="25"
+              [minLength]="1"
+              [placeHolder]="PlaceHolderDescription"
+            ></jqxInput>
+          </li>
+        </ul>
+
+        <ul class="ultable">
+          <li style="width: 120px;">
+            <div class="textTitle">
+              {{'projects_estimated_time' | translate}}
+            </div>
+          </li>
+          <li style="width: 500px;">
+            <jqxNumberInput
+              #estimatedHours
+              [width]="80"
+              [height]="25"
+              [decimalDigits]="0"
+              [digits]="2"
+              [min]="0"
+              [max]="999"
+              [inputMode]="'simple'"
+              [theme]="'bootstrap'"
+              [spinButtons]="true"
+            ></jqxNumberInput>
+          </li>
+        </ul>
+
+        <ul class="ultable">
+          <li style="width: 120px;">
+            <div class="textTitle">
+              {{'projects_grid_deadline' | translate}}
+            </div>
+          </li>
+          <li style="width: 40px;">
+            <jqxButton
+              [theme]='"bootstrap"'
+              (onClick)="deleteDeadLine($event)"
+              style="margin-left: 0px; float: left;"
+            >
+              <i class="icon ion-ios-close" style="font-size: 18px;"></i>
+            </jqxButton>
+          </li>
+          <li style="width: 180px;">
+            <jqxDateTimeInput
+              #editGenDeadline
+              [width]="250"
+              [allowNullDate]="true"
+              [height]="25"
+              [culture]="getCurrentCulture()"
+              [theme]='"bootstrap"'
+              [formatString]='"F"'
+              [showTimeButton]="true"
+            ></jqxDateTimeInput>
+          </li>
+        </ul>
+
+        <ul class="ultable" [hidden]="type != 'RE'">
+          <li style="width: 120px;">
+            <div class="textTitle">{{'projects_reminder' | translate}}</div>
+          </li>
+          <li style="width: 500px;">
+            <div
+              *ngFor="let sett of settingReminderTime"
+              style="width: 80px; float: left; position: relative;"
+            >
+              <input
+                [checked]="sett.state=='true'"
+                type="checkbox"
+                (change)="sett.state = sett.state == 'true' ? 'false' : 'true' "
+              />
+              <span>{{sett.minutesBefore}} min</span>
+            </div>
+          </li>
+        </ul>
+
+        <div class="buttonWindowDiv" style="margin-top: 0px;">
+          <button class="button buttonSave" (click)="CancelClick($event)">
+            <i class="icon ion-ios-arrow-dropleft"></i>
+            {{'global_cancel' | translate}}
+          </button>
+
+          <button class="button buttonSave" (click)="OkClick($event)">
+            <i class="icon ion-ios-checkmark-circle-outline"></i>
+            {{'global_do_action' | translate}}
+          </button>
+        </div>
+      </div>
+    </jqxTabs>
+  </div>
+</jqxWindow>

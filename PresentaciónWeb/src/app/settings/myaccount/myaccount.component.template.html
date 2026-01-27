@@ -1,0 +1,326 @@
+﻿<glowmessages #glowmessage></glowmessages>
+
+<div class="menuContainer">
+  <menu [loaderReference]="myLoader"></menu>
+</div>
+
+<div class="appContainer">
+  <jqxLoader
+    #loaderReference
+    [width]="140"
+    [height]="140"
+    [isModal]="true"
+    [theme]="'bootstrap'"
+    [html]="'<div class=\'loadingdiv\'><div class=\'loader\'></div></div>'"
+    [imagePosition]='"top"'
+  ></jqxLoader>
+
+  <div class="header40PSpace" style="overflow: visible; height: 95%;">
+    <jqxTabs
+      #tabsReference
+      [width]='"100%"'
+      [height]='"100%"'
+      [theme]='"bootstrap"'
+      [position]='"top"'
+      [animationType]='"none"'
+      [selectionTracker]="false"
+    >
+      <ul style="list-style-type: none; color: #808080;">
+        <li>&nbsp;</li>
+        <!-- <li>&nbsp;</li> -->
+        <!-- <li>&nbsp;</li> -->
+      </ul>
+      <div
+        style="
+          overflow: hidden;
+          padding-left: 40px;
+          padding-top: 40px !important;
+        "
+      >
+        <ul class="ultable" style="width: 500px; float: left; margin-top: 0px;">
+          <li style="width: 200px;">
+            <img
+              style="
+                border-radius: 50%;
+                float: left;
+                margin: 40px;
+                margin-top: 0;
+                margin-left: 0px;
+              "
+              height="120"
+              width="120"
+              src="{{ImagePath}}"
+            />
+          </li>
+
+          <li style="width: 300px;">
+            <ul class="ultable">
+              <li style="width: 380px;">
+                <span
+                  style="
+                    color: rgb(118, 118, 118);
+                    font-size: 20px;
+                    height: 25px;
+                    line-height: 25px;
+                  "
+                >
+                  {{UserEmail}}
+                </span>
+              </li>
+            </ul>
+            <ul class="ultable">
+              <li style="width: 380px;">
+                <span
+                  style="
+                    color: rgb(118, 118, 118);
+                    font-size: 16px;
+                    height: 25px;
+                    line-height: 25px;
+                  "
+                >
+                  {{UserLastName}} {{UserFirstName}}
+                </span>
+              </li>
+            </ul>
+            <ul class="ultable">
+              <li style="width: 380px;">
+                <button
+                  class="button"
+                  (click)="logOut($event)"
+                  style="float: left; width: 100px;"
+                >
+                  <i
+                    class="icon ion-ios-lock"
+                    style="color: var(--thirteenth-color); font-size: 18px;"
+                  ></i>
+                  {{'set_logout' | translate}}
+                </button>
+              </li>
+            </ul>
+          </li>
+        </ul>
+
+        <div class="blockMin" style="width: 300px; height: auto; float: left;">
+          <span
+            style="
+              color: rgb(118, 118, 118);
+              font-size: 16px;
+              height: 25px;
+              line-height: 25px;
+            "
+          >
+            {{'set_permision_title' | translate}}
+          </span>
+
+          <span class="ultable" *ngFor="let p of EffectivePermissions">
+            {{p}}
+          </span>
+        </div>
+
+        <ul
+          class="ultable"
+          style="width: 300px; height: auto; float: left; margin-top: 0px;"
+        >
+          <li style="width: 270px;">
+            <span
+              style="
+                color: rgb(118, 118, 118);
+                font-size: 16px;
+                height: 25px;
+                line-height: 25px;
+              "
+            >
+              {{'set_change_your_pass' | translate}}
+            </span>
+          </li>
+
+          <li style="width: 270px; margin-top: 20px;">
+            <jqxPasswordInput
+              #txtCurrentPass
+              [width]="180"
+              [(ngModel)]="currentPass"
+              [theme]="'metro'"
+              [height]="25"
+              [placeHolder]="placeHolderEnterYourPassword"
+            ></jqxPasswordInput>
+          </li>
+
+          <li style="width: 270px; margin-top: 10px;">
+            <jqxPasswordInput
+              #txtNewPass
+              [width]="180"
+              [(ngModel)]="currentNewPass"
+              [theme]="'metro'"
+              [height]="25"
+              [showStrength]="true"
+              [placeHolder]="placeHolderEnterNewPassword"
+            ></jqxPasswordInput>
+          </li>
+
+          <li style="width: 270px; margin-top: 10px;">
+            <jqxPasswordInput
+              #txtNewPassConfirm
+              [width]="180"
+              [(ngModel)]="currentPassConfirm"
+              [theme]="'metro'"
+              [height]="25"
+              [placeHolder]="placeHolderReWritePassword"
+            ></jqxPasswordInput>
+          </li>
+
+          <li style="width: 270px; margin-top: 10px;">
+            <button
+              class="button buttonSave"
+              (click)="ChangePassword($event)"
+              style="width: 180px; float: left; margin-left: 0px;"
+            >
+              <i class="icon ion-ios-swap"></i>
+              {{'set_change_pass' | translate}}
+            </button>
+          </li>
+
+          <li style="width: 270px; margin-top: 10px;">
+            <button
+              class="button"
+              (click)="renewSecret()"
+              style="float: left; width: 150px;"
+            >
+              <i
+                class="icon ion-ios-refresh"
+                style="color: var(--thirteenth-color); font-size: 18px;"
+              ></i>
+              Renew Secret
+            </button>
+          </li>
+        </ul>
+
+        <ul class="ultable">
+          <!-- <li style="width:270px;">
+                            <jqxPasswordInput #txtNewPass
+                                              [width]='180'
+                                              [(ngModel)]="currentNewPass"
+                                              [theme]="'metro'"
+                                              [height]='25'
+                                              [showStrength]="true"
+                                              [placeHolder]='placeHolderEnterNewPassword'>
+                            </jqxPasswordInput>
+                        </li> -->
+        </ul>
+
+        <ul class="ultable">
+          <!-- <li style="width:270px;">
+                            <jqxPasswordInput #txtNewPassConfirm
+                                              [width]='180'
+                                              [(ngModel)]="currentPassConfirm"
+                                              [theme]="'metro'"
+                                              [height]='25'
+                                              [placeHolder]='placeHolderReWritePassword'>
+                            </jqxPasswordInput>
+                        </li> -->
+        </ul>
+
+        <ul class="ultable">
+          <!-- <li style="width:270px;">
+        
+                            <button class="button buttonSave"
+                                    (click)="ChangePassword($event)"
+                                    style="width:180px; float:left; margin-left: 0px;">
+                                    <i class="icon ion-ios-swap" ></i> {{'set_change_pass' | translate}}
+                            </button>
+                        </li> -->
+        </ul>
+      </div>
+
+      <!-- <div style="overflow:hidden;  padding-left: 40px; padding-top: 40px;"></div> -->
+      <!-- <div style="overflow:hidden; padding-left: 40px; padding-top: 40px; height: 400px;"></div>-->
+    </jqxTabs>
+  </div>
+</div>
+
+<jqxWindow
+  #renewWindow
+  [width]="400"
+  [theme]='"bootstrap"'
+  [maxHeight]="400"
+  [resizable]="false"
+  [hidden]="true"
+  [autoOpen]="false"
+  [title]='"Renew Sercret"'
+  [isModal]="true"
+  [showCloseButton]="false"
+>
+  <div id="windowQRContent" style="overflow: hidden;">
+    <div style="height: 260px; margin: 5px 10px 0 10px;">
+      <div
+        *ngIf="!isSecretShowing"
+        style="display: flex; flex-direction: column;"
+      >
+        <div
+          style="
+            color: rgb(118, 118, 118);
+            font-size: 16px;
+            height: 25px;
+            line-height: 25px;
+            text-align: center;
+            margin-top: 50px;
+          "
+        >
+          This action will be unlink all your devices
+        </div>
+        <div
+          style="
+            color: rgb(118, 118, 118);
+            font-size: 16px;
+            height: 25px;
+            line-height: 25px;
+            text-align: center;
+            margin-top: 10px;
+          "
+        >
+          ¿Are you sure?
+        </div>
+
+        <div style="text-align: center; margin-top: 30px;">
+          <jqxButton (click)="showSecret()" [theme]='"bootstrap"'>
+            Yes, I am sure.
+            <i class="fa fa-check"></i>
+          </jqxButton>
+          &nbsp;
+          <jqxButton (click)="this.closeRenewWindow()" [theme]='"bootstrap"'>
+            Cancel
+            <i class="fa fa-times-circle"></i>
+          </jqxButton>
+        </div>
+      </div>
+      <div
+        *ngIf="isSecretShowing"
+        style="text-align: center; margin-top: 15px;"
+      >
+        <div
+          style="
+            color: rgb(118, 118, 118);
+            font-size: 16px;
+            height: 25px;
+            line-height: 25px;
+            text-align: center;
+          "
+        >
+          Scan the QR Code with Authenticator App
+        </div>
+        <img
+          id="myimage"
+          [src]="generatedQRImage"
+          height="180px"
+          width="180px"
+          style="margin-top: 10px;"
+        />
+      </div>
+    </div>
+    <div class="footerWindow">
+      <button class="button buttonSave" (click)="closeRenewWindow()">
+        <i class="icon ion-ios-checkmark-circle-outline"></i>
+        {{'global_save' | translate}}
+      </button>
+    </div>
+  </div>
+</jqxWindow>

@@ -1,0 +1,70 @@
+﻿<glowmessages #glowmessage></glowmessages>
+
+<div class="onesignal-customlink-container"></div>
+
+<div class="vertical-container-login">
+  <div *ngIf="!ready" class="vertical-content-login loginWindow">
+    <h3 class="Titulo" style="width: 300px; margin-top: 80px;">
+      Please Wait...
+    </h3>
+  </div>
+
+  <div *ngIf="ready" class="vertical-content-login loginWindow">
+    <div style="display: flex; justify-content: center;">
+      <img src="assets/logo01.png" alt="Logo" height="80px" />
+    </div>
+
+    <div class="containerinputdiv" style="margin-top: 40px;">
+      <i class="ion-ios-mail"></i>
+      <input
+        #usernametxt
+        [disabled]="authenticating"
+        pInputText
+        [(ngModel)]="username"
+        type="text"
+        [placeholder]="'login_emailplaceholder' | translate"
+      />
+    </div>
+
+    <br />
+    <br />
+
+    <div class="containerinputdiv">
+      <i class="icon ion-ios-lock"></i>
+      <input
+        #passwordtxt
+        [disabled]="authenticating"
+        pInputText
+        [(ngModel)]="password"
+        type="password"
+        [placeholder]="'login_passwordplaceholder' | translate"
+      />
+    </div>
+
+    <br />
+    <br />
+
+    <jqxButton
+      #loginButton
+      [disabled]="authenticating"
+      [width]="'100%'"
+      (onClick)="Login()"
+      [theme]="'bootstrap'"
+      style="color: var(--first-color) !important; margin-top: 40px;"
+    >
+      {{ 'login_buttontext' | translate }}
+      <i class="icon ion-ios-keypad colorPrincipal" style="float: right;"></i>
+    </jqxButton>
+
+    <br />
+    <br />
+
+    <div class="copyright">
+      <span style="float: left;">:: build.000232 :: &nbsp;&nbsp;&nbsp;</span>
+      <span style="float: left;">QA</span>
+      <span style="float: right; margin-right: 60px;">
+        Nothing is to much trouble. JAYGOR © 2019
+      </span>
+    </div>
+  </div>
+</div>

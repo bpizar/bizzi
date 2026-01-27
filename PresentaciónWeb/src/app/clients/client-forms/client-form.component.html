@@ -1,0 +1,616 @@
+<glowmessages #glowmessage></glowmessages>
+
+<div class="menuContainer">
+  <menu [loaderReference]="myLoader"></menu>
+</div>
+
+<div class="appContainer">
+  <jqxLoader
+    #loaderReference
+    [width]="140"
+    [height]="140"
+    [isModal]="true"
+    [theme]="'bootstrap'"
+    [html]="'<div class=\'loadingdiv\'><div class=\'loader\'></div></div>'"
+    [imagePosition]="'top'"
+  ></jqxLoader>
+
+  <div class="auxMenuBar">
+    <div class="titleHeaderSpace">Client Form</div>
+
+    <div class="blockMinRight"></div>
+  </div>
+
+  <div class="headerSpace"></div>
+
+  <div class="bodySpace">
+    <div class="container" style="margin: 0 10% 0 10%;">
+      <form #f="ngForm" ngNativeValidate>
+        <div style="display: flex; width: 100%; margin-bottom: 5px;">
+          <div style="margin: 3px 3px 3px 3px; width: 50%;">
+            <div class="form-group">
+              <ul class="ultable">
+                <li style="width: 160px;">
+                  <label>Name</label>
+                </li>
+                <li style="width: 160px;">
+                  <jqxInput
+                    [(ngModel)]="clientForm.name"
+                    name="name"
+                    type="varchar"
+                    [theme]="'bootstrap'"
+                    placeholder="Name"
+                    required
+                  ></jqxInput>
+                </li>
+              </ul>
+            </div>
+            <div class="form-group">
+              <ul class="ultable">
+                <li style="width: 160px;">
+                  <label>Description</label>
+                </li>
+                <li style="width: 160px;">
+                  <jqxInput
+                    [(ngModel)]="clientForm.description"
+                    name="description"
+                    type="varchar"
+                    [theme]="'bootstrap'"
+                    placeholder="Description"
+                    required
+                  ></jqxInput>
+                </li>
+              </ul>
+            </div>
+            <div class="form-group">
+              <ul class="ultable">
+                <li style="width: 160px; margin-bottom: 5px;">
+                  <label>Template</label>
+                </li>
+                <li style="width: 160px;">
+                  <jqxDropDownList
+                    #cmbTemplateType
+                    [dropDownHeight]="60"
+                    style="max-height: 24px;"
+                    [searchMode]="'containsignorecase'"
+                    [theme]="'bootstrap'"
+                    (onChange)="cmbTemplateTypeChange()"
+                    [source]="templateTypeList"
+                    [selectedIndex]="2"
+                  ></jqxDropDownList>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div
+            style="
+              margin: 3px 3px 6px 3px;
+              width: 50%;
+              padding-left: 20px;
+              border-color: #dfdfdf;
+            "
+          >
+            <ul class="ultable">
+              <li style="width: 120px;">
+                <label>Recurrence</label>
+              </li>
+              <li style="width: 140px;">
+                <jqxDropDownList
+                  #cmbRecurrence
+                  [dropDownHeight]="120"
+                  style="max-height: 24px;"
+                  [searchMode]="'containsignorecase'"
+                  [theme]="'bootstrap'"
+                  (onChange)="onRecurrenceChange()"
+                  [source]="recurrenceList"
+                  [selectedIndex]="0"
+                ></jqxDropDownList>
+              </li>
+            </ul>
+            <ul class="ultable" [hidden]="recurrenceItem != 'Daily'">
+              <li style="width: 120px;">
+                <label>Hour</label>
+              </li>
+              <li style="width: 50px;">
+                <jqxDateTimeInput
+                  #dtiHour
+                  (onChange)="onDtiHourChange()"
+                  [theme]="'bootstrap'"
+                  [formatString]="'HH:mm'"
+                  [height]="25"
+                  [showCalendarButton]="false"
+                  [showTimeButton]="false"
+                ></jqxDateTimeInput>
+              </li>
+            </ul>
+            <ul class="ultable" [hidden]="recurrenceItem != 'Weekly'">
+              <li style="width: 120px;">
+                <label>Week recurrence</label>
+              </li>
+              <li style="width: 40px;">
+                <jqxDropDownList
+                  #cmbWeekday
+                  [dropDownHeight]="120"
+                  style="max-height: 24px;"
+                  [searchMode]="'containsignorecase'"
+                  [theme]="'bootstrap'"
+                  (onChange)="onWeekDayChange()"
+                  [source]="weekRecurrenceList"
+                  [selectedIndex]="0"
+                ></jqxDropDownList>
+              </li>
+            </ul>
+            <ul class="ultable" [hidden]="recurrenceItem != 'Biweekly'">
+              <li style="width: 120px;">
+                <label>Biweekly</label>
+              </li>
+              <li style="width: 40px;">
+                <jqxDropDownList
+                  #cmbTwoTimesWeek
+                  [dropDownHeight]="120"
+                  style="max-height: 24px;"
+                  [searchMode]="'containsignorecase'"
+                  [theme]="'bootstrap'"
+                  (onChange)="biweeklyChange()"
+                  [source]="BiweeklyRecurrenceList"
+                  [selectedIndex]="0"
+                ></jqxDropDownList>
+              </li>
+            </ul>
+            <ul class="ultable" [hidden]="recurrenceItem != 'Monthly'">
+              <li style="width: 120px;">
+                <label>Month recurrence</label>
+              </li>
+              <li style="width: 40px;">
+                <jqxNumberInput
+                  [(ngModel)]="dayMonth"
+                  [name]="dayMonth"
+                  [width]="50"
+                  [spinButtons]="true"
+                  [decimalDigits]="0"
+                  [min]="1"
+                  [max]="31"
+                  [inputMode]="'simple'"
+                  [theme]="'bootstrap'"
+                ></jqxNumberInput>
+              </li>
+            </ul>
+            <ul class="ultable" [hidden]="recurrenceItem != 'Annually'">
+              <li style="width: 120px;">
+                <label>Date</label>
+              </li>
+              <li style="width: 40px;">
+                <jqxDateTimeInput
+                  #dtiDate
+                  (onChange)="ondtiDateChange()"
+                  [theme]="'bootstrap'"
+                  [formatString]="'d'"
+                  [height]="25"
+                ></jqxDateTimeInput>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <label
+              for="upload-file"
+              style="font-size: 13px; color: var(--fifth-color);"
+            >
+              Select Template file to Upload
+              <i class="fa fa-upload"></i>
+            </label>
+            <input
+              class="button"
+              type="file"
+              id="upload-file"
+              (change)="handleFileInput($event.target.files)"
+            />
+          </div>
+        </div>
+
+        <div [hidden]="!(cmbTemplateType.getSelectedIndex() == 2)">
+          <editor
+            apiKey="yyiaysb5la8ygjju426nbr48xybmp9ajp0n0lgi3uka5nanf"
+            [(ngModel)]="editorvalue"
+            [ngModelOptions]="{ standalone: true }"
+            [init]="{
+              plugins:
+                'print preview importcss tinydrive searchreplace autolink autosave save directionality visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount imagetools textpattern noneditable help charmap quickbars emoticons',
+              toolbar:
+                'undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist checklist | forecolor backcolor formatpainter removeformat | pagebreak  | fullscreen  preview',
+              menubar: 'edit view format tools table tc'
+            }"
+          ></editor>
+        </div>
+        <div style="display: flex; flex-direction: column; padding: 15px 0;">
+          <div class="textTitle">Information</div>
+          <editor
+            apiKey="yyiaysb5la8ygjju426nbr48xybmp9ajp0n0lgi3uka5nanf"
+            [(ngModel)]="clientForm.information"
+            name="formFieldInformation"
+            [init]="{
+              plugins:
+                'print preview importcss tinydrive searchreplace autolink autosave save directionality visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount imagetools textpattern noneditable help charmap quickbars emoticons',
+              toolbar:
+                'undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist checklist | forecolor backcolor formatpainter removeformat | pagebreak  | fullscreen  preview',
+              menubar: 'edit view format tools table tc'
+            }"
+          ></editor>
+        </div>
+        <!-- <div class="divider"></div> -->
+        <jqxTabs
+          #tabs
+          [width]="'100%'"
+          [height]="'400'"
+          [position]="'top'"
+          [theme]="'bootstrap'"
+        >
+          <ul>
+            <li [hidden]="!(cmbTemplateType.getSelectedIndex() == 2)">
+              Form Fields
+            </li>
+            <li>Reminders</li>
+          </ul>
+          <div [hidden]="!(cmbTemplateType.getSelectedIndex() == 2)">
+            <div *ngIf="clientForm">
+              <ul class="ultable">
+                <li>
+                  <div class="textTitle">Name</div>
+                </li>
+                <li style="width: 120px;">
+                  <jqxInput
+                    #txtName
+                    [(ngModel)]="formField.name"
+                    [width]="100"
+                    name="formFieldname"
+                    type="varchar"
+                    [theme]="'bootstrap'"
+                    placeholder="Name"
+                    required
+                  ></jqxInput>
+                </li>
+
+                <li>
+                  <div class="textTitle">Placeholder</div>
+                </li>
+                <li style="width: 120px;">
+                  <jqxInput
+                    #txtPlaceholder
+                    [(ngModel)]="formField.placeholder"
+                    [width]="100"
+                    name="formFieldplaceholder"
+                    type="varchar"
+                    [theme]="'bootstrap'"
+                    placeholder="Placeholder"
+                    required
+                  ></jqxInput>
+                </li>
+
+                <li>
+                  <div class="textTitle">Data type</div>
+                </li>
+                <li style="width: 120px;">
+                  <jqxDropDownList
+                    #cmbDatatype
+                    [width]="'100'"
+                    [dropDownHeight]="120"
+                    style="max-height: 24px;"
+                    [searchMode]="'containsignorecase'"
+                    [theme]="'bootstrap'"
+                    (onChange)="cmbDatatypeChange($event)"
+                    [source]="dataTypeList"
+                    [selectedIndex]="0"
+                  ></jqxDropDownList>
+                </li>
+                <li>
+                  <div class="textTitle">Constraints</div>
+                </li>
+                <li style="width: 120px;">
+                  <jqxDropDownList
+                    #cmbConstraints
+                    [width]="100"
+                    [dropDownHeight]="120"
+                    style="max-height: 24px;"
+                    [searchMode]="'containsignorecase'"
+                    [theme]="'bootstrap'"
+                    (onChange)="cmbConstraintsChange($event)"
+                    [source]="constraintsList"
+                    [selectedIndex]="0"
+                  ></jqxDropDownList>
+                </li>
+              </ul>
+
+              <ul class="ultable">
+                <li>
+                  <div class="textTitle">Description</div>
+                </li>
+              </ul>
+              <ul class="ultable">
+                <li style="width: 400px;">
+                  <jqxTextArea
+                    #txtDescription
+                    [(ngModel)]="formField.description"
+                    [items]="3"
+                    [height]="50"
+                    [width]="'170%'"
+                    name="formFielddescription"
+                    type="varchar"
+                    [theme]="'bootstrap'"
+                    placeholder="Description"
+                    required
+                  ></jqxTextArea>
+                </li>
+              </ul>
+
+              <jqxButton
+                [theme]="'bootstrap'"
+                style="margin: 10px 0 10px 0;"
+                (click)="addFormField()"
+              >
+                <i class="fa fa-plus"></i>
+                Add Field
+              </jqxButton>
+
+              <!-- | paginate: { itemsPerPage: 10, currentPage: pagina } -->
+
+              <table class="table-simple">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th></th>
+                    <th>Name</th>
+                    <th>Placeholder</th>
+                    <th>DataType</th>
+                    <th>Constraints</th>
+                    <th>Enabled</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let rowFormField of formFields; let i = index">
+                    <td>
+                      {{ i + 1 }}
+                    </td>
+                    <td>
+                      <div class="orderArrowButtons">
+                        <div
+                          (click)="moveUp(i)"
+                          class="orderArrow"
+                          [hidden]="i == 0"
+                        >
+                          <i class="fa fa-sort-up"></i>
+                        </div>
+                        <div
+                          (click)="moveDown(i)"
+                          class="orderArrow"
+                          [hidden]="i == formFields.length - 1"
+                        >
+                          <i class="fa fa-sort-down"></i>
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      {{ rowFormField.name }}
+                    </td>
+                    <td>
+                      {{ rowFormField.placeholder }}
+                    </td>
+                    <td>
+                      {{ rowFormField.datatype }}
+                    </td>
+                    <td>
+                      {{ rowFormField.constraints }}
+                    </td>
+                    <td>
+                      <jqxCheckBox
+                        style="float: left;"
+                        [height]="25"
+                        [theme]="'bootstrap'"
+                        [checked]="rowFormField.isEnabled"
+                        (onChange)="ckbEnabledChange($event, i)"
+                      ></jqxCheckBox>
+                    </td>
+                    <td>
+                      <i
+                        *ngIf="rowFormField.description != ''"
+                        class="fa fa-info-circle icon-info"
+                        style="font-size: 18px;"
+                        title="{{ rowFormField.description }}"
+                      ></i>
+                      &nbsp;
+                      <i
+                        class="fa fa-edit icon-edit"
+                        style="font-size: 18px;"
+                        title="Edit field"
+                        (click)="showEditWindow(i)"
+                      ></i>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div>
+            <div style="display: flex; justify-content: space-around;">
+              <div
+                style="
+                  width: 48%;
+                  height: 200px;
+                  margin-top: 5px;
+                  display: flex;
+                  flex-direction: column;
+                  justify-content: space-evenly;
+                "
+              >
+                <b>Low</b>
+                <jqxDropDownList
+                  #cmbLowPeriodType
+                  [dropDownHeight]="90"
+                  style="max-height: 24px;"
+                  [searchMode]="'containsignorecase'"
+                  [theme]="'bootstrap'"
+                  (onChange)="cmbLowPeriodTypeChange()"
+                  [source]="periodTypeList"
+                  [selectedIndex]="0"
+                ></jqxDropDownList>
+                <jqxNumberInput
+                  [(ngModel)]="lowPeriodValue"
+                  [width]="50"
+                  [spinButtons]="true"
+                  [decimalDigits]="0"
+                  [min]="1"
+                  [inputMode]="'simple'"
+                  [theme]="'bootstrap'"
+                  [ngModelOptions]="{ standalone: true }"
+                ></jqxNumberInput>
+                <label>Users</label>
+                <jqxComboBox
+                  #cmbLowReminderClient
+                  [multiSelect]="true"
+                  [dropDownHeight]="90"
+                  [itemHeight]="24"
+                  [width]="300"
+                  style="max-height: 60px !important;"
+                  [displayMember]="'name'"
+                  [valueMember]="'id'"
+                  [searchMode]="'containsignorecase'"
+                  [theme]="'bootstrap'"
+                  [source]="staffList"
+                ></jqxComboBox>
+              </div>
+              <div
+                style="
+                  width: 48%;
+                  height: 200px;
+                  margin-top: 5px;
+                  display: flex;
+                  flex-direction: column;
+                  justify-content: space-evenly;
+                "
+              >
+                <b>Critical</b>
+                <jqxDropDownList
+                  #cmbCriticalPeriodType
+                  [dropDownHeight]="90"
+                  style="max-height: 24px;"
+                  [searchMode]="'containsignorecase'"
+                  [theme]="'bootstrap'"
+                  (onChange)="cmbCriticalPeriodTypeChange()"
+                  [source]="periodTypeList"
+                  [selectedIndex]="0"
+                ></jqxDropDownList>
+                <jqxNumberInput
+                  [(ngModel)]="criticalPeriodValue"
+                  [width]="50"
+                  [spinButtons]="true"
+                  [decimalDigits]="0"
+                  [min]="1"
+                  [inputMode]="'simple'"
+                  [theme]="'bootstrap'"
+                  [ngModelOptions]="{ standalone: true }"
+                ></jqxNumberInput>
+                <label>Users</label>
+                <jqxComboBox
+                  #cmbCriticalReminderClient
+                  [multiSelect]="true"
+                  [dropDownHeight]="90"
+                  [itemHeight]="24"
+                  [width]="300"
+                  style="max-height: 60px !important;"
+                  [displayMember]="'name'"
+                  [valueMember]="'id'"
+                  [searchMode]="'containsignorecase'"
+                  [theme]="'bootstrap'"
+                  [source]="staffList"
+                ></jqxComboBox>
+              </div>
+            </div>
+          </div>
+        </jqxTabs>
+        <div style="display: flex; margin: 5px 0 0 0;">
+          <div style="margin-right: 5px;">
+            <jqxButton class="mr-1" [theme]="'bootstrap'" (click)="save(f)">
+              <i class="fa fa-save"></i>
+              Save
+            </jqxButton>
+          </div>
+          <jqxButton [theme]="'bootstrap'" (click)="cancel(f)">
+            <i class="fa fa-cancel"></i>
+            Cancel
+          </jqxButton>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <jqxWindow
+    #editWindow
+    [width]="500"
+    [height]="250"
+    [maxHeight]="250"
+    [minHeight]="250"
+    [maxWidth]="500"
+    [resizable]="false"
+    [minWidth]="500"
+    [theme]="'bootstrap'"
+    [title]="'Edit form field'"
+    [position]="{ x: 350, y: 400 }"
+    [autoOpen]="false"
+    [isModal]="true"
+  >
+    <div id="windowcontent">
+      <div style="padding-left: 20px;">
+        <ul class="ultable">
+          <li>
+            <div class="textTitle">Placeholder</div>
+          </li>
+          <li style="width: 120px;">
+            <jqxInput
+              #txtEditPlaceholder
+              [(ngModel)]="editingRow.placeholder"
+              [width]="100"
+              name="editPlacehoder"
+              type="varchar"
+              [theme]="'bootstrap'"
+              placeholder="Placeholder"
+              required
+            ></jqxInput>
+          </li>
+        </ul>
+
+        <ul class="ultable">
+          <li>
+            <div class="textTitle">Description</div>
+          </li>
+        </ul>
+        <ul class="ultable">
+          <li style="width: 400px;">
+            <jqxTextArea
+              #txtEditDescription
+              [(ngModel)]="editingRow.description"
+              [items]="3"
+              [height]="50"
+              [width]="'110%'"
+              name="editDescription"
+              type="varchar"
+              [theme]="'bootstrap'"
+              placeholder="Description"
+              required
+            ></jqxTextArea>
+          </li>
+        </ul>
+      </div>
+
+      <div class="buttonWindowDiv">
+        <button class="button buttonSave" (click)="cancelClick()">
+          <i class="icon ion-ios-close-circle-outline"></i>
+          Cancel
+        </button>
+
+        <button class="button buttonSave" (click)="saveClick()">
+          <i class="icon ion-ios-checkmark-circle-outline"></i>
+          Done
+        </button>
+      </div>
+    </div>
+  </jqxWindow>
+</div>

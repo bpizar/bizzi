@@ -1,0 +1,6 @@
+﻿{
+  "projects": [ "BACKEND", "FRONTEND" ],
+  "sdk": {
+    "version": "8.0.100"
+  }
+}

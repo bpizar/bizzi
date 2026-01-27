@@ -1,0 +1,21 @@
+.footerButtons {
+  width: 100%;
+  height: 40px;
+  margin-top: 5px;
+  float: left;
+  position: relative;
+  text-align: right !important;
+}
+
+.button {
+  background: transparent !important;
+  color: #808080;
+  font-size: 14px !important;
+  line-height: 20px;
+}
+
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}

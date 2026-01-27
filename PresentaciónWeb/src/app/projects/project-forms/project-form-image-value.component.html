@@ -1,0 +1,160 @@
+<glowmessages #glowmessage></glowmessages>
+
+<div class="menuContainer">
+  <menu [loaderReference]="myLoader"></menu>
+</div>
+
+<div class="appContainer">
+  <jqxLoader
+    #loaderReference
+    [width]="140"
+    [height]="140"
+    [isModal]="true"
+    [theme]="'bootstrap'"
+    [html]="'<div class=\'loadingdiv\'><div class=\'loader\'></div></div>'"
+    [imagePosition]="'top'"
+  ></jqxLoader>
+
+  <div class="auxMenuBar">
+    <div class="titleHeaderSpace" style="float: left;">Edit Image</div>
+    <saveactiondisplay></saveactiondisplay>
+
+    <div class="blockMinRight">
+      <button class="button buttonSave" [hidden]="true" (click)="save()">
+        <i class="icon ion-ios-save"></i>
+        {{ 'global_save' | translate }}
+      </button>
+    </div>
+  </div>
+
+  <div class="headerSpace">
+    <div class="form-header">
+      <div [hidden]="!projectFormName" style="font-size: large;">
+        Project Name: {{ projectName }}
+      </div>
+      <div>Form Title: {{ projectFormName }}</div>
+    </div>
+  </div>
+
+  <div *ngIf="projectInformation" class="container-collapse-10">
+    <button type="button" class="collapsible" (click)="showInfo = !showInfo">
+      <div *ngIf="showInfo">
+        <i class="icon ion-ios-remove"></i>
+        Information
+      </div>
+      <div *ngIf="!showInfo">
+        <i class="icon ion-ios-add"></i>
+        Information
+      </div>
+    </button>
+    <div
+      class="content-info"
+      [ngClass]="{ 'show-info': showInfo, 'hide-info': !showInfo }"
+    >
+      <div [innerHTML]="projectInformation"></div>
+    </div>
+  </div>
+
+  <div style="display: flex; flex-wrap: wrap; margin: 5px;">
+    <div *ngIf="fileNameTD" style="width: 48%; margin: 5px;">
+      <button class="button" type="button" (click)="downloadTemplateFile()">
+        Download Template File
+        <i class="fa fa-download"></i>
+      </button>
+    </div>
+  </div>
+
+  <div style="margin: 0 10% 0 10%;">
+    <ul class="ultable">
+      <div style="display: flex; justify-content: center;">
+        <li style="width: 100px;">
+          <div class="textTitle">Form date</div>
+        </li>
+        <li style="width: 200px;">
+          <jqxDateTimeInput
+            #cmbFormDateTime
+            [width]="200"
+            [theme]="'bootstrap'"
+            [formatString]="'d'"
+            [height]="25"
+            [placeHolder]=""
+          ></jqxDateTimeInput>
+        </li>
+      </div>
+    </ul>
+
+    <ul class="ultable">
+      <div style="display: flex; justify-content: center;">
+        <div style="width: 30%;">
+          <label for="upload-photo">
+            <div
+              [ngClass]="{
+                'image-container-portrait': template == 'ImagePortrait',
+                'image-container-landscape': template == 'ImageLandscape'
+              }"
+            >
+              <div>
+                <img [hidden]="imgSet" class="inside" src="{{ ImagePath }}" />
+                <img
+                  [hidden]="!imgSet"
+                  class="inside"
+                  [src]="croppedImage"
+                  [hidden]="!imgSet"
+                />
+              </div>
+            </div>
+          </label>
+
+          <input
+            [hidden]="imgSet"
+            (change)="fileChangeEvent($event)"
+            style="float: left; opacity: 0; position: absolute; z-index: -1;"
+            #fileInput
+            type="file"
+            id="upload-photo"
+            width="500"
+          />
+
+          <jqxCheckBox
+            #checkBoxUsePicture
+            [hidden]="!selectAtLeastOne || true"
+            (onChange)="checkBoxUseThisPictureChange($event)"
+            style="margin-left: 10px;"
+            [width]="700"
+            [height]="700"
+            [checked]="false"
+          >
+            <span>{{ 'global_change_picture' | translate }}</span>
+          </jqxCheckBox>
+        </div>
+
+        <div [hidden]="!imgSet" style="padding: 0px; width: 70%;">
+          <image-cropper
+            [imageChangedEvent]="imageChangedEvent"
+            [resizeToWidth]="700"
+            format="jpeg,png"
+            (imageCroppedBase64)="imageCroppedBase64($event)"
+            (imageLoaded)="imageLoaded()"
+            (loadImageFailed)="imageLoadFailed()"
+            [style.display]="cropperReady ? null : 'none'"
+            [maintainAspectRatio]="false"
+          ></image-cropper>
+        </div>
+      </div>
+    </ul>
+
+    <ul class="ultable">
+      <div style="display: flex; justify-content: center;">
+        <div class="margin-right: 10px">
+          <jqxButton (click)="save()" [theme]="'bootstrap'">
+            Save Image
+          </jqxButton>
+        </div>
+        <jqxButton type="button" [theme]="'bootstrap'" (click)="cancel()">
+          <i class="fa fa-cancel"></i>
+          Cancel
+        </jqxButton>
+      </div>
+    </ul>
+  </div>
+</div>

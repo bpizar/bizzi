@@ -1,0 +1,74 @@
+<glowmessages #glowmessage></glowmessages>
+
+<div class="menuContainer">
+  <menu [loaderReference]="myLoader"></menu>
+</div>
+
+<div class="appContainer">
+  <jqxLoader
+    #loaderReference
+    [width]="140"
+    [height]="140"
+    [isModal]="true"
+    [theme]="'bootstrap'"
+    [html]="'<div class=\'loadingdiv\'><div class=\'loader\'></div></div>'"
+    [imagePosition]="'top'"
+  ></jqxLoader>
+
+  <div class="auxMenuBar">
+    <div class="titleHeaderSpace">Client Forms</div>
+
+    <div class="blockMinRight"></div>
+  </div>
+
+  <div class="headerSpace"></div>
+
+  <div class="bodySpace">
+    <div style="margin: 0 20% 0 20%;">
+      <jqxButton [routerLink]="['/clients/client-form', '-1']" type="button">
+        <i class="fa fa-plus"></i>
+        Add Form
+      </jqxButton>
+
+      <!-- | paginate: { itemsPerPage: 10, currentPage: pagina } -->
+      <table class="table-simple">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Recurrence</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let clientForm of clientForms">
+            <td>
+              {{ clientForm.name }}
+            </td>
+            <td>
+              {{ clientForm.description }}
+            </td>
+            <td>
+              {{ recurrenceList[clientForm.idfRecurrence]
+              }}{{
+                getRecurrenceDetail(
+                  clientForm.idfRecurrence,
+                  clientForm.idfRecurrenceDetail
+                )
+              }}
+            </td>
+            <td>
+              <jqxButton [routerLink]="['/clients/client-form', clientForm.id]">
+                <i class="fa fa-edit"></i>
+              </jqxButton>
+
+              <jqxButton (click)="delete(clientForm)">
+                <i class="fa fa-trash-o"></i>
+              </jqxButton>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

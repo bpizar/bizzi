@@ -1,0 +1,229 @@
+<!-- | paginate: { itemsPerPage: 10, currentPage: pagina } -->
+<table class="table-data">
+  <thead>
+    <tr>
+      <th>
+        <div class="filter-table-header">
+          Name
+          <input
+            class="input-table-filter"
+            [(ngModel)]="searchByName"
+            name="searchName"
+            type="text"
+            placeholder="Filter by Name"
+            (keyup)="search('name')"
+          />
+        </div>
+      </th>
+      <th>
+        <div class="filter-table-header">
+          Description
+          <input
+            class="input-table-filter"
+            [(ngModel)]="searchByDescription"
+            name="searchDescription"
+            type="text"
+            placeholder="Filter by Description"
+            (keyup)="search('description')"
+          />
+        </div>
+      </th>
+      <th style="vertical-align: top;">Date</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let clientFormbyClient of clientFormsbyClient">
+      <td>
+        {{ clientFormbyClient.name }}
+      </td>
+      <td>
+        {{ clientFormbyClient.description }}
+      </td>
+      <td>
+        {{
+          (clientFormbyClient.idfClientFormValue > 0
+            ? clientFormbyClient.formDateTime
+            : ''
+          ) | date: 'MM-dd-yyyy'
+        }}
+      </td>
+      <td>
+        <jqxButton
+          *ngIf="
+            clientFormbyClient.idfClientFormValue > 0 &&
+            !clientFormbyClient.template.startsWith('Image')
+          "
+          [routerLink]="[
+            '/clients/client-form-value',
+            clientFormbyClient.idfClientFormValue
+          ]"
+          [theme]="'bootstrap'"
+        >
+          Edit
+          <i class="fa fa-edit"></i>
+        </jqxButton>
+        <jqxButton
+          *ngIf="
+            clientFormbyClient.idfClientFormValue > 0 &&
+            clientFormbyClient.template.startsWith('Image')
+          "
+          [routerLink]="[
+            '/clients/client-form-image-value',
+            clientFormbyClient.idfClientFormValue
+          ]"
+          [theme]="'bootstrap'"
+        >
+          Edit
+          <i class="fa fa-edit"></i>
+        </jqxButton>
+        <jqxButton
+          *ngIf="
+            clientFormbyClient.idfClientFormValue > 0 &&
+            !clientFormbyClient.template.startsWith('Image')
+          "
+          (click)="print(clientFormbyClient.idfClientFormValue)"
+          [theme]="'bootstrap'"
+        >
+          Print
+          <i class="fa fa-print"></i>
+        </jqxButton>
+        <jqxButton
+          *ngIf="
+            clientFormbyClient.idfClientFormValue > 0 &&
+            clientFormbyClient.template.startsWith('Image')
+          "
+          (click)="
+            printImage(
+              clientFormbyClient.idfClientFormValue,
+              clientFormbyClient.template
+            )
+          "
+          [theme]="'bootstrap'"
+        >
+          Print
+          <i class="fa fa-print"></i>
+        </jqxButton>
+        <jqxButton
+          *ngIf="
+            !clientFormbyClient.template.startsWith('Image') &&
+            (!(clientFormbyClient.idfClientFormValue > 0) ||
+              clientFormbyClient.idfRecurrence > 0)
+          "
+          [routerLink]="[
+            '/clients/client-form-value',
+            clientFormbyClient.id,
+            idClient
+          ]"
+          [theme]="'bootstrap'"
+        >
+          Create
+          <i class="fa fa-plus"></i>
+        </jqxButton>
+        <jqxButton
+          *ngIf="
+            clientFormbyClient.template.startsWith('Image') &&
+            (!(clientFormbyClient.idfClientFormValue > 0) ||
+              clientFormbyClient.idfRecurrence > 0)
+          "
+          [routerLink]="[
+            '/clients/client-form-image-value',
+            clientFormbyClient.id,
+            idClient
+          ]"
+          [theme]="'bootstrap'"
+        >
+          Create
+          <i class="fa fa-plus"></i>
+        </jqxButton>
+        <jqxButton
+          (click)="showHistory(clientFormbyClient.id)"
+          [theme]="'bootstrap'"
+        >
+          History
+          <i class="fa fa-list"></i>
+        </jqxButton>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<jqxWindow
+  #historyWindow
+  [width]="700"
+  [theme]="'bootstrap'"
+  [maxHeight]="400"
+  [resizable]="false"
+  [hidden]="true"
+  [autoOpen]="false"
+  [title]="'History'"
+  [isModal]="true"
+>
+  <div id="windowPeriodContent" style="overflow: hidden;">
+    <div style="height: 300px; margin: 5px 10px 0 10px; overflow-y: scroll;">
+      <table class="table-data">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Date</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let clientFormHistory of clientFormsHistory">
+            <td>
+              {{ clientFormHistory.name }}
+            </td>
+            <td>
+              {{ clientFormHistory.description }}
+            </td>
+            <td>
+              {{
+                (clientFormHistory.idfClientFormValue > 0
+                  ? clientFormHistory.formDateTime
+                  : ''
+                ) | date: 'MM-dd-yyyy'
+              }}
+            </td>
+            <td>
+              <jqxButton
+                *ngIf="
+                  clientFormHistory.idfClientFormValue > 0 &&
+                  !clientFormHistory.template.startsWith('Image')
+                "
+                (click)="print(clientFormHistory.idfClientFormValue, true)"
+                [theme]="'bootstrap'"
+              >
+                Print
+                <i class="fa fa-print"></i>
+              </jqxButton>
+              <jqxButton
+                *ngIf="
+                  clientFormHistory.idfClientFormValue > 0 &&
+                  clientFormHistory.template.startsWith('Image')
+                "
+                (click)="
+                  printImage(
+                    clientFormHistory.idfClientFormValue,
+                    clientFormHistory.template
+                  )
+                "
+                [theme]="'bootstrap'"
+              >
+                Print
+                <i class="fa fa-print"></i>
+              </jqxButton>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="footerWindow">
+      <button class="button buttonSave" (click)="historyWindow.close()">
+        <i class="icon ion-ios-checkmark-circle-outline"></i>
+        {{ 'global_save' | translate }}
+      </button>
+    </div>
+  </div>
+</jqxWindow>

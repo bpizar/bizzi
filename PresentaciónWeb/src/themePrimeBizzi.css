@@ -1,0 +1,73 @@
+﻿@charset "UTF-8";
+
+.ui-growl {
+  position: fixed !important;
+  top: 100px !important;
+  /* left: 40px !important; */
+  width: 20em !important;
+
+  /* le: 100%;
+  top: -webkit-calc(100% - 56px);
+  top: -moz-calc(100% - 56px);
+  height: calc(100% - 56px); */
+}
+
+.ui-widget {
+  font-family: Segoe UI, Arial, sans-serif;
+  font-size: 1em;
+}
+
+.ui-growl-message-info {
+  background-color: #54aaf0;
+  border-color: #54aaf0;
+  color: var(--thirteenth-color);
+}
+
+.ui-growl-message-warn {
+  background-color: rgb(233, 233, 148);
+  border-color: rgb(233, 233, 148);
+  color: rgb(99, 99, 99);
+
+  bottom: 0px;
+}
+
+.ui-growl-message-error {
+  background-color: #f5877f;
+  border-color: #f5877f;
+  color: var(--thirteenth-color);
+}
+
+.ui-growl-message-success {
+  background-color: #93c593;
+  border-color: #93c593;
+  color: var(--thirteenth-color);
+}
+
+.ui-sidebar-right {
+  background-color: var(--thirteenth-color);
+  top: 58px;
+  /* box-shadow: none !important; */
+}
+
+.ui-sidebar-left {
+  background-color: var(--thirteenth-color);
+  top: 95px;
+  width: 21.75em;
+  /* box-shadow: none !important; */
+}
+
+.ui-messages {
+  border: none;
+  text-align: justify;
+}
+
+/* ui-messages-icon pi pi-exclamation-triangle */
+.ui-messages .pi-exclamation-triangle {
+  color: red !important;
+}
+
+/* ng-tns-c3-1 ng-star-inserted */
+/* .ui-messages .ui-messages-detail  
+{
+    width: 100% !important;
+} */

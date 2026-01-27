@@ -1,0 +1,42 @@
+<jqxWindow
+  #appointmentWindow
+  [width]="650"
+  [height]="400"
+  [maxHeight]="400"
+  [minHeight]="400"
+  [resizable]="false"
+  [maxWidth]="700"
+  [minWidth]="650"
+  [autoOpen]="false"
+  [isModal]="true"
+>
+  <div id="windowContent">
+    <div style="overflow: hidden;">
+      <jqxEditor
+        #myEditor
+        [width]="getWidth()"
+        [height]="'80%'"
+        [tools]="tools"
+        [disabled]="!canDeleteOrSaveProject"
+        [createCommand]="createCommand"
+      ></jqxEditor>
+    </div>
+
+    <div class="buttonWindowDiv">
+      <button class="button buttonSave" (click)="CancelClick($event)">
+        <i class="icon ion-ios-arrow-dropleft"></i>
+        {{'global_cancel' | translate}}
+      </button>
+
+      <button
+        class="button buttonSave"
+        [hidden]="!canDeleteOrSaveProject"
+        (click)="OkClick($event)"
+      >
+        <!-- <i class="icon ion-ios-checkmark" ></i> {{'global_ok' | translate}} -->
+        <i class="icon ion-ios-checkmark-circle-outline"></i>
+        {{'global_do_action' | translate}}
+      </button>
+    </div>
+  </div>
+</jqxWindow>

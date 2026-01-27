@@ -1,0 +1,235 @@
+<jqxWindow
+  #jqxWindowComponent
+  [width]="650"
+  [height]="360"
+  [maxHeight]="360"
+  [minHeight]="360"
+  [resizable]="false"
+  [maxWidth]="700"
+  [minWidth]="650"
+  [autoOpen]="false"
+  [isModal]="true"
+>
+  <div id="windowContent">
+    <div style="overflow: hidden;">
+      <ul class="ultable">
+        <li style="width: 120px;">
+          <div class="textTitle">
+            {{'projects_participant_window' | translate}}
+          </div>
+        </li>
+        <li style="width: 40px;">
+          <jqxButton
+            [theme]='"bootstrap"'
+            [hidden]="!canDeleteOrSaveProject"
+            (onClick)="deleteStaff($event)"
+            style="margin-left: 0px; float: left;"
+          >
+            <i class="icon ion-ios-close" style="font-size: 18px;"></i>
+          </jqxButton>
+        </li>
+        <li style="width: 160px;">
+          <!-- [scrollBarSize]="5" -->
+
+          <jqxDropDownList
+            #editGenStaff
+            [width]="160"
+            [disabled]="!canDeleteOrSaveProject"
+            (onChange)="onEditGenStaffChange($event)"
+            [height]="25"
+            [filterable]="true"
+            [theme]='"bootstrap"'
+            [displayMember]="'fullName'"
+            [valueMember]="'id'"
+            [searchMode]="'containsignorecase'"
+            [renderer]="rendererListBoxStaff"
+            ([scrollBarSize])="5"
+            [filterPlaceHolder]="PlaceHolderLookingFor"
+            [placeHolder]="PlaceHolderParticipant"
+            [source]="dataAdapterStaffListBox"
+          ></jqxDropDownList>
+        </li>
+        <li style="width: 98px; margin-left: 10px;">
+          <div class="textTitle">{{'projects_assignable_to' | translate}}</div>
+        </li>
+        <li style="width: 40px;">
+          <jqxButton
+            [theme]='"bootstrap"'
+            [hidden]="!canDeleteOrSaveProject"
+            (onClick)="deletePosition($event)"
+            style="margin-left: 0px; float: left;"
+          >
+            <i class="icon ion-ios-close" style="font-size: 18px;"></i>
+          </jqxButton>
+        </li>
+        <li style="width: 160px;">
+          <jqxDropDownList
+            #positionsDropDown
+            [width]="160"
+            [height]="25"
+            [disabled]="!canDeleteOrSaveProject"
+            (onChange)="onPositionsDropDownChange($event)"
+            [theme]='"bootstrap"'
+            [displayMember]="'name'"
+            [valueMember]="'id'"
+            ([scrollBarSize])="5"
+            [placeHolder]="PlaceHolderPosition"
+            [source]="dataAdapterPositions"
+          ></jqxDropDownList>
+        </li>
+      </ul>
+      <ul class="ultable">
+        <li style="width: 120px;">
+          <div class="textTitle">{{'global_state' | translate}}</div>
+        </li>
+        <li style="width: 180px;">
+          <jqxDropDownList
+            #statusDropDown
+            [width]="180"
+            [height]="25"
+            [disabled]="!canDeleteOrSaveProject"
+            [filterable]="true"
+            [theme]='"bootstrap"'
+            [displayMember]="'status'"
+            [valueMember]="'id'"
+            [searchMode]="'containsignorecase'"
+            [renderer]="rendererListBoxStatus"
+            ([scrollBarSize])="5"
+            [placeHolder]="PlaceHolderStatus"
+            [source]="dataAdapterStatusListBox"
+          ></jqxDropDownList>
+        </li>
+      </ul>
+      <ul class="ultable">
+        <li style="width: 120px;">
+          <div class="textTitle">{{'global_name' | translate}}</div>
+        </li>
+        <li style="width: 508px;">
+          <jqxInput
+            #editGenTaskName
+            [width]="508"
+            [disabled]="!canDeleteOrSaveProject"
+            [theme]='"bootstrap"'
+            [height]="25"
+            [minLength]="1"
+            [placeHolder]="PlaceHolderName"
+          ></jqxInput>
+        </li>
+      </ul>
+
+      <ul class="ultable">
+        <li style="width: 120px;">
+          <div class="textTitle">{{'global_description' | translate}}</div>
+        </li>
+        <li style="width: 508px;">
+          <jqxInput
+            #editGenTaskDescription
+            [width]="508"
+            [disabled]="!canDeleteOrSaveProject"
+            [theme]='"bootstrap"'
+            [height]="25"
+            [minLength]="1"
+            [placeHolder]="PlaceHolderDescription"
+          ></jqxInput>
+        </li>
+      </ul>
+
+      <ul class="ultable">
+        <li style="width: 120px;">
+          <div class="textTitle">{{'projects_estimated_time' | translate}}</div>
+        </li>
+        <li style="width: 500px;">
+          <jqxNumberInput
+            #estimatedHours
+            [width]="80"
+            [height]="25"
+            [disabled]="!canDeleteOrSaveProject"
+            [decimalDigits]="0"
+            [digits]="2"
+            [min]="0"
+            [max]="999"
+            [inputMode]="'simple'"
+            [theme]="'bootstrap'"
+            [spinButtons]="true"
+          ></jqxNumberInput>
+        </li>
+      </ul>
+
+      <ul class="ultable">
+        <li style="width: 120px;">
+          <div class="textTitle">{{'projects_grid_deadline' | translate}}</div>
+        </li>
+        <li style="width: 40px;">
+          <jqxButton
+            [theme]='"bootstrap"'
+            [hidden]="!canDeleteOrSaveProject"
+            (onClick)="deleteDeadLine($event)"
+            style="margin-left: 0px; float: left;"
+          >
+            <i class="icon ion-ios-close" style="font-size: 18px;"></i>
+          </jqxButton>
+        </li>
+        <li style="width: 180px;">
+          <jqxDateTimeInput
+            #editGenDeadline
+            [width]="250"
+            [disabled]="!canDeleteOrSaveProject"
+            [allowNullDate]="true"
+            [height]="25"
+            [culture]="getCurrentCulture()"
+            [theme]='"bootstrap"'
+            [formatString]='"F"'
+            [showTimeButton]="true"
+          ></jqxDateTimeInput>
+        </li>
+      </ul>
+
+      <ul class="ultable" [hidden]="type != 'RE'">
+        <li style="width: 120px;">
+          <div class="textTitle">{{'projects_reminder' | translate}}</div>
+        </li>
+        <li style="width: 500px;">
+          <div
+            *ngFor="let sett of settingReminderTime"
+            style="width: 80px; float: left; position: relative;"
+          >
+            <input
+              [checked]="sett.state=='true'"
+              type="checkbox"
+              (change)="sett.state = sett.state == 'true' ? 'false' : 'true' "
+            />
+            <span>{{sett.minutesBefore}} min</span>
+          </div>
+        </li>
+      </ul>
+
+      <div class="buttonWindowDiv">
+        <button
+          class="button buttonSave"
+          [hidden]="!isEditing || !canDeleteOrSaveProject"
+          style="float: left;"
+          (click)="RemoveClick($event)"
+        >
+          <i class="icon ion-ios-close"></i>
+          {{'global_remove' | translate}}
+        </button>
+
+        <button class="button buttonSave" (click)="CancelClick($event)">
+          <i class="icon ion-ios-arrow-dropleft"></i>
+          {{'global_cancel' | translate}}
+        </button>
+
+        <button
+          class="button buttonSave"
+          [hidden]="!canDeleteOrSaveProject"
+          style="margin-right: 5px;"
+          (click)="OkClick($event)"
+        >
+          <!-- <i class="icon ion-ios-checkmark" ></i> {{'global_ok' | translate}} -->
+          <i class="icon ion-ios-checkmark-circle-outline"></i>
+          {{'global_save' | translate}}
+        </button>
+      </div>
+    </div>
+  </div>
+</jqxWindow>

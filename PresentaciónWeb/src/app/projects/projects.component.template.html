@@ -1,0 +1,73 @@
+<glowmessages #glowmessage></glowmessages>
+
+<div class="menuContainer">
+  <menu [loaderReference]="myLoader"></menu>
+</div>
+
+<div class="appContainer">
+  <jqxLoader
+    #loaderReference
+    [width]="140"
+    [height]="140"
+    [isModal]="true"
+    [theme]="'bootstrap'"
+    [html]="'<div class=\'loadingdiv\'><div class=\'loader\'></div></div>'"
+    [imagePosition]='"top"'
+  ></jqxLoader>
+
+  <div class="auxMenuBar">
+    <div class="titleHeaderSpace">{{'projects_title' | translate}}</div>
+
+    <div class="blockMinRight" [hidden]="!canAddNew()">
+      <button
+        class="button buttonSave"
+        [routerLink]="['/projects/project-forms']"
+        style="float: right;"
+      >
+        <i class="icon ion-ios-paper"></i>
+        &nbsp;{{'global_binders' | translate}}
+      </button>
+
+      <!-- [hidden]="!canAddNew()" -->
+      <button
+        class="button buttonSave"
+        (click)="createNew($event)"
+        style="margin-left: 0px; float: right;"
+      >
+        <i class="icon ion-ios-add"></i>
+        {{'projects_create_new' | translate}}
+      </button>
+    </div>
+  </div>
+
+  <div class="headerSpace"></div>
+
+  <!-- [rowsheight]="70" -->
+  <!-- [localization]="jqxHelper.getGridLocation_es" -->
+  <div (window:resize)="OnGridGenericEvent2($event)" class="bodySpace">
+    <!-- [adaptive] = "false"  -->
+
+    <jqxGrid
+      #gridReference
+      [autoshowcolumnsmenubutton]="false"
+      (onCellclick)="cellClick($event)"
+      [theme]='"bootstrap"'
+      [sortable]="true"
+      [filterable]="true"
+      [rowsheight]="70"
+      [scrollbarsize]="15"
+      [width]="'100%'"
+      [autoheight]="true"
+      [pageable]="true"
+      [rendered]="renderedGrid"
+      [ready]="ready"
+      (onRowselect)="gridRowselect($event)"
+      [source]="dataAdapter"
+      (onSort)="OnGridGenericEvent($event)"
+      (onFilter)="OnGridGenericEvent($event)"
+      [columns]="columns"
+      [editable]="false"
+      style="margin-top: 0px !important;"
+    ></jqxGrid>
+  </div>
+</div>

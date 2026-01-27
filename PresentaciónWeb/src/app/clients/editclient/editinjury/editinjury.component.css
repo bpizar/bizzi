@@ -1,0 +1,74 @@
+﻿[hidden] {
+  display: none;
+}
+
+.box50 {
+  width: 48%;
+  float: left;
+  padding-top: 2%;
+  padding-left: 1%;
+  padding-right: 1%;
+  min-width: 400px;
+  height: 1350px;
+}
+
+.box50_2 {
+  width: 48%;
+  float: left;
+  padding-top: 2%;
+  padding-left: 1%;
+  padding-right: 1%;
+  /* min-width: 400px; */
+  /* height: 1350px; */
+}
+
+.subtitle1 {
+  float: left;
+  font-weight: bold;
+  font-size: 14px !important;
+  width: 100%;
+}
+
+/* image-drawing div .buttons
+{
+    display: none !important;
+    visibility: hidden !important;
+} */
+
+/* .toolbar .buttons
+{
+    display:hidden !important;
+    visibility: hidden !important;
+} */
+
+/* 
+image-drawing .buttons
+{
+    display:hidden !important;
+    visibility: hidden !important;
+} */
+
+/* signature-pad canvas{
+    background-image: url('http://52.60.139.58:8011/people/qa/jaygorapi/media/images/injuries/generic.jpg') !important; 
+    background-position:absolute !important; 
+    top:0 !important; 
+    left:0 !important; 
+    background-position: top !important;
+    background-repeat:none !important;                                   
+  } */
+
+.divToolBarbody {
+  height: 30px;
+  width: 100%;
+  /* background: red; */
+  margin-bottom: 60px;
+}
+
+.divToolBarbody .pagesSpan {
+  color: var(--first-color);
+  line-height: 30px;
+  float: left;
+  margin-left: 10px;
+  font-size: 12px;
+  margin-right: 4px;
+}

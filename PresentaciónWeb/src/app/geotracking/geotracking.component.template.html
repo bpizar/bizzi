@@ -1,0 +1,294 @@
+<glowmessages #glowmessage></glowmessages>
+
+<div class="menuContainer">
+  <menu [loaderReference]="myLoader"></menu>
+</div>
+
+<div class="appContainer">
+  <jqxLoader
+    #loaderReference
+    [width]="140"
+    [height]="140"
+    [isModal]="true"
+    [theme]="'bootstrap'"
+    [html]="'<div class=\'loadingdiv\'><div class=\'loader\'></div></div>'"
+    [imagePosition]='"top"'
+  ></jqxLoader>
+
+  <div class="auxMenuBar">
+    <div class="titleHeaderSpace">{{'geo_title_bar' | translate}}</div>
+
+    <div class="blockMinRight">
+      <!-- [culture]="getCurrentCulture()" -->
+
+      <jqxDateTimeInput
+        #dateX
+        [width]="50"
+        [height]="25"
+        [theme]='"bootstrap"'
+        [formatString]='"dd"'
+        [culture]="getCurrentCulture()"
+        [showCalendarButton]="true"
+        style="float: right; margin-top: 3px;"
+        [dropDownHorizontalAlignment]="'right'"
+        [readonly]="true"
+        (onValueChanged)="dateChanged($event)"
+        [showTimeButton]="false"
+      ></jqxDateTimeInput>
+
+      <span class="pagesSpan" style="float: right;">
+        {{'global_day' | translate}}
+      </span>
+
+      <!-- [scrollBarSize]="5" -->
+
+      <jqxDropDownList
+        #periodsDropDown
+        [width]="180"
+        (onBindingComplete)="periodsBindingComplete($event)"
+        (onSelect)="PeriodSelectDrowDown($event)"
+        [height]="25"
+        [theme]='"bootstrap"'
+        [displayMember]="'dateJoin'"
+        [valueMember]="'id'"
+        [placeHolder]='"Select"'
+        style="float: right; margin-top: 3px;"
+        [source]="dataAdapterPeriod"
+      ></jqxDropDownList>
+
+      <span class="pagesSpan" style="float: right;">
+        {{'global_period' | translate}}
+      </span>
+    </div>
+
+    <div class="blockMin" style="width: 220px !important;">
+      <span class="pagesSpan" style="margin-left: 20px;">
+        {{'global_update' | translate}}
+      </span>
+
+      <jqxButton
+        #updateButton
+        [width]='"25px"'
+        [height]='"27px"'
+        style="float: left; margin-left: 4px;"
+        (onClick)="GetGeoTracking()"
+        [theme]='"metro"'
+      >
+        <i
+          class="icon ion-ios-sync"
+          style="font-size: 18px; color: var(--first-color);"
+        ></i>
+      </jqxButton>
+
+      <i
+        class="icon ion-ios-search"
+        style="
+          margin-left: 30px;
+          color: var(--first-color);
+          float: left;
+          margin-top: 5px;
+        "
+      ></i>
+
+      <!-- (onClick)="LessZoom($event)" -->
+
+      <jqxButton
+        #lessZoom
+        [width]='"25px"'
+        [height]='"27px"'
+        style="float: left; margin-left: 4px;"
+        (click)="zoomOut(gmap.getMap())"
+        [theme]='"metro"'
+      >
+        <i class="icon ion-ios-remove" style="color: var(--first-color);"></i>
+      </jqxButton>
+
+      <!-- (onClick)="MoreZoom($event)" -->
+
+      <jqxButton
+        #moreZoom
+        [width]='"25px"'
+        [height]='"27px"'
+        (click)="zoomIn(gmap.getMap())"
+        style="float: left; margin-left: 4px;"
+        [theme]='"metro"'
+      >
+        <i class="icon ion-ios-add" style="color: var(--first-color);"></i>
+      </jqxButton>
+    </div>
+
+    <div class="blockMin" style="float: left; width: 200px !important;">
+      <span class="pagesSpan" style="margin-left: 10px;">
+        {{'geo_showautotracking' | translate}}
+      </span>
+      <input
+        style="float: left; margin-left: 4px; margin-top: 8px;"
+        [checked]="loadAutoTracking"
+        type="checkbox"
+        (change)="changeLoadAutoGeoTracking($event)"
+      />
+    </div>
+
+    <!-- <div class="blockMinRight">
+                    <div class="textHeaderSpace">
+                        Project
+                    </div>
+
+                    <jqxDropDownList #projectsDropDown
+                        [width]='220'
+                        [height]='25'
+                        style="float:right; margin-right:4px;"
+                        [theme]="'bootstrap'"
+                        (onBindingComplete)="projectsBindingComplete($event)"
+                        (onSelect)="ProjectSelectDropDown($event)"
+                        [displayMember]="'projectName'"
+                        [valueMember]="'id'"
+                        [scrollBarSize]="10"
+                        [placeHolder]='"Select"'
+                        [source]='dataAdapterProjects'>
+                    </jqxDropDownList>
+            </div> -->
+  </div>
+
+  <div class="headerSpace"></div>
+
+  <!-- <div class="headerSpace">
+        <div class="titleHeaderSpace">Clients</div>
+        <br /><br />
+
+        <div class="blockMin">
+            <button class="button"                 
+                    (click)="createNew($event)"
+                    style="margin-left:0px; float:left;">
+                <i class="icon ion-plus-circled" style="color:white; font-size:18px;"></i> Create New
+            </button>
+
+           
+        </div>
+    </div> -->
+
+  <div class="bodySpace">
+    <div class="leftSide">
+      <jqxListBox
+        #listBoxStaffFilter
+        [checkboxes]="false"
+        [filterable]="true"
+        [scrollBarSize]="5"
+        [width]="348"
+        [filterPlaceHolder]="PlaceHolderLookingFor"
+        [searchMode]="'containsignorecase'"
+        [renderer]="rendererListBoxStaff"
+        [height]='"99%"'
+        [theme]='"bootstrap"'
+        style="float: left;"
+        (onSelect)="selectStaff($event)"
+        [displayMember]="'fullUserName'"
+        [valueMember]="'idfStaffProjectPosition'"
+        [source]="dataAdapterStaffListBox"
+      ></jqxListBox>
+    </div>
+
+    <div class="rigthSide">
+      <!-- <p-gmap [options]="options" [style]="{'width':'100%','height':'320px'}" ></p-gmap>  -->
+      <!-- <p-growl [value]="msgs"></p-growl> -->
+
+      <div class="leftTackingInfo">
+        <span class="pagesSpan" style="margin-left: 40px;">
+          {{'geo_tracking' | translate}}
+        </span>
+
+        <ul
+          style="margin-left: 15px;"
+          class="ultable"
+          *ngFor="let g of geoTimeTrackingList | myfilterGeoTracking:{ idfStaffProjectPosition: currentStaff}"
+        >
+          <li class="utlableli" (click)="clickTimeGeo(gmap.getMap(),g,'start')">
+            <!-- <i class="icon ion-ios-arrow-down" style="font-size:18px; color:limegreen;"></i> -->
+            <i
+              class="icon ion-ios-pin"
+              style="font-size: 18px; color: limegreen;"
+            ></i>
+
+            {{CommonHelper.getTime(g.start)}}
+          </li>
+
+          <li
+            [hidden]="g.end==null"
+            class="utlableli"
+            (click)="clickTimeGeo(gmap.getMap(),g,'end')"
+          >
+            <!-- <i class="icon ion-ios-arrow-up" style="font-size:18px; color:red;"></i> -->
+            <i
+              class="icon ion-ios-pin"
+              style="
+                display: inline-block;
+                transform: rotate(180deg);
+                font-size: 18px;
+                color: red;
+              "
+            ></i>
+            {{CommonHelper.getTime(g.end)}}
+          </li>
+
+          <li [hidden]="g.end==null" class="utlableliTime">
+            <!-- <i class="icon ion-ios-arrow-up" style="font-size:18px; color:red;"></i> -->
+            {{'geo_elapsed_time' | translate}} :
+            {{CommonHelper.convertMinsToHrsMins(g.elapsedTime)}}
+          </li>
+        </ul>
+
+        <span
+          [hidden]="!loadAutoTracking"
+          class="pagesSpan"
+          style="margin-top: 30px; margin-left: 40px;"
+        >
+          {{'geo_auto_tracking' | translate}}
+        </span>
+
+        <div style="overflow-y: scroll; height: 80%; width: 98%; float: left;">
+          <ul
+            style="margin-left: 15px;"
+            class="ultable"
+            *ngFor="let g of geoTimeTrackingAuto | myfilterGeoTrackingAuto:{ idfUser: currentUser}"
+          >
+            <li
+              class="utlableli"
+              (click)="clickTimeGeo(gmap.getMap(),g,'start')"
+            >
+              <i
+                class="icon ion-ios-pin"
+                style="font-size: 18px; color: rgb(134, 125, 125);"
+              ></i>
+              {{CommonHelper.getTime(g.start)}}
+            </li>
+
+            <!-- <li [hidden]="g.end==null" class="utlableli" (click)="clickTimeGeo(gmap.getMap(),g,'end')" >
+                        <i class="icon ion-ios-pin" style=" display: inline-block;  transform: rotate(180deg); font-size:18px; color:red;"></i>
+                        {{CommonHelper.getTime(g.end)}}
+                    </li>
+                    
+                    <li [hidden]="g.end==null"  class="utlableliTime" >
+                          Elapsed Time : {{CommonHelper.convertMinsToHrsMins(g.elapsedTime)}} 
+                    </li> -->
+          </ul>
+        </div>
+      </div>
+
+      <div class="rightTackingInfo">
+        <p-gmap
+          #gmap
+          [style]="{'width':'100%','height':'75vh', 'margin-bottom': '1em'}"
+          [options]="options"
+          [overlays]="overlays"
+          (onMapClick)="handleMapClick($event)"
+          (onOverlayClick)="handleOverlayClick($event)"
+          (onOverlayDragEnd)="handleDragEnd($event)"
+        ></p-gmap>
+
+        <!-- <button type="button" pButton label="Clear" icon="pi pi-times" (click)="clear()" style="margin-right:.25em"></button>
+                <button type="button" pButton label="Zoom In" icon="pi pi-plus" (click)="zoomIn(gmap.getMap())" style="margin-right:.25em"></button>
+                <button type="button" pButton label="Zoom Out" icon="pi pi-minus" (click)="zoomOut(gmap.getMap())"></button> -->
+      </div>
+    </div>
+  </div>
+</div>

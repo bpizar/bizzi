@@ -1,0 +1,67 @@
+<glowmessages #glowmessage></glowmessages>
+
+<div class="menuContainer">
+  <menu [loaderReference]="myLoader"></menu>
+</div>
+
+<div class="appContainer">
+  <jqxLoader
+    #loaderReference
+    [width]="140"
+    [height]="140"
+    [isModal]="true"
+    [theme]="'bootstrap'"
+    [html]="'<div class=\'loadingdiv\'><div class=\'loader\'></div></div>'"
+    [imagePosition]='"top"'
+  ></jqxLoader>
+
+  <div class="auxMenuBar">
+    <div class="titleHeaderSpace">{{'clients_title' | translate}}</div>
+    <div class="blockMinRight">
+      <button
+        class="button buttonSave"
+        [routerLink]="['/clients/client-forms']"
+        style="float: right;"
+      >
+        <i class="icon ion-ios-paper"></i>
+        &nbsp;{{'global_binders' | translate}}
+      </button>
+
+      <button
+        class="button buttonSave"
+        [hidden]="!canAddNew()"
+        (click)="createNew($event)"
+        style="margin-left: 0px; float: right;"
+      >
+        <i class="icon ion-ios-add"></i>
+        {{'clients_create_new' | translate}}
+      </button>
+    </div>
+  </div>
+
+  <div class="headerSpace"></div>
+
+  <div (window:resize)="OnGridGenericEvent2($event)" class="bodySpace">
+    <jqxGrid
+      #gridReference
+      [autoshowcolumnsmenubutton]="false"
+      [ready]="ready"
+      [filterable]="true"
+      [sortable]="true"
+      [rowsheight]="70"
+      (onRowselect)="gridRowselect($event)"
+      [scrollbarsize]="15"
+      (onCellclick)="cellClick($event)"
+      [theme]='"bootstrap"'
+      (onSort)="OnGridGenericEvent($event)"
+      (onFilter)="OnGridGenericEvent($event)"
+      [rendered]="renderedGrid"
+      [width]="'100%'"
+      [autoheight]="true"
+      [pageable]="true"
+      [source]="dataAdapter"
+      [editable]="false"
+      [columns]="columns"
+    ></jqxGrid>
+  </div>
+</div>

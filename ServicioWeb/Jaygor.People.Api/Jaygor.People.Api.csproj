@@ -1,0 +1,152 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+  </PropertyGroup>
+  <PropertyGroup>
+    <IsTransformWebConfigDisabled>true</IsTransformWebConfigDisabled>
+    <StartupObject></StartupObject>
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+    <Folder Include="Controllers\" />
+    <Folder Include="demons\" />
+    <Folder Include="wwwroot\media\images\injuries\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="MailKit" Version="4.5.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.4" />
+    <PackageReference Include="QRCoder" Version="1.3.9" />
+    <PackageReference Include="RestSharp" Version="110.2.0" />
+    <PackageReference Include="Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers" Version="0.4.421302">
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="8.0.4" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="10.1.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Jaygor.People.Business\Jaygor.People.Business.csproj" />
+    <ProjectReference Include="..\JayGor.People.ErrorManager\JayGor.People.ErrorManager.csproj" />
+    <ProjectReference Include="..\JayGor.People.Entities\JayGor.People.Entities.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="wwwroot\media\images\users\0.png" />
+    <Content Remove="wwwroot\media\images\users\042156ab-20c8-456b-9888-ee9cbe12c9e8.png" />
+    <Content Remove="wwwroot\media\images\users\0a6baff0-114b-489e-b3f3-b97784d80bd3.png" />
+    <Content Remove="wwwroot\media\images\users\1.png" />
+    <Content Remove="wwwroot\media\images\users\10.png" />
+    <Content Remove="wwwroot\media\images\users\11.png" />
+    <Content Remove="wwwroot\media\images\users\12.png" />
+    <Content Remove="wwwroot\media\images\users\13.png" />
+    <Content Remove="wwwroot\media\images\users\14.png" />
+    <Content Remove="wwwroot\media\images\users\15.png" />
+    <Content Remove="wwwroot\media\images\users\16.png" />
+    <Content Remove="wwwroot\media\images\users\17.png" />
+    <Content Remove="wwwroot\media\images\users\19.png" />
+    <Content Remove="wwwroot\media\images\users\1e07b728-a111-495a-9d89-0f5ce999766b.png" />
+    <Content Remove="wwwroot\media\images\users\2.png" />
+    <Content Remove="wwwroot\media\images\users\20.png" />
+    <Content Remove="wwwroot\media\images\users\21.png" />
+    <Content Remove="wwwroot\media\images\users\22.png" />
+    <Content Remove="wwwroot\media\images\users\23.png" />
+    <Content Remove="wwwroot\media\images\users\24.png" />
+    <Content Remove="wwwroot\media\images\users\25.png" />
+    <Content Remove="wwwroot\media\images\users\26.png" />
+    <Content Remove="wwwroot\media\images\users\27.png" />
+    <Content Remove="wwwroot\media\images\users\28.png" />
+    <Content Remove="wwwroot\media\images\users\29.png" />
+    <Content Remove="wwwroot\media\images\users\3.png" />
+    <Content Remove="wwwroot\media\images\users\30.png" />
+    <Content Remove="wwwroot\media\images\users\31.png" />
+    <Content Remove="wwwroot\media\images\users\32.png" />
+    <Content Remove="wwwroot\media\images\users\33.png" />
+    <Content Remove="wwwroot\media\images\users\3376d5bb-0336-4819-801e-3209dd2a0663.png" />
+    <Content Remove="wwwroot\media\images\users\34.png" />
+    <Content Remove="wwwroot\media\images\users\35.png" />
+    <Content Remove="wwwroot\media\images\users\36.png" />
+    <Content Remove="wwwroot\media\images\users\37.png" />
+    <Content Remove="wwwroot\media\images\users\38.png" />
+    <Content Remove="wwwroot\media\images\users\39.png" />
+    <Content Remove="wwwroot\media\images\users\4.png" />
+    <Content Remove="wwwroot\media\images\users\40.png" />
+    <Content Remove="wwwroot\media\images\users\41.png" />
+    <Content Remove="wwwroot\media\images\users\42.png" />
+    <Content Remove="wwwroot\media\images\users\43.png" />
+    <Content Remove="wwwroot\media\images\users\44.png" />
+    <Content Remove="wwwroot\media\images\users\45.png" />
+    <Content Remove="wwwroot\media\images\users\46.png" />
+    <Content Remove="wwwroot\media\images\users\47.png" />
+    <Content Remove="wwwroot\media\images\users\48.png" />
+    <Content Remove="wwwroot\media\images\users\49.png" />
+    <Content Remove="wwwroot\media\images\users\5.png" />
+    <Content Remove="wwwroot\media\images\users\50.png" />
+    <Content Remove="wwwroot\media\images\users\51.png" />
+    <Content Remove="wwwroot\media\images\users\52.png" />
+    <Content Remove="wwwroot\media\images\users\53.png" />
+    <Content Remove="wwwroot\media\images\users\54.png" />
+    <Content Remove="wwwroot\media\images\users\55.png" />
+    <Content Remove="wwwroot\media\images\users\56.png" />
+    <Content Remove="wwwroot\media\images\users\57.png" />
+    <Content Remove="wwwroot\media\images\users\58.png" />
+    <Content Remove="wwwroot\media\images\users\58883b4e-a9b8-4c55-8712-52b956aa5e89.png" />
+    <Content Remove="wwwroot\media\images\users\59.png" />
+    <Content Remove="wwwroot\media\images\users\5c980eb4-a9e5-4f96-bb44-c3984c159b3e.png" />
+    <Content Remove="wwwroot\media\images\users\6.png" />
+    <Content Remove="wwwroot\media\images\users\60.png" />
+    <Content Remove="wwwroot\media\images\users\61.png" />
+    <Content Remove="wwwroot\media\images\users\62.png" />
+    <Content Remove="wwwroot\media\images\users\63.png" />
+    <Content Remove="wwwroot\media\images\users\64.png" />
+    <Content Remove="wwwroot\media\images\users\65.png" />
+    <Content Remove="wwwroot\media\images\users\66.png" />
+    <Content Remove="wwwroot\media\images\users\67.png" />
+    <Content Remove="wwwroot\media\images\users\68.png" />
+    <Content Remove="wwwroot\media\images\users\69.png" />
+    <Content Remove="wwwroot\media\images\users\70.png" />
+    <Content Remove="wwwroot\media\images\users\71.png" />
+    <Content Remove="wwwroot\media\images\users\72.png" />
+    <Content Remove="wwwroot\media\images\users\73.png" />
+    <Content Remove="wwwroot\media\images\users\730eddbd-b304-4510-b133-de81e633ed8c.png" />
+    <Content Remove="wwwroot\media\images\users\8.png" />
+    <Content Remove="wwwroot\media\images\users\9.png" />
+    <Content Remove="wwwroot\media\images\users\acb1a9fc-f4e5-413c-8ce0-58ebba4248bf.png" />
+    <Content Remove="wwwroot\media\images\clients\0b0cbcaf-9d95-405c-a112-26221b20ce1b.png" />
+    <Content Remove="wwwroot\media\images\clients\37170b4c-1d2c-4077-bc62-317e6d85eed7.png" />
+    <Content Remove="wwwroot\media\images\clients\3db7b108-65cb-4f22-b9ae-ab1de0cd2b65.png" />
+    <Content Remove="wwwroot\media\images\clients\45e16699-847d-49fe-9789-bf60068dbd15.png" />
+    <Content Remove="wwwroot\media\images\clients\46ec3d82-639d-49c0-92a6-7a87205c4ba2.png" />
+    <Content Remove="wwwroot\media\images\clients\68c77cf3-a539-4e79-88ee-011e99a05f30.png" />
+    <Content Remove="wwwroot\media\images\clients\7633ccdd-561b-4181-8ffa-e41512ac83f7.png" />
+    <Content Remove="wwwroot\media\images\clients\80b9cc2c-ef63-4be7-8fad-d1a24d674ab7.png" />
+    <Content Remove="wwwroot\media\images\clients\93853079-190b-4980-ae63-f1cbf7c0bae4.png" />
+    <Content Remove="wwwroot\media\images\clients\9d621892-b0a2-4d3e-a46e-53696c99ba11.png" />
+    <Content Remove="wwwroot\media\images\clients\b896c2bf-bd41-4e14-b488-69b7d62668c8.png" />
+    <Content Remove="wwwroot\media\images\clients\bb5b9ba0-67b7-4fdc-b4c3-0048ab08300e.png" />
+    <Content Remove="wwwroot\media\images\clients\bccf1949-2450-4a60-93db-9fc3b23dae7f.png" />
+    <Content Remove="wwwroot\media\images\clients\c949cced-b0c1-4e3d-aa50-b11c73be9bf3.png" />
+    <Content Remove="wwwroot\media\images\clients\d19a0c77-ddef-4c8a-a29a-9bde7f3666e9.png" />
+    <Content Remove="wwwroot\media\images\clients\e1744376-85f2-4738-a16d-9ea3b7b94a63.png" />
+    <Content Remove="wwwroot\media\images\clients\ee7eea49-4fc6-4b00-8fed-878456695a30.png" />
+    <Content Remove="wwwroot\media\images\clients\ef47c241-4899-46f3-a34a-209c170deb7c.png" />
+    <Content Remove="wwwroot\media\images\users\acc94179-e93a-48a2-85cf-24a4a8948414.png" />
+    <Content Remove="wwwroot\media\images\users\b0ff2621-eeca-4d6d-b6dc-1283363d1b4c.png" />
+    <Content Remove="wwwroot\media\images\users\b1c32e8a-6cd3-497e-b8a4-928b764ae9a6.png" />
+    <Content Remove="wwwroot\media\images\users\c8ac754e-3987-4397-95d7-74e87f4f3ecf.png" />
+    <Content Remove="wwwroot\media\images\users\dc8e07cf-25a4-418e-953a-065530122bc1.png" />
+    <Content Remove="wwwroot\media\images\users\df7bae42-abd2-4aa6-821b-4ed353ddddd2.png" />
+    <Content Remove="wwwroot\media\images\users\f5ca2458-04c2-488c-98b9-e2b5b0d89046.png" />
+    <Content Remove="wwwroot\media\images\users\f67ca689-3d97-4db0-abb9-70c364708a23.png" />
+    <Content Remove="wwwroot\media\images\users\feff150b-bb89-476e-b3a8-0f0e0fdb4dcb.png" />
+    <Content Remove="wwwroot\media\images\.DS_Store" />
+    <Content Remove="wwwroot\media\images\clients\generic.png" />
+    <Content Remove="wwwroot\media\images\users\c7848723-dbd8-42f7-8c9c-4b06fa9d93c3.png" />
+    <Content Remove="wwwroot\media\images\users\d09052a0-0f1b-4632-baf8-aacb2228b6ff.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+</Project>

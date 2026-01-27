@@ -1,0 +1,44 @@
+﻿/*.div-table-Duplicate-Days{
+  width:auto;         
+  border-spacing:5px;
+  width:90%;
+}
+.div-table-row-Duplicate-Days{
+  display:table-row;
+  width:100%;
+  clear:both;    
+}
+.div-table-col-Duplicate-Days{
+  float:left;
+  display:table-column;         
+  width:100%;         
+  height:25px;
+}
+
+.div-table-col-Duplicate-Days-width1{  
+  width:100px;    
+}
+.div-table-col-Duplicate-Days-width2{  
+  width:90px;
+}
+.div-table-col-Duplicate-Days-width3{  
+  width:100px;  
+}
+
+.div-table-col-Duplicate-Days-width4{  
+  width:80%;  
+}*/
+
+[hidden] {
+  display: none;
+}
+
+/* 
+.cellmodifiedTrackingFormat
+{
+  background-color: #e83636 !important;
+}
+
+.cellmodifiedTrackingFormat:not(.jqx-grid-cell-hover):not(.jqx-grid-cell-selected), .jqx-widget .cellmodifiedTrackingFormat:not(.jqx-grid-cell-hover):not(.jqx-grid-cell-selected) {
+    background-color: yellow !important;
+} */

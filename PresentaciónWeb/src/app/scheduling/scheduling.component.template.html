@@ -1,0 +1,1087 @@
+<glowmessages #glowmessage></glowmessages>
+
+<div class="menuContainer">
+  <menu [loaderReference]="myLoader"></menu>
+</div>
+
+<!-- <div [ngClass]="{'appContainer':true,'appContainerMinusPanelRight':panelRightSelectVisible}"> -->
+
+<div class="appContainer">
+  <jqxLoader
+    #loaderReference
+    [width]="140"
+    [height]="140"
+    [isModal]="true"
+    [theme]="'bootstrap'"
+    [html]="'<div class=\'loadingdiv\'><div class=\'loader\'></div></div>'"
+    [imagePosition]='"top"'
+  ></jqxLoader>
+
+  <div class="auxMenuBar">
+    <div class="titleHeaderSpace">{{'scheduling_title_bar' | translate}}</div>
+
+    <div class="blockMinRight">
+      <div class="textHeaderSpace" style="margin-top: 4px;">
+        {{'global_period' | translate}}
+      </div>
+
+      <jqxDropDownList
+        #periodsDropDown
+        [width]="190"
+        (onBindingComplete)="periodsBindingComplete($event)"
+        (onSelect)="PeriodSelectDrowDown($event)"
+        [height]="25"
+        ([scrollBarSize])="5"
+        [theme]='"bootstrap"'
+        [displayMember]="'dateJoin'"
+        [valueMember]="'id'"
+        [placeHolder]='"Select"'
+        style="float: left; margin-top: 2px;"
+        [source]="dataAdapterPeriod"
+      ></jqxDropDownList>
+
+      <i
+        [hidden]="!canManagePeriods()"
+        (click)="openPeriodsManager($event)"
+        class="ion ion-ios-alarm transparentButton"
+        style="margin-top: -3px; font-size: 24px;"
+      ></i>
+    </div>
+
+    <div class="blockMinRight" style="margin-top: 5px;">
+      <jqxButtonGroup
+        #calendarModeButtons
+        [mode]="'radio'"
+        [width]="250"
+        (onButtonclick)="calendarModeOnClick($event)"
+        style="float: right !important;"
+        [theme]="'bootstrap'"
+      >
+        <button
+          class="jqx-button jqx-button-bootstrap jqx-group-button-normal jqx-group-button-normal-bootstrap"
+          icon="ion-checkmark"
+          iconPos="left"
+          id="Left"
+        >
+          &nbsp;
+          <i class="icon ion-ios-school"></i>
+        </button>
+        <button
+          class="jqx-button jqx-button-bootstrap jqx-group-button-normal jqx-group-button-normal-bootstrap"
+          id="Center"
+          checked="true"
+        >
+          &nbsp;
+          <i class="icon ion-ios-briefcase"></i>
+        </button>
+        <button
+          class="jqx-button jqx-button-bootstrap jqx-group-button-normal jqx-group-button-normal-bootstrap"
+          id="Right"
+        >
+          &nbsp;
+          <i class="icon ion-ios-person"></i>
+        </button>
+      </jqxButtonGroup>
+    </div>
+
+    <button
+      class="button buttonSave"
+      [disabled]="newScheduleButtonDisabled"
+      [hidden]="!canAddOrEditSchedule()"
+      (click)="newAppointment($event)"
+      style="float: right; margin-right: 20px;"
+    >
+      <i class="icon ion-ios-add"></i>
+      {{'scheduling_addbutton' | translate}}
+    </button>
+
+    <button
+      class="button buttonPrint"
+      (click)="print($event)"
+      style="float: right; margin-right: 20px;"
+    >
+      <i class="icon ion-ios-briefcase"></i>
+      {{'scheduling_print' | translate}}
+    </button>
+
+    <!-- <jqxCheckBox #dcheckSelectMany
+                        class="button buttonSave"
+                        style='margin-left: 8px; float: right; color: #bfbfbf; font-size: 14px !important; line-height: 20px;' 
+                        [theme]="'bootstrap'" 
+                        [width]='150' 
+                        [height]='25'>
+                        Select Schedules      
+            </jqxCheckBox> -->
+
+    <!-- <button class="button buttonSave"
+                [disabled]="newScheduleButtonDisabled"
+                [hidden]="!canAddOrEditSchedule()"
+                (click)="newAppointment($event)"             
+                style="float:right; margin-right: 20px;  ">
+                <i class="icon ion-ios-add " ></i> {{'scheduling_addbutton' | translate}} 
+            </button> -->
+
+    <!-- <div class="blockMinRight">
+
+                    <button class="button buttonSave"
+                        [disabled]="newScheduleButtonDisabled"
+                        [hidden]="!canAddOrEditSchedule()"
+                        (click)="newAppointment($event)"             
+                        style="float:left; margin-right: 20px;  ">
+                        <i class="icon ion-ios-add " ></i> {{'scheduling_addbutton' | translate}} 
+                    </button>
+ 
+                        <div class="textHeaderSpace" style="margin-top:4px;" >
+                            {{'global_period' | translate}}
+                        </div>
+
+                      
+                        <jqxDropDownList #periodsDropDown
+                                            [width]='190'                            
+                                            (onBindingComplete)="periodsBindingComplete($event)"
+                                            (onSelect)="PeriodSelectDrowDown($event)"
+                                            [height]='25'
+                                            ([scrollBarSize])="5"
+                                            [theme]='"bootstrap"'
+                                            [displayMember]="'dateJoin'"
+                                            [valueMember]="'id'"                                         
+                                            [placeHolder]='"Select"'
+                                            style="float:left; margin-top:2px;"
+                                            [source]='dataAdapterPeriod'>
+                        </jqxDropDownList>
+    
+                        <i  [hidden]="!canManagePeriods()" (click)="openPeriodsManager($event)" class='ion ion-ios-alarm transparentButton' style="margin-top:0px; font-size: 24px;" ></i>
+            </div>     -->
+  </div>
+
+  <div class="headerSpace" style="height: 35px;">
+    <div [hidden]="!showOverTimeAlert" class="messageCritical">
+      <span>
+        <i class="icon ion-ios-alert"></i>
+        Overtime scheduling has been detected
+      </span>
+    </div>
+
+    <div [hidden]="!showOverLapAlert" class="messageCritical">
+      <span>
+        <i class="icon ion-ios-alert"></i>
+        OverLap scheduling has been detected
+      </span>
+    </div>
+
+    <div [hidden]="hideMessageFilter()" class="messageExclamation">
+      <span>
+        <i class="icon ion-ios-alert"></i>
+        Remove filter for view posible hidden schedules
+      </span>
+    </div>
+
+    <div [hidden]="!showOutOfRange" class="messageExclamation">
+      <span>
+        <i class="icon ion-ios-alert"></i>
+        Period out of range
+      </span>
+    </div>
+
+    <div class="blockMin" style="width: 500px;"></div>
+  </div>
+
+  <div class="bodySpace" style="height: 79vh;">
+    <div class="leftSide">
+      <jqxTabs
+        #tabsReference
+        [width]='"100%"'
+        [height]='"100%"'
+        [theme]='"bootstrap"'
+        style="margin-top: 5px;"
+        [position]='"top"'
+        (onSelected)="onSelectedScheduledTab($event)"
+        [initTabContent]="initTabSchedule"
+        [animationType]='"none"'
+        [selectionTracker]="false"
+      >
+        <ul style="list-style-type: none;">
+          <!-- "scheduling_schedule_tab":"Schedule",
+                "scheduling_overtime_tab":"OverTime",
+                "scheduling_overlap_tab":"OverLap", -->
+
+          <li>Schedule</li>
+          <li>OverTime</li>
+          <li>OverLap</li>
+        </ul>
+
+        <div style="overflow: hidden; padding-left: 1%; padding-right: 1%;">
+          <div style="height: 9%;">
+            <!-- 
+                        <input type="button" value="filtrar" (click)="filter1()" />      
+                        <input type="button" value="clear" (click)="clearFilter()" />     
+                    -->
+
+            <!-- 
+                        (onBindingComplete)="projectsBindingComplete($event)" (onSelect)="ProjectSelectDropDown($event)" 
+                    -->
+
+            <!-- (onSelect)="selectDuplicateCombo($event)" -->
+            <jqxDropDownList
+              #projectsDropDown
+              (onSelect)="selectProjectsDropDown($event)"
+              [width]="330"
+              [height]="25"
+              [theme]="'bootstrap'"
+              style="float: left; margin-left: 4px; margin-top: 16px;"
+              [source]="dataAdapterProjects"
+              [displayMember]="'projectName'"
+              [valueMember]="'id'"
+            ></jqxDropDownList>
+
+            <!-- <xxxxx #projectsDropDown
+                            [width]='330'
+                            [height]='25'
+                            (onChange) = "projectsChange($event)"
+                            [multiSelect]='false'
+                            style="float:left; margin-left:4px; margin-top:16px;"
+                            [theme]="'bootstrap'" 
+                            (onBindingComplete)="projectsBindingComplete($event)"                           
+                            [scrollBarSize] = "5"
+                            [displayMember]="'projectName'"
+                            [valueMember]="'id'"                          
+                            [placeHolder]='"No Filter"'
+                            [source]='dataAdapterProjects'>
+                </xxxxx> -->
+          </div>
+
+          <jqxListBox
+            #listBoxStaffFilter
+            (click)="clickSheduleListBox($event)"
+            [checkboxes]="false"
+            [filterable]="true"
+            [scrollBarSize]="5"
+            [width]="346"
+            [allowDrag]="allowListBoxStaffFilter"
+            [allowDrop]="false"
+            [dragEnd]="dragEndProperty"
+            [searchMode]="'containsignorecase'"
+            [renderer]="rendererScheduleListBox"
+            [height]='"90%"'
+            [theme]='"bootstrap"'
+            style="float: left;"
+            [filterPlaceHolder]="PlaceHolderLookingFor"
+            [displayMember]="'fullUserName'"
+            [valueMember]="'idfStaffProjectPosition'"
+            [source]="dataAdapterStaffListBox"
+          ></jqxListBox>
+        </div>
+
+        <div style="overflow: hidden; padding-left: 1%; padding-right: 1%;">
+          <jqxListBox
+            #listBoxOverTimeFilter
+            [checkboxes]="false"
+            [filterable]="true"
+            (click)="clickOverTimeListBox($event)"
+            [scrollBarSize]="5"
+            [width]="348"
+            [allowDrag]="false"
+            [allowDrop]="false"
+            [searchMode]="'containsignorecase'"
+            [renderer]="rendererOverTimeListBox"
+            [height]='"99%"'
+            [theme]='"bootstrap"'
+            style="float: left;"
+            [displayMember]="'positionName'"
+            [filterPlaceHolder]="PlaceHolderLookingFor"
+            [valueMember]="'id'"
+            [source]="dataAdapterOverTinmeListBox"
+          ></jqxListBox>
+        </div>
+
+        <div style="overflow: hidden; padding-left: 1%; padding-right: 1%;">
+          <jqxListBox
+            #listBoxOverLapFilter
+            [checkboxes]="false"
+            [filterable]="true"
+            (click)="clickOverLapListBox($event)"
+            [scrollBarSize]="5"
+            [width]="348"
+            [allowDrag]="false"
+            [allowDrop]="false"
+            [searchMode]="'containsignorecase'"
+            [renderer]="rendererOverLapListBox"
+            [height]='"99%"'
+            [theme]='"bootstrap"'
+            style="float: left;"
+            [filterPlaceHolder]="PlaceHolderLookingFor"
+            [displayMember]="'positionName'"
+            [valueMember]="'id'"
+            [source]="dataAdapterOverLapListBox"
+          ></jqxListBox>
+        </div>
+      </jqxTabs>
+    </div>
+
+    <div class="rigthSide">
+      <!-- 
+                <div style="background-color:lightblue; opacity: 0.5; height: 700px; width: 90%; margin-top:160px; position: fixed; top:50px; left:0p; z-index: 999999999;">
+                    tapita
+                </div> 
+            -->
+
+      <!-- [timeZone]="'Atlantic Standard Time'" 
+            
+         
+            -->
+
+      <jqxScheduler
+        #schedulerReference
+        [date]="date"
+        [renderAppointment]="renderAppointment"
+        (onViewChange)="onViewChange($event)"
+        (onAppointmentChange)="onAppointmentChange($event)"
+        (onDateChange)="onDateChange($event)"
+        (onBindingComplete)="schedulerBindingComplete($event)"
+        (onAppointmentDoubleClick)="onAppointmentDoubleClick($event)"
+        (onAppointmentClick)="onAppointmentClick($event)"
+        [ready]="ready"
+        [width]="'100%'"
+        [resources]="resources"
+        [scrollBarSize]="5"
+        [height]='"99%"'
+        [contextMenu]="true"
+        [contextMenuCreate]="contextMenuCreate"
+        [contextMenuOpen]="contextMenuOpen"
+        [contextMenuItemClick]="contextMenuItemClick"
+        [contextMenuClose]="contextMenuClose"
+        [source]="dataAdapter"
+        [editDialog]="false"
+        [showLegend]="false"
+        [view]='"weekView"'
+        [statuses]="statusesScheduled"
+        style="height: 100%;"
+        [theme]='"bootstrap"'
+        [dayNameFormat]='"abbr"'
+        [localization]="getScheduleLocation()"
+        [appointmentDataFields]="appointmentDataFields"
+        [views]="views"
+      >
+        <jqxWindow
+          #appointmentWindow
+          [width]="550"
+          [height]="520"
+          [theme]='"bootstrap"'
+          [maxHeight]="700"
+          [minHeight]="400"
+          [hidden]="true"
+          [maxWidth]="700"
+          [minWidth]="550"
+          [autoOpen]="false"
+          [resizable]="false"
+          [title]="windowTitle"
+          [isModal]="true"
+        >
+          <div id="windowContent">
+            <ul class="ultable">
+              <li style="width: 100%;">
+                <div class="textTitle">{{'staff_title' | translate}}</div>
+              </li>
+            </ul>
+
+            <ul class="ultable">
+              <li style="width: 100%;">
+                <jqxListBox
+                  #editGenStaff
+                  [width]='"100%"'
+                  [height]="200"
+                  [checkboxes]="true"
+                  [filterable]="true"
+                  [theme]='"bootstrap"'
+                  [displayMember]="'fullUserName'"
+                  [valueMember]="'idfStaffProjectPosition'"
+                  [searchMode]="'containsignorecase'"
+                  [renderer]="rendererListBoxStaffWindow"
+                  [filterPlaceHolder]="PlaceHolderLookingFor"
+                  [scrollBarSize]="5"
+                  [source]="dataAdapterStaffListBox"
+                ></jqxListBox>
+              </li>
+            </ul>
+
+            <ul class="ultable">
+              <li style="width: 20%;">
+                <div class="textTitle">{{'global_date' | translate}}</div>
+              </li>
+              <li style="width: 80%;">
+                <jqxDateTimeInput
+                  #editGenDate
+                  [width]="150"
+                  [height]="25"
+                  [theme]='"bootstrap"'
+                  [culture]="getCurrentCulture()"
+                  [formatString]='"d"'
+                  [showCalendarButton]="true"
+                  style="float: left;"
+                  [showTimeButton]="false"
+                ></jqxDateTimeInput>
+              </li>
+            </ul>
+
+            <ul class="ultable">
+              <li style="width: 20%;">
+                <div class="textTitle">{{'global_from' | translate}}</div>
+              </li>
+              <li style="width: 80%;">
+                <jqxDateTimeInput
+                  #editGenFrom
+                  [width]="150"
+                  [height]="25"
+                  [theme]='"bootstrap"'
+                  [formatString]='"t"'
+                  [culture]="getCurrentCulture()"
+                  [showCalendarButton]="false"
+                  style="float: left;"
+                  [showTimeButton]="true"
+                ></jqxDateTimeInput>
+              </li>
+            </ul>
+
+            <ul class="ultable">
+              <li style="width: 20%;">
+                <div class="textTitle">{{'global_to' | translate}}</div>
+              </li>
+              <li style="width: 80%;">
+                <jqxDateTimeInput
+                  #editGenTo
+                  [width]="150"
+                  [height]="25"
+                  [theme]='"bootstrap"'
+                  [formatString]='"t"'
+                  [culture]="getCurrentCulture()"
+                  [showCalendarButton]="false"
+                  style="float: left;"
+                  [showTimeButton]="true"
+                ></jqxDateTimeInput>
+              </li>
+            </ul>
+
+            <ul class="ultable">
+              <li style="width: 20%;">
+                <div class="textTitle">{{'global_repeat' | translate}}</div>
+              </li>
+              <li style="width: 80%;">
+                <jqxDropDownList
+                  #duplicateComboSelection
+                  (onSelect)="selectDuplicateCombo($event)"
+                  [width]="100"
+                  [height]="25"
+                  [selectedIndex]="0"
+                  [theme]="'bootstrap'"
+                  [source]="sourceDuplicateCombo"
+                  [displayMember]="'value'"
+                  [valueMember]="'id'"
+                ></jqxDropDownList>
+              </li>
+            </ul>
+
+            <ul
+              class="ultable"
+              [hidden]="selectedDuplicateCombo=='N' || selectedDuplicateCombo=='B'"
+            >
+              <li style="width: 35%;">
+                <div class="textTitle">
+                  {{'global_repeat_every' | translate}}
+                </div>
+              </li>
+              <li style="width: 15%;">
+                <jqxNumberInput
+                  #duplicateNumberRepeatEvery
+                  [width]="40"
+                  [height]="25"
+                  [decimalDigits]="0"
+                  [digits]="2"
+                  [min]="1"
+                  [max]="31"
+                  [inputMode]="'simple'"
+                  [theme]="'bootstrap'"
+                  [spinButtons]="true"
+                ></jqxNumberInput>
+              </li>
+
+              <li style="width: 50%;">
+                <span [hidden]="selectedDuplicateCombo!='D'">
+                  {{'global_days' | translate}}
+                </span>
+                <span [hidden]="selectedDuplicateCombo!='W'">
+                  {{'global_weeks' | translate}}
+                </span>
+                <span [hidden]="selectedDuplicateCombo!='M'">
+                  {{'global_months' | translate}}
+                </span>
+                <span [hidden]="selectedDuplicateCombo!='Y'">
+                  {{'global_years' | translate}}
+                </span>
+              </li>
+            </ul>
+
+            <!--ESPECIAL FOR WEEK-->
+            <ul
+              class="ultable"
+              [hidden]="selectedDuplicateCombo!='W' && selectedDuplicateCombo!='B'"
+            >
+              <li style="width: 35%;">
+                <div class="textTitle">{{'global_repeat_on' | translate}}</div>
+              </li>
+              <li style="width: 65%;">
+                <jqxCheckBox
+                  #duplicateCheckDayRepeatOnWeek_Su
+                  style="margin-left: 8px; float: left;"
+                  [theme]="'bootstrap'"
+                  [width]="42"
+                  [height]="25"
+                >
+                  Su
+                </jqxCheckBox>
+                <jqxCheckBox
+                  #duplicateCheckDayRepeatOnWeek_Mo
+                  style="margin-left: 8px; float: left;"
+                  [theme]="'bootstrap'"
+                  [width]="42"
+                  [height]="25"
+                >
+                  Mo
+                </jqxCheckBox>
+                <jqxCheckBox
+                  #duplicateCheckDayRepeatOnWeek_Tu
+                  style="margin-left: 8px; float: left;"
+                  [theme]="'bootstrap'"
+                  [width]="42"
+                  [height]="25"
+                >
+                  Tu
+                </jqxCheckBox>
+                <jqxCheckBox
+                  #duplicateChecDaykRepeatOnWeek_We
+                  style="margin-left: 8px; float: left;"
+                  [theme]="'bootstrap'"
+                  [width]="42"
+                  [height]="25"
+                >
+                  We
+                </jqxCheckBox>
+                <jqxCheckBox
+                  #duplicateCheckDayRepeatOnWeek_Th
+                  style="margin-left: 8px; float: left;"
+                  [theme]="'bootstrap'"
+                  [width]="42"
+                  [height]="25"
+                >
+                  Th
+                </jqxCheckBox>
+                <jqxCheckBox
+                  #duplicateCheckDayRepeatOnWeek_Fr
+                  style="margin-left: 8px; float: left;"
+                  [theme]="'bootstrap'"
+                  [width]="42"
+                  [height]="25"
+                >
+                  Fr
+                </jqxCheckBox>
+                <jqxCheckBox
+                  #duplicateCheckDayRepeatOnWeek_Sa
+                  style="margin-left: 8px; float: left;"
+                  [theme]="'bootstrap'"
+                  [width]="42"
+                  [height]="25"
+                >
+                  Sa
+                </jqxCheckBox>
+              </li>
+            </ul>
+
+            <!--END (OCURRENCE)-->
+            <ul class="ultable" [hidden]="selectedDuplicateCombo=='N'">
+              <li style="width: 35%;">
+                <jqxRadioButton
+                  #duplicateRadioButtonEndAfter
+                  value="endAfter"
+                  [width]="100"
+                  [height]="25"
+                  [groupName]="'endGroup'"
+                  [checked]="true"
+                  [theme]="'bootstrap'"
+                  [(ngModel)]="endModel"
+                >
+                  <span>{{'global_end_after' | translate}}</span>
+                </jqxRadioButton>
+              </li>
+              <li style="width: 15%;">
+                <jqxNumberInput
+                  #duplicateNumberEndAfter
+                  [width]="40"
+                  [height]="25"
+                  [decimalDigits]="0"
+                  [digits]="3"
+                  [min]="1"
+                  [decimal]="1"
+                  [max]="365"
+                  [inputMode]="'simple'"
+                  [theme]="'bootstrap'"
+                  [spinButtons]="true"
+                ></jqxNumberInput>
+              </li>
+              <li style="width: 50%;">
+                {{'global_ocurrences' | translate}}
+              </li>
+            </ul>
+
+            <!--END (ON)-->
+            <ul class="ultable" [hidden]="selectedDuplicateCombo=='N'">
+              <li style="width: 35%;">
+                <jqxRadioButton
+                  #duplicateRadioButtonEndOn
+                  value="endOn"
+                  [groupName]="'endGroup'"
+                  [width]="100"
+                  [height]="25"
+                  [theme]="'bootstrap'"
+                  [checked]="false"
+                  [(ngModel)]="endModel"
+                >
+                  <span>{{'global_end_on' | translate}}</span>
+                </jqxRadioButton>
+              </li>
+              <li style="width: 65%;">
+                <jqxDateTimeInput
+                  #dateTimeEndOn
+                  [width]="140"
+                  [culture]="getCurrentCulture()"
+                  style="padding: 0 !important; line-height: 25px !important;"
+                  [theme]="'bootstrap'"
+                  [formatString]='"d"'
+                  [height]="25"
+                ></jqxDateTimeInput>
+              </li>
+            </ul>
+
+            <div class="buttonWindowDiv">
+              <button
+                class="button buttonSave"
+                (click)="closeWindow($event)"
+                [hidden]="!canAddOrEditSchedule()"
+              >
+                <i class="icon ion-ios-arrow-dropleft"></i>
+                {{'global_cancel' | translate}}
+              </button>
+              <button
+                class="button buttonSave"
+                (click)="SaveAppointment($event)"
+                [hidden]="!canAddOrEditSchedule()"
+              >
+                <i class="icon ion-ios-checkmark-circle-outline"></i>
+                {{'global_save' | translate}}
+              </button>
+            </div>
+          </div>
+        </jqxWindow>
+
+        <jqxWindow
+          #periodsWindow
+          [width]="600"
+          [height]="400"
+          [theme]='"bootstrap"'
+          [maxHeight]="400"
+          [minHeight]="400"
+          [resizable]="false"
+          [maxWidth]="600"
+          [minWidth]="600"
+          [hidden]="true"
+          [autoOpen]="false"
+          [title]='"Periods"'
+          [isModal]="true"
+        >
+          <div id="windowPeriodContent" style="overflow: hidden;">
+            <div
+              class="auxMenuBar"
+              style="width: 600px; margin-left: -4px; line-height: 25px;"
+            >
+              <ul class="ultable" style="margin-top: 0px;">
+                <!-- <ul class="ultable"> -->
+                <li style="width: 40px;">
+                  {{'global_from' | translate}}
+                </li>
+                <li style="width: 120px;">
+                  <jqxDateTimeInput
+                    #dateFromPeriod
+                    [width]="100"
+                    [height]="25"
+                    [theme]='"bootstrap"'
+                    [formatString]='"d"'
+                    [culture]="getCurrentCulture()"
+                    [showCalendarButton]="true"
+                    style="float: left;"
+                    [showTimeButton]="false"
+                  ></jqxDateTimeInput>
+                </li>
+                <li style="width: 40px;">
+                  {{'global_to' | translate}}
+                </li>
+                <li style="width: 120px;">
+                  <jqxDateTimeInput
+                    #dateToPeriod
+                    [width]="100"
+                    [height]="25"
+                    [theme]='"bootstrap"'
+                    [formatString]='"d"'
+                    [culture]="getCurrentCulture()"
+                    [showCalendarButton]="true"
+                    style="float: left;"
+                    [showTimeButton]="false"
+                  ></jqxDateTimeInput>
+                </li>
+                <li style="width: 180px;">
+                  &nbsp;
+                </li>
+                <li style="width: 100px;">
+                  <button
+                    class="button buttonSave"
+                    [hidden]="!canAddOrEditSchedule()"
+                    (click)="addPeriodClick($event)"
+                    style="float: left;"
+                  >
+                    <i class="icon ion-ios-add"></i>
+                    {{'global_add' | translate}}
+                  </button>
+                </li>
+              </ul>
+            </div>
+
+            <div
+              style="
+                height: 200px;
+                margin-top: 40px;
+                float: left;
+                overflow-y: scroll;
+              "
+            >
+              <ul
+                class="ultable"
+                *ngFor="let p of this.sourcePeriodsListBox.localData | myfilterperiods:{ abm: 'D' }"
+                style="text-align: right;"
+              >
+                <li style="width: 150px;" [hidden]="p.abm=='D'">
+                  {{getFormatDate(p.from,true)}}
+                </li>
+
+                <li style="width: 150px;" [hidden]="p.abm=='D'">
+                  {{getFormatDate(p.to,false)}}
+                </li>
+
+                <li style="width: 150px;" [hidden]="p.abm=='D'">
+                  <span
+                    [hidden]="!(p.state!='C' && p.abm!='E') || p.abm=='D' || p.abm=='I'"
+                  >
+                    {{'global_closed' | translate}}
+                  </span>
+                  <span [hidden]="p.abm != 'I'">&nbsp;</span>
+                  <span [hidden]="p.state!='C' && p.abm!='E'">
+                    <input
+                      ng
+                      type="checkbox"
+                      (change)="changeCloseTextBoxPosition(p)"
+                      [(ngModel)]="p.close"
+                    />
+                    {{'global_close' | translate}}
+                  </span>
+                </li>
+
+                <li style="width: 70px;" [hidden]="p.abm=='D'">
+                  <jqxButton
+                    [width]="30"
+                    [theme]='"bootstrap"'
+                    [height]="30"
+                    (onClick)="removePeriodClick(p)"
+                    style="
+                      margin-left: 20px;
+                      margin-top: -5px;
+                      float: left;
+                      text-align: center;
+                    "
+                  >
+                    <i class="icon ion-ios-close"></i>
+                  </jqxButton>
+                </li>
+              </ul>
+            </div>
+
+            <div class="buttonWindowDiv">
+              <button
+                class="button buttonSave"
+                (click)="cancelWindowPeriod($event)"
+              >
+                <i class="icon ion-ios-arrow-dropleft"></i>
+                {{'global_cancel' | translate}}
+              </button>
+              <button class="button buttonSave" (click)="savePeriods($event)">
+                <i class="icon ion-ios-checkmark-circle-outline"></i>
+                {{'global_save' | translate}}
+              </button>
+            </div>
+          </div>
+        </jqxWindow>
+
+        <jqxWindow
+          #editAppointmentWindow
+          [width]="400"
+          [height]="280"
+          [theme]='"bootstrap"'
+          [resizable]="false"
+          [maxHeight]="280"
+          [minHeight]="280"
+          [maxWidth]="400"
+          [minWidth]="400"
+          [autoOpen]="false"
+          [hidden]="true"
+          [title]="windowTitle"
+          [isModal]="true"
+        >
+          <div id="windowContent">
+            <ul class="ultable">
+              <li style="width: 20%;">
+                <img
+                  style="border-radius: 50%; margin-right: 4px; float: left;"
+                  height="30"
+                  width="30"
+                  [src]="editAppointmentWindowImgUrl"
+                />
+              </li>
+              <li style="width: 80%;">
+                <span>{{editAppointmentWindowFullName}}</span>
+              </li>
+            </ul>
+
+            <ul class="ultable">
+              <li style="width: 20%;">
+                <div
+                  style="width: 20px; height: 20px;"
+                  [style.background-color]="editAppointmentProjectColor"
+                >
+                  &nbsp;
+                </div>
+                <!-- <img style="margin-right:4px; float:left;" height="30" width="30" [src]="editAppointmentWindowImgUrl" /> -->
+              </li>
+              <li style="width: 80%;">
+                <span>{{editAppointmentProjectName}}</span>
+              </li>
+            </ul>
+
+            <br />
+            <br />
+
+            <ul class="ultable">
+              <li style="width: 20%;">
+                {{'global_date' | translate}}
+              </li>
+              <li style="width: 80%;">
+                <jqxDateTimeInput
+                  #editAppointmentDate
+                  [width]="120"
+                  [height]="25"
+                  [theme]='"bootstrap"'
+                  [formatString]='"d"'
+                  [culture]="getCurrentCulture()"
+                  [showCalendarButton]="true"
+                  style="float: left;"
+                  [showTimeButton]="false"
+                ></jqxDateTimeInput>
+              </li>
+            </ul>
+
+            <!-- *ngIf="typeEdit=='' || typeEdit=='MM'" -->
+
+            <ul [hidden]="!(typeEdit=='' || typeEdit=='MM')" class="ultable">
+              <li [hidden]="typeEdit=='MM'" style="width: 20%;">
+                {{'global_from' | translate}}
+              </li>
+              <li [hidden]="typeEdit!='MM'" style="width: 20%;">
+                Time
+              </li>
+              <li style="width: 80%;">
+                <jqxDateTimeInput
+                  #editAppointmentFrom
+                  [width]="120"
+                  [height]="25"
+                  [theme]='"bootstrap"'
+                  [formatString]='"t"'
+                  [culture]="getCurrentCulture()"
+                  [showCalendarButton]="false"
+                  style="float: left;"
+                  [showTimeButton]="true"
+                ></jqxDateTimeInput>
+              </li>
+            </ul>
+
+            <!-- *ngIf="typeEdit==''"  -->
+
+            <ul [hidden]="typeEdit!=''" class="ultable">
+              <li style="width: 20%;">
+                {{'global_to' | translate}}
+              </li>
+              <li style="width: 80%;">
+                <jqxDateTimeInput
+                  #editAppointmentTo
+                  [width]="120"
+                  [height]="25"
+                  [theme]='"bootstrap"'
+                  [formatString]='"t"'
+                  [culture]="getCurrentCulture()"
+                  [showCalendarButton]="false"
+                  style="float: left;"
+                  [showTimeButton]="true"
+                ></jqxDateTimeInput>
+              </li>
+            </ul>
+
+            <!-- *ngIf="typeEdit!=''" -->
+
+            <ul [hidden]="typeEdit==''" class="ultable" style="height: 30px;">
+              <li *ngIf="typeEdit=='TT'" style="width: 20%;">
+                Task
+              </li>
+              <li *ngIf="typeEdit=='MM'" style="width: 20%;">
+                Medication
+              </li>
+              <li style="width: 80%;">
+                <span>{{editAppointmentSubject}}</span>
+              </li>
+            </ul>
+
+            <div #buttonWindowDiv class="buttonWindowDiv">
+              <button
+                [hidden]="typeEdit!=''"
+                #cancelButtonEditAppointment
+                class="button buttonSave"
+                (click)="closeWindowEditAppointment($event)"
+                [hidden]="!canAddOrEditSchedule()"
+              >
+                <i class="icon ion-ios-arrow-dropleft"></i>
+                {{'global_cancel' | translate}}
+              </button>
+
+              <button
+                [hidden]="typeEdit!=''"
+                #removeButtonEditAppointment
+                class="button buttonSave"
+                (click)="removeWindowEditAppointment($event)"
+                [hidden]="!canAddOrEditSchedule()"
+              >
+                <i class="icon ion-ios-close"></i>
+                {{'global_remove' | translate}}
+              </button>
+
+              <button
+                #saveButtonEditAppointment
+                class="button buttonSave"
+                (click)="SaveWindowEditAppointment($event)"
+                [hidden]="!canAddOrEditSchedule()"
+              >
+                <i class="icon ion-ios-checkmark-circle-outline"></i>
+                {{'global_save' | translate}}
+              </button>
+            </div>
+          </div>
+        </jqxWindow>
+      </jqxScheduler>
+    </div>
+  </div>
+
+  <!--  -->
+  <p-sidebar
+    [visible]="panelRightSelectVisible"
+    [modal]="false"
+    [position]="'left'"
+    [showCloseIcon]="false"
+    [dismissible]="false"
+  >
+    Selected Schedules
+    <i
+      (click)="closePanelRight()"
+      class="icon ion-ios-close iconmenu"
+      style="color: var(--twelfth-color); float: right; font-size: 32px;"
+    ></i>
+    <br />
+    <br />
+
+    <!-- [hidden]="!canAddOrEditSchedule()" -->
+
+    <button
+      class="button buttonSave"
+      (click)="removeSelected($event)"
+      style="float: left; margin-left: 0px;"
+    >
+      <i class="icon ion-ios-trash"></i>
+      Remove Selected
+    </button>
+
+    <button
+      class="button buttonSave"
+      (click)="clearAllSelected($event)"
+      style="float: left; margin-left: 0px;"
+    >
+      <i class="ion-ios-remove-circle-outline"></i>
+      Clear All
+    </button>
+
+    <br />
+    <br />
+
+    <div class="panelRemindersScrool">
+      <div *ngFor="let xx of appointmentsSelected; let i = index">
+        <!-- as.originalData.color -->
+        <div
+          class="scheduleSelectedInRightPanel"
+          [ngStyle]="{'border-color':red }"
+        >
+          <!-- <i  class='icon ion-ios-notifications-outline iconmenu' style="color:var(--twelfth-color);"></i>    -->
+
+          <!-- constantService.API_ENDPOINT + 'media/images/users/' + record.img + '.png' -->
+
+          <div class="img">
+            <img
+              style="
+                float: left;
+                border-radius: 50%;
+                margin-right: 4px;
+                float: left;
+              "
+              height="60"
+              width="60"
+              [src]="xx.originalData.img | image:'users'"
+            />
+          </div>
+
+          <div class="project">{{xx.originalData.projectName}}</div>
+          <div class="assignedTo">
+            {{xx.originalData.assignedToFullName}} -
+            {{xx.originalData.assignedToPosition}}
+          </div>
+          <div class="date">
+            {{CommonHelper.convertMinsToHrsMins(xx.originalData.hours)}}
+          </div>
+
+          <button
+            class="button buttonSave"
+            (click)="unselectRemoveSchedule($event,i)"
+            style="float: right; margin-right: 5px;"
+          >
+            <i class="icon ion-ios-remove-circle-outline"></i>
+            Unselect
+          </button>
+
+          <!-- <div class="position"></div> -->
+        </div>
+      </div>
+    </div>
+
+    <br />
+    <br />
+    <br />
+    <br />
+  </p-sidebar>
+</div>

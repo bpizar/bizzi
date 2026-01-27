@@ -1,0 +1,229 @@
+<!-- | paginate: { itemsPerPage: 10, currentPage: pagina } -->
+<table class="table-data program-table">
+  <thead class="program-table_head">
+    <tr>
+      <th>
+        <div class="filter-table-header">
+          Name
+          <input
+            class="input-table-filter"
+            [(ngModel)]="searchByName"
+            name="searchName"
+            type="text"
+            placeholder="Filter by Name"
+            (keyup)="search('name')"
+          />
+        </div>
+      </th>
+      <th>
+        <div class="filter-table-header">
+          Description
+          <input
+            class="input-table-filter"
+            [(ngModel)]="searchByDescription"
+            name="searchDescription"
+            type="text"
+            placeholder="Filter by Description"
+            (keyup)="search('description')"
+          />
+        </div>
+      </th>
+      <th style="vertical-align: top;">Date</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody class="program-table_body">
+    <tr *ngFor="let projectFormbyProject of projectFormsbyProject">
+      <td>
+        {{ projectFormbyProject.name }}
+      </td>
+      <td>
+        {{ projectFormbyProject.description }}
+      </td>
+      <td>
+        {{
+          (projectFormbyProject.idfProjectFormValue > 0
+            ? projectFormbyProject.formDateTime
+            : ''
+          ) | date: 'MM-dd-yyyy'
+        }}
+      </td>
+      <td>
+        <jqxButton
+          *ngIf="
+            projectFormbyProject.idfProjectFormValue > 0 &&
+            !projectFormbyProject.template.startsWith('Image')
+          "
+          [routerLink]="[
+            '/projects/project-form-value',
+            projectFormbyProject.idfProjectFormValue
+          ]"
+          [theme]="'bootstrap'"
+        >
+          Edit
+          <i class="fa fa-edit"></i>
+        </jqxButton>
+        <jqxButton
+          *ngIf="
+            projectFormbyProject.idfProjectFormValue > 0 &&
+            projectFormbyProject.template.startsWith('Image')
+          "
+          [routerLink]="[
+            '/projects/project-form-image-value',
+            projectFormbyProject.idfProjectFormValue
+          ]"
+          [theme]="'bootstrap'"
+        >
+          Edit
+          <i class="fa fa-edit"></i>
+        </jqxButton>
+        <jqxButton
+          *ngIf="
+            projectFormbyProject.idfProjectFormValue > 0 &&
+            !projectFormbyProject.template.startsWith('Image')
+          "
+          (click)="print(projectFormbyProject.idfProjectFormValue)"
+          [theme]="'bootstrap'"
+        >
+          Print
+          <i class="fa fa-print"></i>
+        </jqxButton>
+        <jqxButton
+          *ngIf="
+            projectFormbyProject.idfProjectFormValue > 0 &&
+            projectFormbyProject.template.startsWith('Image')
+          "
+          (click)="
+            printImage(
+              projectFormbyProject.idfProjectFormValue,
+              projectFormbyProject.template
+            )
+          "
+          [theme]="'bootstrap'"
+        >
+          Print
+          <i class="fa fa-print"></i>
+        </jqxButton>
+        <jqxButton
+          *ngIf="
+            !projectFormbyProject.template.startsWith('Image') &&
+            (!projectFormbyProject.idfProjectFormValue > 0 ||
+              projectFormbyProject.idfRecurrence > 0)
+          "
+          [routerLink]="[
+            '/projects/project-form-value',
+            projectFormbyProject.id,
+            idProject
+          ]"
+          [theme]="'bootstrap'"
+        >
+          Create
+          <i class="fa fa-plus"></i>
+        </jqxButton>
+        <jqxButton
+          *ngIf="
+            projectFormbyProject.template.startsWith('Image') &&
+            (!projectFormbyProject.idfProjectFormValue > 0 ||
+              projectFormbyProject.idfRecurrence > 0)
+          "
+          [routerLink]="[
+            '/projects/project-form-image-value',
+            projectFormbyProject.id,
+            idProject
+          ]"
+          [theme]="'bootstrap'"
+        >
+          Create
+          <i class="fa fa-plus"></i>
+        </jqxButton>
+        <jqxButton
+          (click)="showHistory(projectFormbyProject.id)"
+          [theme]="'bootstrap'"
+        >
+          History
+          <i class="fa fa-list"></i>
+        </jqxButton>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<jqxWindow
+  #historyWindow
+  [width]="700"
+  [theme]="'bootstrap'"
+  [maxHeight]="400"
+  [resizable]="false"
+  [hidden]="true"
+  [autoOpen]="false"
+  [title]="'History'"
+  [isModal]="true"
+>
+  <div id="windowPeriodContent" style="overflow: hidden;">
+    <div style="height: 300px; margin: 5px 10px 0 10px; overflow-y: scroll;">
+      <table class="table-data">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Date</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let projectFormHistory of projectFormsHistory">
+            <td>
+              {{ projectFormHistory.name }}
+            </td>
+            <td>
+              {{ projectFormHistory.description }}
+            </td>
+            <td>
+              {{
+                (projectFormHistory.idfProjectFormValue > 0
+                  ? projectFormHistory.formDateTime
+                  : ''
+                ) | date: 'MM-dd-yyyy'
+              }}
+            </td>
+            <td>
+              <jqxButton
+                *ngIf="
+                  projectFormHistory.idfProjectFormValue > 0 &&
+                  !projectFormHistory.template.startsWith('Image')
+                "
+                (click)="print(projectFormHistory.idfProjectFormValue, true)"
+                [theme]="'bootstrap'"
+              >
+                Print
+                <i class="fa fa-print"></i>
+              </jqxButton>
+              <jqxButton
+                *ngIf="
+                  projectFormHistory.idfProjectFormValue > 0 &&
+                  projectFormHistory.template.startsWith('Image')
+                "
+                (click)="
+                  printImage(
+                    projectFormHistory.idfProjectFormValue,
+                    projectFormHistory.template
+                  )
+                "
+                [theme]="'bootstrap'"
+              >
+                Print
+                <i class="fa fa-print"></i>
+              </jqxButton>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="footerWindow">
+      <button class="button buttonSave" (click)="historyWindow.close()">
+        <i class="icon ion-ios-checkmark-circle-outline"></i>
+        {{ 'global_save' | translate }}
+      </button>
+    </div>
+  </div>
+</jqxWindow>

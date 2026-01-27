@@ -1,0 +1,1080 @@
+<glowmessages #glowmessage></glowmessages>
+
+<div class="menuContainer">
+  <menu></menu>
+</div>
+
+<div class="appContainer">
+  <jqxLoader
+    #loaderReference
+    [width]="140"
+    [height]="140"
+    [isModal]="true"
+    [theme]="'bootstrap'"
+    [html]="'<div class=\'loadingdiv\'><div class=\'loader\'></div></div>'"
+    [imagePosition]='"top"'
+  ></jqxLoader>
+
+  <div class="auxMenuBar">
+    <!-- <div class="blockMin">        -->
+
+    <!-- </div> -->
+
+    <div class="titleHeaderSpace" [hidden]="CurrentItem<0" style="float: left;">
+      {{'clients_edit' | translate}}
+    </div>
+    <div
+      class="titleHeaderSpace"
+      [hidden]="CurrentItem>=0"
+      style="float: left;"
+    >
+      {{'clients_new' | translate}}
+    </div>
+
+    <saveactiondisplay (mustSave)="onMustSave($event)"></saveactiondisplay>
+
+    <!-- style="float:right; width:400px;" -->
+    <div class="blockMinRight">
+      <button class="button buttonSave" [hidden]="true" (click)="Save($event)">
+        <i class="icon ion-ios-save"></i>
+        {{'global_save'| translate}}
+      </button>
+      <!-- <button #buttonStateAccount
+                            [hidden]="btnHiddenEnableDisableAccount"
+                            class="button"
+                            >
+                        <i class="icon ion-unlock" style="color:white; font-size:14px;"></i> {{btnEnableDisbleAccountText}}
+                    </button>
+                    <button class="button"
+                            [hidden]="btnHiddenEnableDisableAccount"
+                            >
+                        <i class="icon ion-key" style="color:white; font-size:14px;"></i> {{'global_reset_password' | translate}}
+                    </button> -->
+    </div>
+
+    <div
+      [hidden]="hiddenWhenIsNew"
+      class="blockMinRight"
+      style="margin-top: 3px; margin-right: 0px;"
+    >
+      <div class="textHeaderSpace">
+        {{'global_period' | translate}}
+      </div>
+      <!-- [placeHolder]='placeHolderPeriod' -->
+      <jqxDropDownList
+        #periodsDropDown
+        [width]="180"
+        (onBindingComplete)="periodsBindingComplete($event)"
+        (onSelect)="PeriodSelectDrowDown($event)"
+        [height]="25"
+        [theme]='"bootstrap"'
+        [displayMember]="'dateJoin'"
+        [valueMember]="'id'"
+        ([scrollBarSize])="5"
+        style="float: left;"
+        [source]="dataAdapterPeriod"
+      ></jqxDropDownList>
+    </div>
+
+    <div class="blockMinRight">
+      <button
+        class="button buttonSave"
+        (click)="createNew($event)"
+        [hidden]="hiddenWhenIsNew || !canDeleteOrSave"
+        style="margin-right: 10px; float: left;"
+      >
+        <i class="icon ion-ios-add"></i>
+        {{'staff_create_new' | translate}}
+      </button>
+    </div>
+  </div>
+
+  <div class="header40PSpace">
+    <div class="blockMin" style="width: 900px; color: red;">
+      <ul class="ultable">
+        <li style="width: 400px;">
+          <ul class="ultable">
+            <li style="width: 90px;">
+              <div class="textTitle">{{'clients_edit_email'| translate}}</div>
+            </li>
+            <li style="width: 270px;">
+              <jqxInput
+                #txtemail
+                [disabled]="!canDeleteOrSave"
+                [width]="270"
+                [(ngModel)]="Client.email"
+                [theme]="'bootstrap'"
+                (onChange)="onAnyChange($event)"
+                [height]="25"
+                [minLength]="1"
+                [placeHolder]="placeHolderEmail"
+              ></jqxInput>
+            </li>
+          </ul>
+
+          <ul class="ultable">
+            <li style="width: 90px;">
+              <div class="textTitle">
+                {{'clients_edit_fist_name' | translate}}
+              </div>
+            </li>
+            <li style="width: 270px;">
+              <jqxInput
+                #txtFirstName
+                [width]="270"
+                [disabled]="!canDeleteOrSave"
+                [(ngModel)]="Client.firstName"
+                [theme]="'bootstrap'"
+                [height]="25"
+                (onChange)="onAnyChange($event)"
+                [minLength]="1"
+                [placeHolder]="placeHolderFirstName"
+              ></jqxInput>
+            </li>
+          </ul>
+          <ul class="ultable">
+            <li style="width: 90px;">
+              <div class="textTitle">
+                {{'clients_edit_lastname' | translate}}
+              </div>
+            </li>
+            <li style="width: 270px;">
+              <jqxInput
+                #txtLastName
+                [width]="270"
+                [(ngModel)]="Client.lastName"
+                [theme]="'bootstrap'"
+                [disabled]="!canDeleteOrSave"
+                [height]="25"
+                (onChange)="onAnyChange($event)"
+                [minLength]="1"
+                [placeHolder]="placeHolderLastName"
+              ></jqxInput>
+            </li>
+          </ul>
+          <ul class="ultable">
+            <li style="width: 90px;">
+              <div class="textTitle">
+                {{'clients_edit_birthdate' | translate}}
+              </div>
+            </li>
+            <li style="width: 270px;">
+              <!-- [(ngModel)]="Client.birthDate"
+                      [culture]="getCurrentCulture()" -->
+
+              <jqxDateTimeInput
+                #txtBirthDate
+                [width]="270"
+                (onChange)="onAnyChange($event)"
+                [theme]="'bootstrap'"
+                [formatString]="'d'"
+                [disabled]="!canDeleteOrSave"
+                [height]="25"
+                [placeHolder]="placeHolderBirthDate"
+              ></jqxDateTimeInput>
+            </li>
+          </ul>
+
+          <ul class="ultable">
+            <li style="width: 90px;">
+              <div class="textTitle">{{'clients_phone' | translate}}</div>
+            </li>
+            <li style="width: 270px;">
+              <jqxInput
+                #txtPhone
+                [width]="270"
+                [(ngModel)]="Client.phoneNumber"
+                [theme]="'bootstrap'"
+                [disabled]="!canDeleteOrSave"
+                (onChange)="onAnyChange($event)"
+                [height]="25"
+                [minLength]="1"
+                [placeHolder]="placeHolderPhoneNumber"
+              ></jqxInput>
+            </li>
+          </ul>
+          <ul class="ultable">
+            <li style="width: 90px;">
+              <div class="textTitle">{{'clients_notes' | translate}}</div>
+            </li>
+            <li style="width: 270px;">
+              <jqxInput
+                #txtNotes
+                [width]="270"
+                [disabled]="!canDeleteOrSave"
+                [(ngModel)]="Client.notes"
+                [theme]="'bootstrap'"
+                (onChange)="onAnyChange($event)"
+                [height]="25"
+                [minLength]="1"
+                [placeHolder]="placeHolderNotes"
+              ></jqxInput>
+            </li>
+          </ul>
+        </li>
+
+        <li style="float: left; width: 500px; height: 240px; overflow: hidden;">
+          <div style="width: 30%; float: left;">
+            <label for="upload-photo">
+              <figure>
+                <img
+                  [hidden]="imgSet"
+                  style="border-radius: 50%;"
+                  height="120"
+                  width="120"
+                  src="{{ImagePath}}"
+                />
+                <img
+                  [hidden]="!imgSet"
+                  style="border-radius: 50%;"
+                  [src]="croppedImage"
+                  [hidden]="!imgSet"
+                />
+                <figcaption>{{Client.firstName}}</figcaption>
+              </figure>
+            </label>
+
+            <input
+              [hidden]="imgSet"
+              (change)="fileChangeEvent($event)"
+              style="float: left; opacity: 0; position: absolute; z-index: -1;"
+              #fileInput
+              type="file"
+              id="upload-photo"
+              width="100"
+            />
+
+            <jqxCheckBox
+              #checkBoxUsePicture
+              [hidden]="!selectAtLeastOne || true"
+              (onChange)="checkBoxUseThisPictureChange($event)"
+              style="margin-left: 10px; float: left;"
+              [width]="120"
+              [height]="25"
+              [checked]="false"
+            >
+              <span>{{'global_change_picture' | translate}}</span>
+            </jqxCheckBox>
+          </div>
+
+          <div style="width: 70%; float: left;">
+            <div [hidden]="!imgSet" style="padding: 0px;">
+              <image-cropper
+                [imageChangedEvent]="imageChangedEvent"
+                [maintainAspectRatio]="true"
+                [aspectRatio]="1 / 1"
+                [resizeToWidth]="128"
+                format="jpeg,png"
+                (imageCroppedBase64)="imageCroppedBase64($event)"
+                (imageLoaded)="imageLoaded()"
+                (loadImageFailed)="imageLoadFailed()"
+                style="max-height: 20vh;"
+                [style.display]="cropperReady ? null : 'none'"
+              ></image-cropper>
+
+              <div
+                style="
+                  text-align: center;
+                  padding-left: 0px;
+                  width: 100%;
+                  height: 30px;
+                "
+              ></div>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- [hidden]="!isEditing" -->
+
+  <jqxTabs
+    #tabsReference
+    [initTabContent]="initWidgets"
+    [width]='"100%"'
+    [theme]='"bootstrap"'
+    style="margin-top: 5px;"
+    [position]='"top"'
+    [animationType]='"none"'
+    [selectionTracker]="false"
+  >
+    <ul style="list-style-type: none;">
+      <li>Safety Plan</li>
+      <!-- <li>Daily Logs</li> -->
+      <li>Injuries</li>
+      <li>More&nbsp;Info</li>
+      <li>Education</li>
+      <li>Health</li>
+      <li>Forms</li>
+    </ul>
+    <div style="overflow: hidden; padding-left: 1%; padding-right: 1%;">
+      <ul class="ultable" style="margin-top: 0px; margin-top: 40px;">
+        <li style="width: 120px; line-height: 25px;">
+          Safety Plan
+        </li>
+        <li style="width: 400px;">
+          <jqxTextArea
+            #txtSafetyPlan
+            [width]="'100%'"
+            [height]="100"
+            [theme]='"bootstrap"'
+            [disabled]="!canDeleteOrSave"
+            (onChange)="onAnyChange($event)"
+            [minLength]="1"
+            [(ngModel)]="Client.safetyPlan"
+            style="margin-top: 0px; float: left;"
+            [placeHolder]="'Please write the safety plan here'"
+          ></jqxTextArea>
+        </li>
+      </ul>
+    </div>
+    <!-- <div style="overflow: hidden; padding-left: 1%; padding-right: 1%;">
+      <i
+        [hidden]="hiddenWhenIsNew || !canDeleteOrSave"
+        (click)="clickNewDailyLog($event)"
+        class="ion ion-ios-add transparentButton"
+        style="width: 80px; margin-top: 20px;"
+      >
+        &nbsp;{{'global_add' | translate}}
+      </i> -->
+
+    <!-- (window:resize)="OnGridGenericEventgridDailyLog2($event)"  -->
+    <!-- (onSort)="OnGridGenericEventgridDailyLog($event)"
+          (onFilter)="OnGridGenericEventgridDailyLog($event)"  
+          (onRowselect)="OnGridGenericEventgridDailyLog($event)"  -->
+    <!-- [rendered]="renderedGridDailyLog"    -->
+    <!-- <div
+        (window:resize)="OnGridGenericEventgridDailyLog2($event)"
+        class="divMinusTitle"
+      >
+        <jqxGrid
+          #gridDailyLog
+          [autoshowcolumnsmenubutton]="false"
+          [ready]="gridReadyDailyLog"
+          [theme]='"bootstrap"'
+          [filterable]="true"
+          [rowsheight]="70"
+          [scrollbarsize]="5"
+          [sortable]="true"
+          (onRowselect)="gridRowselectDailyLog($event)"
+          [rendered]="renderedGridDailyLog"
+          (onSort)="OnGridGenericEventgridDailyLog($event)"
+          (onFilter)="OnGridGenericEventgridDailyLog($event)"
+          [width]="'100%'"
+          [height]="'99%'"
+          [source]="dataAdapterDailyLogs"
+          [columns]="columnsGridDailyLogs"
+          [editable]="false"
+          style="margin-top: 0px !important;"
+        ></jqxGrid>
+      </div>
+    </div> -->
+
+    <div style="overflow: hidden; padding-left: 1%; padding-right: 1%;">
+      <i
+        [hidden]="hiddenWhenIsNew || !canDeleteOrSave"
+        (click)="clickNewInjuries($event)"
+        class="ion ion-ios-add transparentButton"
+        style="width: 80px; margin-top: 20px;"
+      >
+        &nbsp;{{'global_add' | translate}}
+      </i>
+
+      <jqxGrid
+        #gridIncidents
+        [autoshowcolumnsmenubutton]="false"
+        [ready]="gridReadyInjuries"
+        [theme]='"bootstrap"'
+        [filterable]="true"
+        [rowsheight]="70"
+        [scrollbarsize]="5"
+        [sortable]="true"
+        [rendered]="renderedGridInjuries"
+        (onSort)="OnGridGenericEventgridIncidents($event)"
+        (onFilter)="OnGridGenericEventgridIncidents($event)"
+        (onRowselect)="gridRowselectInjuries($event)"
+        [width]="'100%'"
+        autoheight="true"
+        pageable="true"
+        [source]="dataAdapterInjuries"
+        [columns]="columnsGridInjuries"
+        [editable]="false"
+        style="margin-top: 0px !important;"
+      ></jqxGrid>
+    </div>
+
+    <div style="overflow-y: scroll; padding-left: 1%; padding-right: 1%;">
+      <ul
+        class="ultable"
+        style="margin-top: 0px; margin-top: 40px;"
+        *ngFor="let p of projectClient;let i = index"
+      >
+        <li style="width: 120px; line-height: 25px;">
+          Program
+          <span *ngIf="projectClient.length>1">{{i+1}}</span>
+        </li>
+        <li style="width: 340px;">
+          <!-- <jqxTextArea  #txtPlacement
+                                [width]="'100%'" 
+                                [height]="25"                           
+                                [theme]='"bootstrap"'   
+                                [disabled]="!canDeleteOrSave"
+                                (onChange)="onAnyChange($event)"                                    
+                                [minLength]="1" 
+                                [(ngModel)]="Client.tmpPlacement"
+                                style="margin-top:0px; float:left;"
+                                [placeHolder]="''">
+                        </jqxTextArea> -->
+          <span
+            style="
+              margin-top: 2px;
+              border: 1px solid var(--thirteenth-color);
+              height: 35px;
+              width: 15px !important;
+            "
+            [ngStyle]="{'background-color':p.color}"
+          >
+            &nbsp;&nbsp;
+          </span>
+          <span>{{p.description}} {{p.id}}</span>
+        </li>
+
+        <li style="width: 120px; line-height: 25px; text-indent: 10px;">
+          Supervisor
+        </li>
+        <li style="width: 250px;">
+          <!-- <jqxTextArea  #txtTmpSupervisor
+                            [width]="'100%'" 
+                            [height]="25"         
+                            [disabled]="!canDeleteOrSave"                  
+                            [theme]='"bootstrap"'                                       
+                            [minLength]="1" 
+                            (onChange)="onAnyChange($event)"
+                            [(ngModel)]="Client.tmpSupervisor"
+                            style="margin-top:0px; float:left;"
+                            [placeHolder]="''">
+                      </jqxTextArea> -->
+
+          <!--
+                        nChange)="cmbSupervisorsBindingComplete($event,i)"
+                        [rend
+                            (oerer]="rendererListBoxStaff2"
+                       -->
+
+          <jqxDropDownList
+            cpmsg
+            #supervisorcmb
+            (onChange)="cmbSupervidorOnchange($event,i)"
+            [width]='"100%"'
+            [height]="25"
+            [filterable]="true"
+            [theme]='"bootstrap"'
+            [dropDownWidth]="350"
+            (onBindingComplete)="cmbSupervisorsBindingComplete($event,i)"
+            [displayMember]="'fullName'"
+            [valueMember]="'id'"
+            [searchMode]="'containsignorecase'"
+            ([scrollBarSize])="5"
+            [filterPlaceHolder]="'Filter'"
+            [source]="dataAdapterStaffListBoxList[i]"
+            [placeHolder]='"Select"'
+          ></jqxDropDownList>
+        </li>
+      </ul>
+
+      <ul class="ultable" style="margin-top: 0px; margin-top: 40px;">
+        <li style="width: 120px; line-height: 25px;">
+          Mother
+        </li>
+        <li style="width: 340px;">
+          <jqxTextArea
+            #txtMotherName
+            [width]="'100%'"
+            [height]="25"
+            [disabled]="!canDeleteOrSave"
+            [theme]='"bootstrap"'
+            [minLength]="1"
+            (onChange)="onAnyChange($event)"
+            [(ngModel)]="Client.tmpMotherName"
+            style="margin-top: 0px; float: left;"
+            [placeHolder]="''"
+          ></jqxTextArea>
+        </li>
+
+        <li style="width: 120px; line-height: 25px; text-indent: 10px;">
+          Contact Number
+        </li>
+        <li style="width: 250px;">
+          <jqxTextArea
+            #txtMotherInfo
+            [width]="'100%'"
+            [height]="25"
+            [theme]='"bootstrap"'
+            [minLength]="1"
+            [disabled]="!canDeleteOrSave"
+            (onChange)="onAnyChange($event)"
+            [(ngModel)]="Client.tmpMotherInfo"
+            style="margin-top: 0px; float: left;"
+            [placeHolder]="''"
+          ></jqxTextArea>
+        </li>
+      </ul>
+
+      <ul class="ultable" style="margin-top: 0px; margin-top: 40px;">
+        <li style="width: 120px; line-height: 25px;">
+          Father
+        </li>
+        <li style="width: 340px;">
+          <jqxTextArea
+            #txtFatherName
+            [width]="'100%'"
+            [height]="25"
+            [theme]='"bootstrap"'
+            [minLength]="1"
+            [disabled]="!canDeleteOrSave"
+            (onChange)="onAnyChange($event)"
+            [(ngModel)]="Client.tmpFatherName"
+            style="margin-top: 0px; float: left;"
+            [placeHolder]="''"
+          ></jqxTextArea>
+        </li>
+
+        <li style="width: 120px; line-height: 25px; text-indent: 10px;">
+          Contact Number
+        </li>
+        <li style="width: 250px;">
+          <jqxTextArea
+            #txtFatherInfo
+            [width]="'100%'"
+            [height]="25"
+            [theme]='"bootstrap"'
+            [disabled]="!canDeleteOrSave"
+            (onChange)="onAnyChange($event)"
+            [minLength]="1"
+            [(ngModel)]="Client.tmpFatherInfo"
+            style="margin-top: 0px; float: left;"
+            [placeHolder]="''"
+          ></jqxTextArea>
+        </li>
+      </ul>
+
+      <ul class="ultable" style="margin-top: 0px; margin-top: 40px;">
+        <li style="width: 120px; line-height: 25px;">
+          Agency
+        </li>
+        <li style="width: 340px;">
+          <jqxTextArea
+            #txtAgencyWorker
+            [width]="'100%'"
+            [height]="25"
+            [disabled]="!canDeleteOrSave"
+            [theme]='"bootstrap"'
+            [minLength]="1"
+            (onChange)="onAnyChange($event)"
+            [(ngModel)]="Client.tmpAgency"
+            style="margin-top: 0px; float: left;"
+            [placeHolder]="''"
+          ></jqxTextArea>
+        </li>
+
+        <li style="width: 120px; line-height: 25px; text-indent: 10px;">
+          Contact Number
+        </li>
+        <li style="width: 250px;">
+          <jqxTextArea
+            #txtAgencyInfo
+            [width]="'100%'"
+            [height]="25"
+            [theme]='"bootstrap"'
+            [disabled]="!canDeleteOrSave"
+            [minLength]="1"
+            (onChange)="onAnyChange($event)"
+            [(ngModel)]="Client.tmpAgencyInfo"
+            style="margin-top: 0px; float: left;"
+            [placeHolder]="''"
+          ></jqxTextArea>
+        </li>
+      </ul>
+
+      <ul class="ultable" style="margin-top: 0px; margin-top: 40px;">
+        <li style="width: 120px; line-height: 25px;">
+          Agency Worker
+        </li>
+        <li style="width: 340px;">
+          <jqxTextArea
+            #txtAgencyWorker
+            [width]="'100%'"
+            [height]="25"
+            [disabled]="!canDeleteOrSave"
+            [theme]='"bootstrap"'
+            [minLength]="1"
+            (onChange)="onAnyChange($event)"
+            [(ngModel)]="Client.tmpAgencyWorker"
+            style="margin-top: 0px; float: left;"
+            [placeHolder]="''"
+          ></jqxTextArea>
+        </li>
+
+        <li style="width: 120px; line-height: 25px; text-indent: 10px;">
+          Contact Number
+        </li>
+        <li style="width: 250px;">
+          <jqxTextArea
+            #txtAgencyInfo
+            [width]="'100%'"
+            [height]="25"
+            [theme]='"bootstrap"'
+            [disabled]="!canDeleteOrSave"
+            [minLength]="1"
+            (onChange)="onAnyChange($event)"
+            [(ngModel)]="Client.tmpAgencyWorkerInfo"
+            style="margin-top: 0px; float: left;"
+            [placeHolder]="''"
+          ></jqxTextArea>
+        </li>
+      </ul>
+
+      <div class="ultable" *ngFor="let p of cosa6"></div>
+
+      <ul class="ultable" style="margin-top: 20px;">
+        <li style="width: 120px; line-height: 25px;">
+          Special Program
+        </li>
+        <li style="width: 340px;">
+          <jqxTextArea
+            #txtTmpSpecialProgram
+            [width]="'100%'"
+            [height]="25"
+            (onChange)="onAnyChange($event)"
+            [theme]='"bootstrap"'
+            [disabled]="!canDeleteOrSave"
+            [minLength]="1"
+            [(ngModel)]="Client.tmpSpecialProgram"
+            style="margin-top: 0px; float: left;"
+            [placeHolder]="''"
+          ></jqxTextArea>
+        </li>
+      </ul>
+
+      <ul class="ultable" style="margin-top: 20px;">
+        <li style="width: 120px; line-height: 25px;">
+          Additional Information
+        </li>
+        <li style="width: 340px;">
+          <jqxTextArea
+            #txtTmpAdditionalInformation
+            [width]="'100%'"
+            [height]="25"
+            (onChange)="onAnyChange($event)"
+            [theme]='"bootstrap"'
+            [disabled]="!canDeleteOrSave"
+            [minLength]="1"
+            [(ngModel)]="Client.tmpAdditionalInformation"
+            style="margin-top: 0px; float: left;"
+            [placeHolder]="''"
+          ></jqxTextArea>
+        </li>
+      </ul>
+
+      <!-- </div> -->
+    </div>
+
+    <div style="overflow-y: scroll; padding-left: 1%; padding-right: 1%;">
+      <ul class="ultable" style="margin-top: 0px; margin-top: 40px;">
+        <li style="width: 120px; line-height: 25px;">
+          School/Education
+        </li>
+        <li style="width: 340px;">
+          <jqxTextArea
+            #txtTmpShool
+            [width]="'100%'"
+            [height]="25"
+            [theme]='"bootstrap"'
+            [disabled]="!canDeleteOrSave"
+            (onChange)="onAnyChange($event)"
+            [minLength]="1"
+            [(ngModel)]="Client.tmpSchool"
+            style="margin-top: 0px; float: left;"
+            [placeHolder]="''"
+          ></jqxTextArea>
+        </li>
+
+        <li style="width: 120px; line-height: 25px; text-indent: 10px;">
+          Number
+        </li>
+        <li style="width: 250px;">
+          <jqxTextArea
+            #txtSchoolInfo
+            [width]="'100%'"
+            [height]="25"
+            [theme]='"bootstrap"'
+            [disabled]="!canDeleteOrSave"
+            [minLength]="1"
+            (onChange)="onAnyChange($event)"
+            [(ngModel)]="Client.tmpSchoolInfo"
+            style="margin-top: 0px; float: left;"
+            [placeHolder]="''"
+          ></jqxTextArea>
+        </li>
+      </ul>
+
+      <ul class="ultable" style="margin-top: 0px; margin-top: 40px;">
+        <li style="width: 120px; line-height: 25px;">
+          Teacher
+        </li>
+        <li style="width: 340px;">
+          <jqxTextArea
+            #txtTeacher
+            [width]="'100%'"
+            [height]="25"
+            [theme]='"bootstrap"'
+            [disabled]="!canDeleteOrSave"
+            [minLength]="1"
+            (onChange)="onAnyChange($event)"
+            [(ngModel)]="Client.tmpTeacher"
+            style="margin-top: 0px; float: left;"
+            [placeHolder]="''"
+          ></jqxTextArea>
+        </li>
+
+        <li style="width: 120px; line-height: 25px; text-indent: 10px;">
+          Contact Number
+        </li>
+        <li style="width: 250px;">
+          <jqxTextArea
+            #txtTeacherInfo
+            [width]="'100%'"
+            [height]="25"
+            [theme]='"bootstrap"'
+            (onChange)="onAnyChange($event)"
+            [minLength]="1"
+            [disabled]="!canDeleteOrSave"
+            [(ngModel)]="Client.tmpTeacherInfo"
+            style="margin-top: 0px; float: left;"
+            [placeHolder]="''"
+          ></jqxTextArea>
+        </li>
+      </ul>
+    </div>
+
+    <div style="overflow-y: scroll; padding-left: 1%; padding-right: 1%;">
+      <ul class="ultable" style="margin-top: 20px; width: 30%;">
+        <li style="width: 100%;">
+          Doctor Name
+        </li>
+        <li style="width: 100%;">
+          <jqxTextArea
+            #txtTmpDoctorName
+            [width]="'95%'"
+            [height]="25"
+            [theme]='"bootstrap"'
+            [disabled]="!canDeleteOrSave"
+            [minLength]="1"
+            (onChange)="onAnyChange($event)"
+            [(ngModel)]="Client.tmpDoctorName"
+            style="margin-top: 0px; float: left;"
+            [placeHolder]="''"
+          ></jqxTextArea>
+        </li>
+      </ul>
+
+      <ul class="ultable" style="margin-top: 20px; float: left; width: 70%;">
+        <li style="width: 100%;">
+          More Info
+        </li>
+        <li style="width: 100%;">
+          <jqxTextArea
+            #txtTmpDoctorInfo
+            [width]="'50%'"
+            [height]="25"
+            [theme]='"bootstrap"'
+            [disabled]="!canDeleteOrSave"
+            [minLength]="1"
+            (onChange)="onAnyChange($event)"
+            [(ngModel)]="Client.tmpDoctorInfo"
+            style="margin-top: 0px; float: left;"
+            [placeHolder]="''"
+          ></jqxTextArea>
+        </li>
+      </ul>
+
+      <!-- <ul class="ultable" style="margin-top:0px;  margin-top:40px;  " >
+            <li style="width:120px; line-height: 25px;">
+              Doctor Name
+            </li>
+            <li style="width:340px;">                   
+                    <jqxTextArea  #txtTmpDoctorName
+                            [width]="'100%'" 
+                            [height]="25"                           
+                            [theme]='"bootstrap"'  
+                            [disabled]="!canDeleteOrSave"                                     
+                            [minLength]="1" 
+                            (onChange)="onAnyChange($event)"
+                            [(ngModel)]="Client.tmpDoctorName"
+                            style="margin-top:0px; float:left;"
+                            [placeHolder]="''">
+                    </jqxTextArea>
+            </li>
+
+            <li style="width:120px; line-height: 25px; text-indent: 10px;">
+               More Info
+            </li>
+            <li style="width:250px;">                   
+                  <jqxTextArea  #txtTmpDoctorInfo
+                        [width]="'100%'" 
+                        [height]="25"                           
+                        [theme]='"bootstrap"'  
+                        [disabled]="!canDeleteOrSave"                                     
+                        [minLength]="1" 
+                        (onChange)="onAnyChange($event)"
+                        [(ngModel)]="Client.tmpDoctorInfo"
+                        style="margin-top:0px; float:left;"
+                        [placeHolder]="''">
+                  </jqxTextArea>
+            </li>
+          </ul> -->
+
+      <ul class="ultable" style="margin-top: 20px; width: 30%;">
+        <li style="width: 100%;">
+          Medical Notes
+        </li>
+        <li style="width: 100%;">
+          <jqxTextArea
+            #txtTmpMedication
+            [width]="'95%'"
+            [height]="'70%'"
+            [theme]='"bootstrap"'
+            [disabled]="!canDeleteOrSave"
+            [minLength]="1"
+            (onChange)="onAnyChange($event)"
+            [(ngModel)]="Client.tmpMedicationNotes"
+            style="margin-top: 10px; float: left;"
+            [placeHolder]="''"
+          ></jqxTextArea>
+        </li>
+      </ul>
+
+      <ul class="ultable" style="margin-top: 20px; float: left; width: 70%;">
+        <li style="width: 100%;">
+          Medication Schedule
+        </li>
+        <li style="width: 100%;">
+          <i
+            [hidden]="hiddenWhenIsNew || !canDeleteOrSave"
+            (click)="clickNewMedical($event)"
+            class="ion ion-ios-add transparentButton"
+            style="margin-left: 0px; width: 80px; margin-top: 0px;"
+          >
+            &nbsp;{{'global_add' | translate}}
+          </i>
+
+          <jqxGrid
+            #gridMedication
+            [autoshowcolumnsmenubutton]="false"
+            [theme]='"bootstrap"'
+            [filterable]="true"
+            [rowsheight]="70"
+            [scrollbarsize]="5"
+            [sortable]="true"
+            (onRowselect)="gridRowselectMedication($event)"
+            [rendered]="renderedGridMedication"
+            (onSort)="OnGridGenericEventgridMedication($event)"
+            (onFilter)="OnGridGenericEventgridMedication($event)"
+            [width]="'100%'"
+            autoheight="true"
+            pageable="true"
+            [source]="dataAdapterMedication"
+            [columns]="columnsMedication"
+            [editable]="false"
+            style="margin-top: 0px !important;"
+          ></jqxGrid>
+        </li>
+      </ul>
+    </div>
+
+    <div
+      style="
+        overflow: hidden;
+        padding-left: 1%;
+        padding-right: 1%;
+        height: auto;
+      "
+    >
+      <ul class="ultable" style="margin-top: 20px;">
+        <li style="width: 100%;">
+          <app-client-forms-list-by-client></app-client-forms-list-by-client>
+        </li>
+      </ul>
+    </div>
+  </jqxTabs>
+
+  <jqxWindow
+    #medicalWindow
+    [width]="380"
+    [height]="360"
+    [theme]='"bootstrap"'
+    [maxHeight]="360"
+    [minHeight]="360"
+    [resizable]="false"
+    [maxWidth]="380"
+    [minWidth]="380"
+    [hidden]="true"
+    [autoOpen]="false"
+    [title]='"Medication Schedule"'
+    [isModal]="true"
+  >
+    <div id="windowMedicalContent">
+      <ul class="ultable" style="height: 30px;">
+        <li style="width: 100px;">
+          Reminder
+        </li>
+
+        <li style="width: 200px;">
+          <!-- (onChange)="checkBoxUseThisPictureChange($event)"  -->
+          <jqxCheckBox
+            #checkBoxReminder
+            style="margin-left: 0px; float: left;"
+            [width]="120"
+            [theme]="'bootstrap'"
+            [height]="25"
+            [checked]="true"
+          >
+            <span></span>
+          </jqxCheckBox>
+        </li>
+      </ul>
+
+      <ul class="ultable" style="height: 30px;">
+        <li style="width: 100px;">
+          Medication
+        </li>
+
+        <li style="width: 260px;">
+          <!--  -->
+
+          <jqxInput
+            #txtMedication
+            [width]='"100%"'
+            [(ngModel)]="medication"
+            [theme]="'bootstrap'"
+            [height]="25"
+            [minLength]="1"
+            [placeHolder]='"Medication"'
+          ></jqxInput>
+        </li>
+      </ul>
+
+      <ul class="ultable" style="height: 30px;">
+        <li style="width: 100px;">
+          Time
+        </li>
+
+        <li style="width: 240px;">
+          <jqxDateTimeInput
+            #txtTime
+            [width]="120"
+            [height]="25"
+            [theme]='"bootstrap"'
+            [formatString]='"t"'
+            [culture]="getCurrentCulture()"
+            [showCalendarButton]="false"
+            style="float: left;"
+            [showTimeButton]="true"
+          ></jqxDateTimeInput>
+        </li>
+      </ul>
+
+      <ul class="ultable" style="height: 30px;">
+        <li style="width: 100px;">
+          From
+        </li>
+
+        <li style="width: 150px;">
+          <jqxDateTimeInput
+            #txtFrom
+            [width]="120"
+            [height]="25"
+            [theme]='"bootstrap"'
+            [formatString]='"d"'
+            [culture]="getCurrentCulture()"
+            [showCalendarButton]="true"
+            style="float: left;"
+            [showTimeButton]="false"
+          ></jqxDateTimeInput>
+        </li>
+      </ul>
+
+      <ul class="ultable" style="height: 30px;">
+        <li style="width: 100px;">
+          To
+        </li>
+
+        <li style="width: 150px;">
+          <jqxDateTimeInput
+            #txtTo
+            [width]="120"
+            [height]="25"
+            [theme]='"bootstrap"'
+            [formatString]='"d"'
+            [culture]="getCurrentCulture()"
+            [showCalendarButton]="true"
+            style="float: left;"
+            [showTimeButton]="false"
+          ></jqxDateTimeInput>
+        </li>
+      </ul>
+
+      <ul class="ultable" style="height: 30px;">
+        <li style="width: 100px;">
+          Responsable
+        </li>
+
+        <li style="width: 260px;">
+          <!-- 
+            (onChange)="onEditGenStaffChange($event)" 
+          
+          -->
+
+          <jqxDropDownList
+            #editGenStaff
+            [width]='"100%"'
+            [height]="25"
+            [filterable]="true"
+            [theme]='"bootstrap"'
+            [dropDownWidth]="350"
+            [renderer]="rendererListBoxStaff"
+            [displayMember]="'fullName'"
+            [valueMember]="'id'"
+            [searchMode]="'containsignorecase'"
+            ([scrollBarSize])="5"
+            [filterPlaceHolder]="'Filter'"
+            [source]="dataAdapterStaffListBox"
+            [placeHolder]='"Select"'
+          ></jqxDropDownList>
+        </li>
+      </ul>
+
+      <div class="buttonWindowDiv">
+        <button class="button buttonSave" (click)="cancelWindowMedical($event)">
+          <i class="icon ion-ios-arrow-dropleft"></i>
+          {{'global_cancel' | translate}}
+        </button>
+
+        <button
+          [hidden]="isAddingMedication"
+          class="button buttonSave"
+          (click)="RemoveWindowMedical($event)"
+        >
+          <i class="icon ion-ios-close"></i>
+          {{'global_remove' | translate}}
+        </button>
+
+        <button class="button buttonSave" (click)="DoneWindowMedical($event)">
+          <i class="icon ion-ios-checkmark-circle-outline"></i>
+          {{'global_save' | translate}}
+        </button>
+      </div>
+    </div>
+  </jqxWindow>
+</div>

@@ -1,0 +1,1116 @@
+<glowmessages #glowmessage></glowmessages>
+
+<div class="menuContainer">
+  <menu></menu>
+</div>
+
+<div class="appContainer">
+  <jqxLoader
+    #loaderReference
+    [width]="140"
+    [height]="140"
+    [isModal]="true"
+    [theme]="'bootstrap'"
+    [html]="'<div class=\'loadingdiv\'><div class=\'loader\'></div></div>'"
+    [imagePosition]='"top"'
+  ></jqxLoader>
+
+  <div class="auxMenuBar">
+    <!-- <div class="titleHeaderSpace" [hidden]="CurrentItem<0" style="float:left;">{{'clients_edit' | translate}} > Edit Incident</div>                              
+           <div class="titleHeaderSpace" [hidden]="CurrentItem>=0" style="float:left;">{{'clients_edit' | translate}} > New Incident</div> -->
+
+    <div class="titleHeaderSpace" [hidden]="idIncident<0" style="float: left;">
+      Incidents > Edit Incident
+    </div>
+    <div class="titleHeaderSpace" [hidden]="idIncident>=0" style="float: left;">
+      Incidents > New Incident
+    </div>
+
+    <saveactiondisplay (mustSave)="onMustSave($event)"></saveactiondisplay>
+
+    <div class="blockMinRight">
+      <button class="button buttonSave" [hidden]="true" (click)="Save($event)">
+        <!-- <i class="icon ion-ios-save" ></i> {{'global_save'| translate}} -->
+        <i class="icon ion-ios-checkmark-circle-outline"></i>
+        {{'global_save' | translate}}
+      </button>
+    </div>
+  </div>
+
+  <!-- <div class="header100px">
+        <ul class="ultable" style="height: 98%; min-width: 1200px; float:left;" >
+              <li style="width:140px; height: 100%;">
+                <img [hidden]="imgSet"  style="border-radius:50%; float:left; margin: 0px; margin-left: 15px;" height="100" width="100" src="{{ImagePath}}" />
+              </li>
+               
+              <li>
+                
+                <ul class="ultable" style="height:40px;" >                                   
+                    <li class="subtitle">
+                        Christian Aché
+                    </li>
+                </ul>
+
+                <ul class="ultable">
+                    
+                    <li style="width:120px;">
+                        Workers of Shift
+                    </li>
+                    <li style="width:290px;">
+                       
+                        <jqxInput #txtemail
+                            [disabled]="isEditing()"
+                            [width]='260'                            
+                            [theme]="'bootstrap'"
+                            [height]='25'
+                            [minLength]='1'>
+                        </jqxInput>
+                    </li>
+
+                    <li style="width:80px;">
+                        Placement
+                      </li>
+                      <li style="width:290px">
+                         
+                          <jqxInput #txtemailsd
+                              [disabled]="isEditing()"
+                              [width]='260'                            
+                              [theme]="'bootstrap'"
+                              [height]='25'
+                              [minLength]='1'>
+                          </jqxInput>
+                      </li>
+
+                      <li style="width:40px;">
+                          Date
+                      </li>
+
+                      <li>
+                         
+                          <jqxDateTimeInput #dateTimeFrom
+                                            [width]='100'                                           
+                                            [formatString]='"d"'
+                                             style="float:left;"
+                                            [theme]="'bootstrap'"
+                                            [height]='25'>
+                          </jqxDateTimeInput>
+                      </li>
+
+                    
+
+                </ul>
+            </li>
+        </ul>                                           
+    </div> -->
+
+  <!-- <div class="header30px">
+
+           
+
+
+    </div> -->
+
+  <div class="bodySpace" style="padding: 10px;">
+    <!-- [hidden]="!isEditing()" -->
+
+    <jqxTabs
+      #tabsReference
+      [initTabContent]="initWidgets"
+      [width]='"100%"'
+      [height]='"99%"'
+      [theme]='"bootstrap"'
+      style="margin-top: 5px; float: left;"
+      [position]='"top"'
+      [animationType]='"none"'
+      [selectionTracker]="false"
+    >
+      <ul style="list-style-type: none;">
+        <li>Incident</li>
+        <!-- <li>Injury</li>         -->
+        <li>Serious Ocurrence</li>
+      </ul>
+
+      <div style="overflow-y: scroll;">
+        <div class="box50">
+          <ul class="ultable" style="float: left; width: 100%;">
+            <li style="width: 30%; line-height: 25px;">
+              Date Time Incident
+            </li>
+
+            <li
+              style="
+                width: 65%;
+                text-align: right;
+                margin-right: 1%;
+                line-height: 25px;
+              "
+            >
+              <!-- 
+                                        || !isSeriousOcurrence
+                                    -->
+
+              <jqxDateTimeInput
+                #dtimeSeriousOccurence
+                [width]='"100%"'
+                [height]="25"
+                [disabled]="!canDeleteOrSave "
+                [theme]='"bootstrap"'
+                (onChange)="onAnyChange($event)"
+                [(ngModel)]="dateTimeIncident"
+                [formatString]="'F'"
+                [showTimeButton]="true"
+                [culture]="getCurrentCulture()"
+                [showCalendarButton]="true"
+                style="float: right; max-width: 270px;"
+              ></jqxDateTimeInput>
+            </li>
+          </ul>
+
+          <ul class="ultable" style="float: left; width: 95%;">
+            <li style="width: 35%;">
+              <!--  
+                                        || !isSeriousOcurrence
+                                    -->
+
+              <jqxCheckBox
+                style="margin-left: 0px; float: left;"
+                [theme]='"bootstrap"'
+                [(ngModel)]="sc1_u"
+                [checked]="sc1_u"
+                [disabled]="!canDeleteOrSave"
+                (onChange)="onAnyChange($event)"
+                [width]='"100%"'
+                [height]="25"
+              >
+                <span>Physical intervention required</span>
+              </jqxCheckBox>
+            </li>
+            <li
+              style="
+                width: 19%;
+                text-align: right;
+                margin-right: 1%;
+                line-height: 25px;
+              "
+            >
+              <span>Safety Risk to</span>
+            </li>
+            <li style="width: 45%; text-align: right;">
+              <!-- style="max-height: 100px !important;" -->
+
+              <!-- 
+                                    || !isSeriousOcurrence
+                                -->
+
+              <jqxComboBox
+                #cmbSafetyRiskTo
+                [width]='"100%"'
+                [multiSelect]="true"
+                [disabled]="!canDeleteOrSave"
+                (onUnselect)="onSelectChangeCmb($event,'s1'); onAnyChange($event,'other');"
+                (onSelect)="onSelectChangeCmb($event,'s1'); onAnyChange($event,'other');"
+                (onBindingComplete)="BindingCompleteCmbSafetyRiskTo($event)"
+                [height]="25"
+                style="float: right; max-width: 270px; min-width: 270px;"
+                [displayMember]="'fullName'"
+                [valueMember]="'id'"
+                [searchMode]="'containsignorecase'"
+                [theme]="'bootstrap'"
+                [source]="dataAdapterStaffList_1"
+              ></jqxComboBox>
+            </li>
+          </ul>
+
+          <ul
+            class="ultable"
+            style="margin-top: 10px; float: left; width: 100%;"
+          >
+            <li style="width: 20%; line-height: 25px;">
+              Placement
+            </li>
+            <li style="width: 75%;">
+              <!--   
+                                    [(ngModel)]="st21_u"
+                                -->
+              <jqxInput
+                #txtPlacement
+                [width]='"100%"'
+                [disabled]="!canDeleteOrSave"
+                (onChange)="onAnyChange($event)"
+                [(ngModel)]="st21_u"
+                [theme]="'bootstrap'"
+                [height]="25"
+                [minLength]="1"
+              ></jqxInput>
+            </li>
+          </ul>
+
+          <ul
+            class="ultable"
+            style="margin-top: 10px; float: left; width: 100%;"
+          >
+            <li style="width: 20%; line-height: 25px;">
+              Social Worker
+            </li>
+            <li style="width: 75%;">
+              <!-- 
+                                    [(ngModel)]="dailyLog.placement"
+                                -->
+              <jqxInput
+                #txtPlacement
+                [width]='"100%"'
+                [disabled]="!canDeleteOrSave "
+                (onChange)="onAnyChange($event)"
+                [(ngModel)]="st22_u"
+                [theme]="'bootstrap'"
+                [height]="25"
+                [minLength]="1"
+              ></jqxInput>
+            </li>
+          </ul>
+
+          <ul class="ultable" style="float: left; width: 100%;">
+            <li style="width: 20%;">
+              Umab Intervention
+            </li>
+            <li style="width: 75%;">
+              <!-- (onSelect)="cmbTypeOfSeriousOccurrenceOnSelect($event)" -->
+
+              <!-- (onChange)="onAnyChange($event,'other')"      -->
+
+              <jqxDropDownList
+                #cmbUmabIntervention
+                [width]='"100%"'
+                [height]="25"
+                (onBindingComplete)="UmabInterventionBindingComplete($event)"
+                [autoDropDownHeight]="true"
+                [disabled]="!canDeleteOrSave"
+                [theme]='"bootstrap"'
+                [displayMember]="'description'"
+                [valueMember]="'id'"
+                ([scrollBarSize])="5"
+                style="float: left;"
+                [source]="dataAdapterUmabInterventionList"
+              ></jqxDropDownList>
+            </li>
+          </ul>
+
+          <ul class="ultable" style="float: left; width: 100%;">
+            <li style="width: 20%;">
+              Other
+            </li>
+            <!-- style="min-width: 300px;"        -->
+            <li style="width: 75%; text-align: right;">
+              <jqxInput
+                #g1_other
+                [width]='"100%"'
+                [theme]="'bootstrap'"
+                [height]="25"
+                [disabled]="!canDeleteOrSave "
+                (onChange)="onAnyChange($event)"
+                [(ngModel)]="st6_u"
+                [minLength]="1"
+              ></jqxInput>
+            </li>
+          </ul>
+
+          <div class="subtitle1" style="margin-top: 20px;">
+            UMAB Intervention Continuum
+          </div>
+
+          <jqxListBox
+            #listBox_g1
+            [checkboxes]="true"
+            [width]="'95%'"
+            [height]="320"
+            [disabled]="!canDeleteOrSave"
+            (onCheckChange)="onAnyChange($event,'other')"
+            [theme]='"bootstrap"'
+            (onBindingComplete)="listBoxBindingCompleteG1($event)"
+            [displayMember]="'display'"
+            [valueMember]="'id'"
+            style="margin-top: 20px; float: left;"
+            [source]="dataAdapterListBox_g1"
+          ></jqxListBox>
+
+          <div class="subtitle1" style="margin-top: 20px;">
+            Check below for all non-physical de-escalation / behavioural
+            management strategies utilized by staff
+          </div>
+
+          <jqxListBox
+            #listBox_g2
+            [checkboxes]="true"
+            [width]="'95%'"
+            [height]="480"
+            [disabled]="!canDeleteOrSave"
+            (onCheckChange)="onAnyChange($event,'other')"
+            (onBindingComplete)="listBoxBindingCompleteG2($event)"
+            [theme]='"bootstrap"'
+            [displayMember]="'display'"
+            [valueMember]="'id'"
+            style="margin-top: 20px; float: left;"
+            [source]="dataAdapterListBox_g2"
+          ></jqxListBox>
+        </div>
+
+        <div class="box50_2" style="margin-top: 0px;">
+          <div class="subtitle1">
+            Clients
+          </div>
+
+          <i
+            [hidden]="!canDeleteOrSave"
+            (click)="addClients($event)"
+            class="ion ion-ios-add transparentButton"
+            style="width: 80px;"
+          >
+            &nbsp;{{'global_add' | translate}}
+          </i>
+          <i
+            [hidden]="hiddenDeleteClientButton || !canDeleteOrSave"
+            (click)="deleteClients($event)"
+            class="ion ion-ios-remove transparentButton"
+            style="width: 80px;"
+          >
+            &nbsp;{{'global_remove' | translate}}
+          </i>
+          <i
+            [hidden]="hiddenUndoClientButton || !canDeleteOrSave"
+            (click)="UndoDeleteClients($event)"
+            class="ion ion-ios-undo transparentButton"
+            style="width: 80px;"
+          >
+            &nbsp;{{'global_undo' | translate}}
+          </i>
+
+          <!-- [filterPlaceHolder]="PlaceHolderLookingFor" -->
+          <jqxListBox
+            #listBoxClients
+            [checkboxes]="false"
+            [filterable]="false"
+            [disabled]="!canDeleteOrSave"
+            (onSelect)="onSelectClient($event)"
+            [renderer]="rendererListBoxClients"
+            [scrollBarSize]="5"
+            [width]="'100%'"
+            [searchMode]="'containsignorecase'"
+            [height]="140"
+            [theme]='"bootstrap"'
+            [displayMember]="'fullName'"
+            [valueMember]="'id'"
+            style="float: left;"
+            [source]="dataAdapterClientsListBox"
+          ></jqxListBox>
+        </div>
+
+        <div class="box50_2" style="margin-top: 20px;">
+          <div class="subtitle1">
+            Injuries
+          </div>
+
+          <div style="height: 30px; width: 100%; float: left;">
+            <i
+              [hidden]="hiddenDeleteInjuriesButton || canDeleteOrSave"
+              (click)="removeInjury($event)"
+              class="ion ion-ios-remove transparentButton"
+              style="width: 80px;"
+            >
+              &nbsp;{{'global_remove' | translate}}
+            </i>
+            <i
+              [hidden]="hiddenUndoInjuriesButton || true"
+              (click)="UndoDeleteInjuries($event)"
+              class="ion ion-ios-undo transparentButton"
+              style="width: 80px;"
+            >
+              &nbsp;{{'global_undo' | translate}}
+            </i>
+          </div>
+
+          <!-- 
+                                [filterPlaceHolder]="PlaceHolderLookingFor" 
+                                [renderer]="rendererListBoxClients"
+                                (onSelect)="onSelectClient($event)"          
+                            -->
+
+          <jqxListBox
+            #listBoxInjuries
+            [checkboxes]="false"
+            [filterable]="false"
+            [scrollBarSize]="5"
+            [disabled]="!canDeleteOrSave"
+            [width]="'100%'"
+            (onSelect)="onSelectInjuries($event)"
+            [searchMode]="'containsignorecase'"
+            [height]="150"
+            [theme]='"bootstrap"'
+            [displayMember]="'descName'"
+            [valueMember]="'id'"
+            style="float: left;"
+            [renderer]="rendererListBoxInjuries"
+            [source]="dataAdapterInjuriesListBox"
+          ></jqxListBox>
+        </div>
+
+        <div class="box50">
+          <div class="subtitle1">
+            Detailed Description of Incident
+          </div>
+
+          <jqxTextArea
+            [width]="'100%'"
+            [height]="200"
+            [disabled]="!canDeleteOrSave"
+            [theme]='"bootstrap"'
+            [minLength]="1"
+            (onChange)="onAnyChange($event)"
+            [(ngModel)]="st1_u"
+            style="margin-top: 20px; float: left;"
+            [placeHolder]="'Enter Description'"
+          ></jqxTextArea>
+
+          <div class="subtitle1" style="margin-top: 30px;">
+            Physical Injuries
+          </div>
+
+          <jqxListBox
+            #listBox_g3
+            [checkboxes]="true"
+            [width]="'100%'"
+            [disabled]="!canDeleteOrSave"
+            [height]="100"
+            (onCheckChange)="onAnyChange($event,'other')"
+            [theme]='"bootstrap"'
+            [displayMember]="'display'"
+            (onBindingComplete)="listBoxBindingCompleteG3($event)"
+            [valueMember]="'id'"
+            style="margin-top: 20px; float: left;"
+            [source]="dataAdapterListBox_g3"
+          ></jqxListBox>
+
+          <ul
+            class="ultable"
+            style="float: left; width: 100%; margin-top: 30px;"
+          >
+            <li style="width: 90%;">
+              Describe Injury
+            </li>
+            <!-- style="min-width: 300px;"        -->
+            <li style="min-width: 300; width: 100%; text-align: right;">
+              <jqxTextArea
+                [width]="'100%'"
+                [height]="100"
+                [theme]='"bootstrap"'
+                [disabled]="!canDeleteOrSave"
+                (onChange)="onAnyChange($event)"
+                [minLength]="1"
+                [(ngModel)]="st2_u"
+                style="margin-top: 10px; float: left;"
+                [placeHolder]="'Describe injury'"
+              ></jqxTextArea>
+            </li>
+          </ul>
+
+          <ul
+            class="ultable"
+            style="float: left; width: 100%; margin-top: 30px;"
+          >
+            <li style="width: 90%;">
+              Debriefing of incident with Child
+            </li>
+            <!-- style="min-width: 300px;"        -->
+            <li style="min-width: 300; width: 100%; text-align: right;">
+              <jqxTextArea
+                [width]="'100%'"
+                [height]="100"
+                [theme]='"bootstrap"'
+                [disabled]="!canDeleteOrSave"
+                [minLength]="1"
+                (onChange)="onAnyChange($event)"
+                [(ngModel)]="st3_u"
+                style="margin-top: 10px; float: left;"
+                [placeHolder]="'Debriefing of incident with Child'"
+              ></jqxTextArea>
+            </li>
+          </ul>
+
+          <ul
+            class="ultable"
+            style="float: left; width: 100%; margin-top: 30px;"
+          >
+            <li style="width: 90%;">
+              Debriefing of incident with staff
+            </li>
+            <!-- style="min-width: 300px;"        -->
+            <li style="min-width: 300; width: 100%; text-align: right;">
+              <jqxTextArea
+                [width]="'100%'"
+                [height]="100"
+                [disabled]="!canDeleteOrSave"
+                [theme]='"bootstrap"'
+                (onChange)="onAnyChange($event)"
+                [minLength]="1"
+                [(ngModel)]="st4_u"
+                style="margin-top: 10px; float: left;"
+                [placeHolder]="'Debriefing of incident with Staff'"
+              ></jqxTextArea>
+            </li>
+          </ul>
+
+          <ul
+            class="ultable"
+            style="float: left; width: 100%; margin-top: 30px;"
+          >
+            <li style="width: 90%;">
+              Staff on Shift
+            </li>
+            <!-- style="min-width: 300px;"        -->
+            <li style="min-width: 300; width: 100%; text-align: right;">
+              <jqxTextArea
+                [width]="'100%'"
+                [height]="100"
+                [theme]='"bootstrap"'
+                [minLength]="1"
+                [disabled]="!canDeleteOrSave"
+                (onChange)="onAnyChange($event)"
+                [(ngModel)]="st5_u"
+                style="margin-top: 10px; float: left;"
+                [placeHolder]="'Staff on Shift'"
+              ></jqxTextArea>
+            </li>
+          </ul>
+
+          <ul
+            class="ultable"
+            style="float: left; width: 100%; margin-top: 30px;"
+          >
+            <li style="width: 90%;">
+              Staff Involved in incident
+            </li>
+            <!-- style="min-width: 300px;" -->
+            <li style="min-width: 300; width: 100%; text-align: right;">
+              <jqxComboBox
+                #cmbStaffInvolved
+                [width]='"100%"'
+                (onBindingComplete)="BindingCompleteCmbStaffInvolved($event)"
+                (onUnselect)="onSelectChangeCmb($event,'g1'); onAnyChange($event,'other');"
+                (onSelect)="onSelectChangeCmb($event,'g1'); onAnyChange($event,'other');"
+                [multiSelect]="true"
+                [height]="25"
+                [disabled]="!canDeleteOrSave"
+                style="max-height: 100px !important;"
+                [displayMember]="'fullName'"
+                [valueMember]="'id'"
+                [searchMode]="'containsignorecase'"
+                [theme]="'bootstrap'"
+                [source]="dataAdapterStaffList_2"
+              ></jqxComboBox>
+            </li>
+          </ul>
+
+          <ul class="ultable" style="float: left; width: 100%;">
+            <li style="width: 90%;">
+              Staff responsible for monitoring health of child
+            </li>
+            <!-- style="min-width: 300px;" -->
+            <li style="min-width: 300; width: 100%; text-align: right;">
+              <!-- <jqxInput #g1_other                                        
+                                                    [width]='"100%"'                                                                  
+                                                    [theme]="'bootstrap'"
+                                                    [height]='25'
+                                                    [minLength]='1'>
+                                                </jqxInput> -->
+              <!-- 
+                                               
+                                               
+                                             -->
+
+              <jqxComboBox
+                #cmbStaffResponsible
+                [width]='"100%"'
+                [multiSelect]="true"
+                (onUnselect)="onSelectChangeCmb($event,'g2')"
+                (onSelect)="onSelectChangeCmb($event,'g2')"
+                (onBindingComplete)="BindingCompleteCmbStaffResponsible($event)"
+                [height]="25"
+                [disabled]="!canDeleteOrSave"
+                style="max-height: 100px !important;"
+                [displayMember]="'fullName'"
+                [valueMember]="'id'"
+                [searchMode]="'containsignorecase'"
+                [theme]="'bootstrap'"
+                [source]="dataAdapterStaffList_3"
+              ></jqxComboBox>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Serious Ocurrence -->
+      <div>
+        <div class="box50" style="height: 500px;">
+          <ul class="ultable" style="float: left; width: 100%;">
+            <li style="width: 45%;">
+              <jqxCheckBox
+                style="margin-left: 0px; float: left;"
+                [theme]='"bootstrap"'
+                #checkIfSeriousOcurrence
+                (onChange)="onAnyChange($event)"
+                [(ngModel)]="isSeriousOcurrence"
+                [disabled]="!canDeleteOrSave"
+                [checked]="isSeriousOcurrence"
+                [width]='"100%"'
+                [height]="25"
+              >
+                <span>Incident was Deemed Serious Ocurrence at</span>
+              </jqxCheckBox>
+            </li>
+
+            <li
+              style="
+                width: 50%;
+                text-align: right;
+                margin-right: 1%;
+                line-height: 25px;
+              "
+            >
+              <jqxDateTimeInput
+                #dtimeSeriousOccurence
+                [width]='"100%"'
+                [height]="25"
+                [theme]='"bootstrap"'
+                (onChange)="onAnyChange($event)"
+                [disabled]="!canDeleteOrSave || !isSeriousOcurrence"
+                [(ngModel)]="dateTimeWhenSeriousOccurrence"
+                [formatString]="'F'"
+                [showTimeButton]="true"
+                [culture]="getCurrentCulture()"
+                [showCalendarButton]="true"
+                style="float: right; max-width: 270px;"
+              ></jqxDateTimeInput>
+            </li>
+          </ul>
+
+          <ul class="ultable" style="float: left; width: 100%;">
+            <div
+              [ngClass]="{'subtitle1': isSeriousOcurrence}"
+              style="width: 90%;"
+            >
+              Please explain if more than 24 hours have passed since date & time
+              of incident / occurrence
+            </div>
+
+            <li style="min-width: 300; width: 100%; text-align: right;">
+              <jqxTextArea
+                [width]="'95%'"
+                [height]="200"
+                [theme]='"bootstrap"'
+                [disabled]="!canDeleteOrSave || !isSeriousOcurrence"
+                (onChange)="onAnyChange($event)"
+                [minLength]="1"
+                [(ngModel)]="st8_u"
+                style="margin-top: 20px; float: left;"
+                [placeHolder]="'Enter explanation'"
+              ></jqxTextArea>
+            </li>
+          </ul>
+
+          <ul class="ultable" style="float: left; width: 100%;">
+            <li style="width: 10%; height: 25px;">
+              Ministry
+            </li>
+
+            <li style="width: 50%;">
+              <!-- [(ngModel)]="idfMinistry"       -->
+              <jqxDropDownList
+                #cmbMinistry
+                [width]='"90%"'
+                [height]="25"
+                (onChange)="onAnyChange($event,'other')"
+                (onBindingComplete)="MinistryBindingComplete($event)"
+                [autoDropDownHeight]="true"
+                [theme]='"bootstrap"'
+                [dropDownWidth]="300"
+                [disabled]="!canDeleteOrSave || !isSeriousOcurrence"
+                [displayMember]="'description'"
+                [valueMember]="'id'"
+                ([scrollBarSize])="5"
+                style="float: left;"
+                [source]="dataAdapterMinistryList"
+              ></jqxDropDownList>
+            </li>
+
+            <li style="width: 10%; height: 25px;">
+              Region
+            </li>
+
+            <li style="width: 25%;">
+              <jqxDropDownList
+                #cmbRegion
+                [width]='"100%"'
+                [height]="25"
+                [autoDropDownHeight]="true"
+                (onChange)="onAnyChange($event,'other')"
+                [theme]='"bootstrap"'
+                (onBindingComplete)="RegionBindingComplete($event)"
+                [dropDownWidth]="200"
+                [disabled]="!canDeleteOrSave || !isSeriousOcurrence"
+                [displayMember]="'description'"
+                [valueMember]="'id'"
+                ([scrollBarSize])="5"
+                style="float: left;"
+                [source]="dataAdapterRegionList"
+              ></jqxDropDownList>
+            </li>
+          </ul>
+
+          <ul class="ultable" style="float: left; width: 100%;">
+            <li style="width: 30%;">
+              Type of Serious occurence
+            </li>
+            <li style="width: 65%;">
+              <!-- (onChange)="onAnyChange($event,'other')"    -->
+              <jqxDropDownList
+                #cmbTypeOfSeriousOccurrence
+                [width]='"100%"'
+                [height]="25"
+                [disabled]="!canDeleteOrSave || !isSeriousOcurrence"
+                (onSelect)="cmbTypeOfSeriousOccurrenceOnSelect($event)"
+                (onBindingComplete)="TypeOfSeriousOccurrenceBindingComplete($event)"
+                [autoDropDownHeight]="true"
+                [theme]='"bootstrap"'
+                [dropDownWidth]="500"
+                [displayMember]="'description'"
+                [valueMember]="'id'"
+                ([scrollBarSize])="5"
+                style="float: left;"
+                [source]="dataAdapterTypeSeriousOccurrenceList"
+              ></jqxDropDownList>
+            </li>
+          </ul>
+
+          <ul
+            [hidden]="typeOfSeriousOccurrence!=1"
+            class="ultable"
+            style="float: left; width: 100%;"
+          >
+            <li style="width: 150px;">
+              <jqxCheckBox
+                style="margin-left: 0px; float: left;"
+                [theme]='"bootstrap"'
+                [(ngModel)]="sc2_u"
+                [checked]="sc2_u"
+                [disabled]="!canDeleteOrSave || !isSeriousOcurrence"
+                (onChange)="onAnyChange($event)"
+                [width]='"100%"'
+                [height]="25"
+              >
+                <span>Coroner Notified?</span>
+              </jqxCheckBox>
+            </li>
+            <li style="width: 100px;">
+              <jqxCheckBox
+                style="margin-left: 0px; float: left;"
+                [theme]='"bootstrap"'
+                [(ngModel)]="sc2_u_aux"
+                [checked]="sc2_u_aux"
+                [disabled]="!canDeleteOrSave || !isSeriousOcurrence"
+                (onChange)="onAnyChange($event)"
+                [width]='"100%"'
+                [height]="25"
+              >
+                <span>Unknown</span>
+              </jqxCheckBox>
+            </li>
+          </ul>
+
+          <ul
+            [hidden]="typeOfSeriousOccurrence!=1"
+            class="ultable"
+            style="float: left; width: 100%;"
+          >
+            <li style="width: 90%;">
+              By Whom
+            </li>
+            <li style="width: 100%;">
+              <jqxComboBox
+                #cmbByWhom_t1
+                [width]='"100%"'
+                [multiSelect]="true"
+                (onUnselect)="onSelectChangeCmb($event,'s2'); onAnyChange($event,'other');"
+                (onSelect)="onSelectChangeCmb($event,'s2'); onAnyChange($event,'other');"
+                (onBindingComplete)="BindingCompleteCmbByWhom($event)"
+                [height]="25"
+                [disabled]="!canDeleteOrSave || !isSeriousOcurrence"
+                style="max-height: 100px !important;"
+                [displayMember]="'fullName'"
+                [valueMember]="'id'"
+                [searchMode]="'containsignorecase'"
+                [theme]="'bootstrap'"
+                [source]="dataAdapterStaffList_4"
+              ></jqxComboBox>
+            </li>
+          </ul>
+
+          <ul
+            [hidden]="typeOfSeriousOccurrence!=2"
+            class="ultable"
+            style="float: left; width: 100%;"
+          >
+            <li style="width: 100%;">
+              <jqxListBox
+                #listBox_g6
+                [checkboxes]="true"
+                [width]="'100%'"
+                [height]="140"
+                (onCheckChange)="onAnyChange($event,'other')"
+                [theme]='"bootstrap"'
+                [disabled]="!canDeleteOrSave || !isSeriousOcurrence"
+                [displayMember]="'display'"
+                (onBindingComplete)="listBoxBindingCompleteG6($event)"
+                [valueMember]="'id'"
+                style="margin-top: 20px; float: left;"
+                [source]="dataAdapterListBox_g6"
+              ></jqxListBox>
+            </li>
+          </ul>
+
+          <ul
+            [hidden]="typeOfSeriousOccurrence!=3"
+            class="ultable"
+            style="float: left; width: 100%;"
+          >
+            <li style="width: 100%;">
+              Note: For MCSS Developmental Services and Supports, any alleged,
+              witnessed or suspected abuse that may constitute a criminal
+              offence must be inmediately reported to the police and requires an
+              Enhanced Serious Occurenc Report
+            </li>
+          </ul>
+
+          <ul
+            [hidden]="typeOfSeriousOccurrence!=4"
+            class="ultable"
+            style="float: left; width: 100%;"
+          >
+            <li style="width: 100%;">
+              Note: Ministry must be notified of final outcome
+            </li>
+          </ul>
+
+          <ul
+            [hidden]="typeOfSeriousOccurrence!=5"
+            class="ultable"
+            style="float: left; width: 100%;"
+          >
+            <li style="width: 30%;">
+              Please Especify
+            </li>
+            <!-- style="min-width: 300px;"        -->
+            <li style="min-width: 300; width: 70%; text-align: right;">
+              <jqxInput
+                #txtDisasterOnPremises_t5
+                [width]='"100%"'
+                [theme]="'bootstrap'"
+                [height]="25"
+                [disabled]="!canDeleteOrSave || !isSeriousOcurrence"
+                (onChange)="onAnyChange($event)"
+                [(ngModel)]="st9_u"
+                [minLength]="1"
+              ></jqxInput>
+            </li>
+          </ul>
+
+          <!-- 8 -->
+          <ul
+            [hidden]="typeOfSeriousOccurrence!=8"
+            class="ultable"
+            style="float: left; width: 100%;"
+          >
+            <div [ngClass]="{'subtitle1': isSeriousOcurrence}">
+              If MCSS, Developmental Services and Supports use of Restraint
+            </div>
+
+            <li style="min-width: 300; width: 90%; text-align: right;">
+              <jqxListBox
+                #listBox_g7
+                [checkboxes]="true"
+                [width]="'100%'"
+                [height]="140"
+                (onCheckChange)="onAnyChange($event,'other')"
+                [disabled]="!canDeleteOrSave || !isSeriousOcurrence"
+                [theme]='"bootstrap"'
+                [displayMember]="'display'"
+                (onBindingComplete)="listBoxBindingCompleteG7($event)"
+                [valueMember]="'id'"
+                style="margin-top: 20px; float: left;"
+                [source]="dataAdapterListBox_g7"
+              ></jqxListBox>
+            </li>
+          </ul>
+
+          <ul
+            [hidden]="typeOfSeriousOccurrence!=8"
+            class="ultable"
+            style="float: left; width: 100%;"
+          >
+            <div [ngClass]="{'subtitle1': isSeriousOcurrence}">
+              If MCYS or MCSS other than Develpmental Services, use of Physical
+              Restraint
+            </div>
+
+            <li style="min-width: 300; width: 90%; text-align: right;">
+              <jqxListBox
+                #listBox_g8
+                [checkboxes]="true"
+                [width]="'100%'"
+                [height]="140"
+                (onCheckChange)="onAnyChange($event,'other')"
+                [disabled]="!canDeleteOrSave || !isSeriousOcurrence"
+                [theme]='"bootstrap"'
+                [displayMember]="'display'"
+                (onBindingComplete)="listBoxBindingCompleteG8($event)"
+                [valueMember]="'id'"
+                style="margin-top: 20px; float: left;"
+                [source]="dataAdapterListBox_g8"
+              ></jqxListBox>
+            </li>
+          </ul>
+        </div>
+
+        <div class="box50" style="height: 500px;">
+          <div
+            [ngClass]="{'subtitle1': isSeriousOcurrence}"
+            style="width: 90%;"
+          >
+            Details of Serious Occurrence
+          </div>
+
+          <ul class="ultable" style="float: left; width: 100%;">
+            <li style="width: 100%;">
+              <jqxCheckBox
+                style="margin-left: 0px; float: left;"
+                [theme]='"bootstrap"'
+                [(ngModel)]="sc3_u"
+                [disabled]="!canDeleteOrSave || !isSeriousOcurrence"
+                (onChange)="onAnyChange($event)"
+                [checked]="sc3_u"
+                [width]='"100%"'
+                [height]="25"
+              >
+                <span>Tick if other pages are attached</span>
+              </jqxCheckBox>
+            </li>
+
+            <li style="min-width: 300; width: 100%; text-align: right;">
+              <jqxTextArea
+                [width]="'95%'"
+                [height]="200"
+                [theme]='"bootstrap"'
+                (onChange)="onAnyChange($event)"
+                [minLength]="1"
+                [disabled]="!canDeleteOrSave || !isSeriousOcurrence"
+                [(ngModel)]="st10_u"
+                style="margin-top: 28px; float: left;"
+                [placeHolder]="'Enter explanation'"
+              ></jqxTextArea>
+            </li>
+          </ul>
+
+          <div [ngClass]="{'subtitle1': isSeriousOcurrence}">
+            Serious Occurrence Notifications
+          </div>
+
+          <jqxListBox
+            #listBox_g9
+            [checkboxes]="true"
+            [width]="'100%'"
+            [height]="60"
+            [theme]='"bootstrap"'
+            (onCheckChange)="onAnyChange($event,'other')"
+            [disabled]="!canDeleteOrSave || !isSeriousOcurrence"
+            [displayMember]="'display'"
+            (onBindingComplete)="listBoxBindingCompleteG9($event)"
+            [valueMember]="'id'"
+            style="margin-top: 20px; float: left;"
+            [source]="dataAdapterListBox_g9"
+          ></jqxListBox>
+
+          <ul class="ultable" style="float: left; width: 100%;">
+            <li style="width: 10%;">
+              <jqxCheckBox
+                style="margin-left: 0px; float: left;"
+                [theme]='"bootstrap"'
+                [(ngModel)]="sc4_u"
+                [checked]="sc4_u"
+                [disabled]="!canDeleteOrSave || !isSeriousOcurrence"
+                (onChange)="onAnyChange($event)"
+                [width]='"100%"'
+                [height]="25"
+              >
+                <span>Agency</span>
+              </jqxCheckBox>
+            </li>
+            <li style="width: 15%; margin-right: 1%; line-height: 25px;">
+              <span>Please Specify</span>
+            </li>
+            <li style="width: 70%; text-align: right;">
+              <jqxInput
+                #g1_other
+                [width]='"100%"'
+                [theme]="'bootstrap'"
+                [height]="25"
+                [disabled]="!canDeleteOrSave || !isSeriousOcurrence"
+                (onChange)="onAnyChange($event)"
+                [(ngModel)]="st11_u"
+                [minLength]="1"
+              ></jqxInput>
+            </li>
+          </ul>
+
+          <ul class="ultable" style="float: left; width: 100%;">
+            <li style="width: 10%;">
+              <!--  -->
+
+              <jqxCheckBox
+                style="margin-left: 0px; float: left;"
+                [theme]='"bootstrap"'
+                [(ngModel)]="sc5_u"
+                [checked]="sc5_u"
+                [disabled]="!canDeleteOrSave || !isSeriousOcurrence"
+                (onChange)="onAnyChange($event)"
+                [width]='"100%"'
+                [height]="25"
+              >
+                <span>Other</span>
+              </jqxCheckBox>
+            </li>
+            <li style="width: 15%; margin-right: 1%; line-height: 25px;">
+              <span>Please Especify</span>
+            </li>
+            <li style="width: 70%; text-align: right;">
+              <jqxInput
+                #g1_other
+                [width]='"100%"'
+                [theme]="'bootstrap'"
+                [height]="25"
+                [disabled]="!canDeleteOrSave || !isSeriousOcurrence"
+                (onChange)="onAnyChange($event)"
+                [(ngModel)]="st12_u"
+                [minLength]="1"
+              ></jqxInput>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <selectclient
+        [glowmessage]="glowMessage"
+        [hidden]="true"
+        style="background-color: black;"
+        (onAddClient)="onAddClient($event)"
+      ></selectclient>
+    </jqxTabs>
+  </div>
+</div>

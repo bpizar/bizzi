@@ -1,0 +1,204 @@
+<jqxLoader
+  #loaderReference
+  [width]="180"
+  [height]="140"
+  [isModal]="true"
+  [theme]="'bootstrap'"
+  [html]="'<div class=\'loadingdiv\'><div class=\'loader\'></div></div>'"
+  [imagePosition]='"top"'
+></jqxLoader>
+
+<jqxWindow
+  #pettyCashWindow
+  [width]="920"
+  [height]="520"
+  [maxHeight]="520"
+  [minHeight]="520"
+  [theme]='"bootstrap"'
+  [resizable]="false"
+  [maxWidth]="920"
+  [minWidth]="650"
+  [autoOpen]="false"
+  [isModal]="true"
+>
+  <div id="windowContent">
+    <div
+      class="auxMenuBar"
+      style="width: 916px; margin-left: -4px; line-height: 25px;"
+    >
+      <ul class="ultable" style="margin-top: 0px;">
+        <li style="width: 60px;">
+          <div class="textTitle">{{'global_category' | translate}}</div>
+        </li>
+
+        <li style="width: 150px;">
+          <!-- (onChange)="onEditGenStaffChange($event)"
+                    [renderer]="rendererListBoxStaff" -->
+          <!-- [scrollBarSize]="5" -->
+          <jqxDropDownList
+            #cmbCategories
+            [width]='"100%"'
+            [height]="25"
+            [filterable]="false"
+            [theme]='"bootstrap"'
+            [displayMember]="'description'"
+            [valueMember]="'id'"
+            [searchMode]="'containsignorecase'"
+            [placeHolder]='"Select Category"'
+            [source]="dataAdapterCategoriesListBox"
+          ></jqxDropDownList>
+        </li>
+
+        <li style="width: 60px; text-indent: 20px;">
+          <div class="textTitle">{{'global_date' | translate}}</div>
+        </li>
+
+        <li style="width: 100px;">
+          <jqxDateTimeInput
+            #txtDate
+            [width]="90"
+            [height]="25"
+            [theme]='"bootstrap"'
+            [formatString]='"d"'
+            [culture]="getCurrentCulture()"
+            [showCalendarButton]="true"
+            style="float: left;"
+            [showTimeButton]="false"
+          ></jqxDateTimeInput>
+        </li>
+
+        <li style="width: 90px;">
+          <div class="textTitle">{{'global_description' | translate }}</div>
+        </li>
+
+        <li style="width: 200px;">
+          <jqxInput
+            #txtDescription
+            [width]="180"
+            [theme]="'bootstrap'"
+            [height]="25"
+            style="float: left; text-align: right;"
+            [minLength]="1"
+          ></jqxInput>
+        </li>
+
+        <li style="width: 60px;">
+          <div class="textTitle">{{'global_amount' | translate}}</div>
+        </li>
+        <li style="width: 90px;">
+          <jqxNumberInput
+            #txtAmount
+            [width]="80"
+            [height]="25"
+            [decimalDigits]="2"
+            [digits]="10"
+            [min]="0"
+            [max]="999999"
+            [inputMode]="'simple'"
+            [theme]="'bootstrap'"
+            [spinButtons]="true"
+          ></jqxNumberInput>
+        </li>
+
+        <li style="width: 105px;">
+          <button
+            class="button buttonSave"
+            (click)="addPettyCashClick($event)"
+            style="margin-left: 10px; float: left;"
+          >
+            <i class="icon ion-ios-add-circle-outline"></i>
+            {{'global_add' | translate}}
+          </button>
+        </li>
+      </ul>
+    </div>
+
+    <div
+      style="
+        height: 300px;
+        margin-top: 40px;
+        width: 100%;
+        float: left;
+        overflow-y: scroll;
+      "
+    >
+      <!-- aqui va   -->
+      <ul class="ultable" style="width: 100%; font-weight: bold;">
+        <li style="width: 230px;">
+          {{'global_category' | translate}}
+        </li>
+        <li style="width: 140px;">
+          {{'global_date' | translate}}
+        </li>
+        <li style="width: 290px;">
+          {{'global_description' | translate}}
+        </li>
+        <li style="width: 165px;">
+          {{'global_amount' | translate}}
+        </li>
+      </ul>
+
+      <ul
+        class="ultable"
+        *ngFor="let p of PettyCash"
+        style="width: 100%;"
+        [hidden]="p.abm=='D'"
+      >
+        <!-- <li style="width:60px; ">
+                    &nbsp;
+                </li> -->
+        <li style="width: 230px;">
+          <span>{{p.category}}</span>
+        </li>
+        <li style="width: 140px;">
+          <span>{{getFormatDate(p.date)}}</span>
+        </li>
+        <li style="width: 290px;">
+          <span>{{p.description}}</span>
+        </li>
+        <li style="width: 165px; text-align: left;">
+          <span>{{currencySymbol}}{{p.amount | number:'1.2-2' }}</span>
+        </li>
+
+        <li style="width: 40px;">
+          <jqxButton
+            [theme]='"bootstrap"'
+            style="float: right;"
+            (onClick)="removePettyCashClick(p)"
+          >
+            <i class="icon ion-ios-close" style="font-size: 14px;"></i>
+          </jqxButton>
+        </li>
+      </ul>
+    </div>
+
+    <ul class="ultable">
+      <li style="width: 600px;">
+        &nbsp;
+      </li>
+      <li style="width: 60px; text-align: right;">
+        <div class="textTitle">{{'global_total' | translate}}</div>
+      </li>
+
+      <li style="width: 75px; height: 30px; text-align: left; font-size: 18px;">
+        {{currencySymbol}}{{SumPettyCash() | number:'1.2-2'}}
+      </li>
+    </ul>
+
+    <div class="buttonWindowDiv">
+      <button class="button buttonSave" (click)="CancelClick($event)">
+        <i class="icon ion-ios-arrow-dropleft"></i>
+        {{'global_cancel' | translate}}
+      </button>
+      <button
+        class="button buttonSave"
+        [hidden]="true"
+        (click)="OkClick($event)"
+      >
+        <!-- <i class="icon ion-ios-save"></i> {{'global_save' | translate}} -->
+        <i class="icon ion-ios-checkmark-circle-outline"></i>
+        {{'global_save' | translate}}
+      </button>
+    </div>
+  </div>
+</jqxWindow>

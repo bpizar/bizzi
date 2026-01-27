@@ -1,0 +1,99 @@
+﻿<div class="menuContainer">
+  <menu [loaderReference]="myLoader"></menu>
+</div>
+
+<div
+  class="appContainer"
+  style="
+    background-color: var (--thirteenth-color);
+    padding-left: 20px;
+    overflow-y: auto;
+    height: 90vh;
+  "
+>
+  <div class="onesignal-customlink-container">
+    <jqxLoader
+      #loaderReference
+      [width]="140"
+      [height]="140"
+      [isModal]="true"
+      [theme]="'bootstrap'"
+      [html]="'<div class=\'loadingdiv\'><div class=\'loader\'></div></div>'"
+      [imagePosition]='"top"'
+    ></jqxLoader>
+
+    <div class="dashBoard-container">
+      <div class="dashBoard-element">
+        <jqxChart
+          #dashboard1
+          [width]="330"
+          [height]="330"
+          [title]="titleDashboard1"
+          [description]="descriptionDashboard1"
+          [showLegend]="true"
+          [enableAnimations]="true"
+          [padding]="paddingDashboard1"
+          [titlePadding]="titlePaddingDashboard1"
+          [source]="dataAdapterDashboard1"
+          [showBorderLine]="true"
+          [seriesGroups]="seriesGroupsDashboard1"
+          [legendLayout]="legendLayout1"
+          [colorScheme]="'scheme02'"
+          [backgroundColor]="'white'"
+        ></jqxChart>
+      </div>
+
+      <div
+        class="dashBoard-element"
+        style="display: flex; justify-content: center; align-items: flex-end;"
+      >
+        <jqxBarGauge
+          #dashboard2
+          [width]="330"
+          [height]="330"
+          [colorScheme]="'rgb'"
+          [backgroundColor]="'white'"
+          [max]="maxDashboard2"
+          [customColorScheme]="customColorSchemeDashboard2"
+          [colorScheme]="'rgb'"
+          [labels]="labels2"
+          [values]="valuesDashboard2"
+          [tooltip]="tooltipDashboard2"
+        ></jqxBarGauge>
+      </div>
+
+      <div class="dashBoard-element">
+        <jqxChart
+          #dashboard3
+          [width]="330"
+          [height]="330"
+          [title]="titleDashboard3"
+          [description]="descriptionDashboard3"
+          [showLegend]="true"
+          [enableAnimations]="true"
+          [padding]="paddingDashboard1"
+          [titlePadding]="titlePaddingDashboard1"
+          [source]="dataAdapterDashboard3"
+          [xAxis]="xAxis3"
+          [valueAxis]="valueAxis3"
+          [seriesGroups]="seriesGroups3"
+          [colorScheme]="'scheme05'"
+          [backgroundColor]="'white'"
+        ></jqxChart>
+      </div>
+    </div>
+  </div>
+
+  <!-- <div class="squareWidget">
+           
+            <div class="divIcon">
+                <i [hidden]="valueDashboard3!=0" class="icon ion-ios-alarm iconmenu"></i>
+                <div [hidden]="valueDashboard3==0">{{valueDashboard3}}</div>
+            </div>
+
+            <div>              
+                <span [hidden]="valueDashboard3==0">{{'dashboard_dash3_assignedtasks' | translate}}</span>
+                <span [hidden]="valueDashboard3!=0">{{'dashboard_dash3_not_assignedtasks' | translate}}</span>
+            </div>
+    </div> -->
+</div>

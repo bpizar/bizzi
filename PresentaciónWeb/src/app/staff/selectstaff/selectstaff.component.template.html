@@ -1,0 +1,85 @@
+﻿<jqxLoader
+  #loaderReference
+  [width]="180"
+  [height]="140"
+  [isModal]="true"
+  [theme]="'bootstrap'"
+  [html]="'<div class=\'loadingdiv\'><div class=\'loader\'></div></div>'"
+  [imagePosition]='"top"'
+></jqxLoader>
+
+<jqxWindow
+  #windowx1
+  [width]="400"
+  [height]="200"
+  [maxHeight]="200"
+  [minHeight]="200"
+  [maxWidth]="400"
+  [minWidth]="400"
+  [theme]='"bootstrap"'
+  [autoOpen]="false"
+  [isModal]="true"
+>
+  <div id="windowcontent">
+    <ul class="ultable">
+      <li style="width: 120px;">
+        <div class="textTitle">
+          {{'projects_participant_window' | translate}}
+        </div>
+      </li>
+      <li style="width: 260px;">
+        <jqxDropDownList
+          #staffDropDown
+          [width]="260"
+          [height]="25"
+          [renderer]="rendererListBoxStaff"
+          [filterable]="true"
+          [theme]='"bootstrap"'
+          style="float: left;"
+          [displayMember]="'fullName'"
+          [valueMember]="'id'"
+          [searchMode]="'containsignorecase'"
+          ([scrollBarSize])="5"
+          [filterPlaceHolder]="PlaceHolderLookingFor"
+          [placeHolder]="PlaceHolderParticipant"
+          [source]="dataAdapterStaffListBox"
+        ></jqxDropDownList>
+      </li>
+    </ul>
+
+    <ul class="ultable">
+      <li style="width: 120px;">
+        <div class="textTitle">{{'projects_position_window' | translate}}</div>
+      </li>
+      <li style="width: 260px;">
+        <jqxDropDownList
+          #positionsDropDown
+          [width]="260"
+          [height]="25"
+          [filterable]="true"
+          [theme]='"bootstrap"'
+          [displayMember]="'name'"
+          style="float: left;"
+          [valueMember]="'id'"
+          [searchMode]="'containsignorecase'"
+          ([scrollBarSize])="5"
+          [filterPlaceHolder]="PlaceHolderLookingFor"
+          [placeHolder]="PlaceHolderPosition"
+          [source]="dataAdapterPositionsListBox"
+        ></jqxDropDownList>
+      </li>
+    </ul>
+
+    <div class="buttonWindowDiv">
+      <button class="button buttonSave" (click)="CancelClick($event)">
+        <i class="icon ion-ios-arrow-dropleft"></i>
+        {{'global_cancel' | translate}}
+      </button>
+
+      <button class="button buttonSave" (click)="OkClick($event)">
+        <i class="icon ion-ios-checkmark-circle-outline"></i>
+        {{'global_save' | translate}}
+      </button>
+    </div>
+  </div>
+</jqxWindow>

@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="CustomEntities\identity_users_rol.cs" />
+    <Compile Remove="CustomEntities\identity_roles.cs" />
+    <Compile Remove="CustomEntities\identity_users.cs" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,579 @@
+<glowmessages #glowmessage></glowmessages>
+
+<div class="menuContainer">
+  <menu></menu>
+</div>
+
+<div class="appContainer" style="overflow-y: hidden;">
+  <jqxLoader
+    #loaderReference
+    [width]="140"
+    [height]="140"
+    [isModal]="true"
+    [theme]="'bootstrap'"
+    [html]="'<div class=\'loadingdiv\'><div class=\'loader\'></div></div>'"
+    [imagePosition]='"top"'
+  ></jqxLoader>
+
+  <div class="auxMenuBar">
+    <div class="titleHeaderSpace" [hidden]="CurrentItem<0" style="float: left;">
+      <a (click)="back($event)">{{'clients_edit' | translate}}</a>
+      > Edit Injury
+    </div>
+    <div
+      class="titleHeaderSpace"
+      [hidden]="CurrentItem>=0"
+      style="float: left;"
+    >
+      <a (click)="back($event)">{{'clients_edit' | translate}}</a>
+      > New Injury
+    </div>
+
+    <saveactiondisplay (mustSave)="onMustSave($event)"></saveactiondisplay>
+
+    <div class="blockMinRight">
+      <button class="button buttonSave" [hidden]="true" (click)="Save($event)">
+        <!-- <i class="icon ion-ios-save"></i> {{'global_save'| translate}} -->
+        <i class="icon ion-ios-checkmark-circle-outline"></i>
+        {{'global_save' | translate}}
+      </button>
+    </div>
+  </div>
+
+  <div class="header100px backgroundGray">
+    <ul
+      class="ultable"
+      style="height: auto; min-width: 800px; width: 800px; float: left;"
+    >
+      <li style="width: 20%; height: 100%; max-width: 140px; min-width: 140px;">
+        <img
+          style="
+            border-radius: 50%;
+            float: left;
+            margin: 0px;
+            margin-left: 15px;
+          "
+          height="80"
+          width="80"
+          src="{{ImagePath}}"
+        />
+      </li>
+
+      <li style="width: 550px;">
+        <ul class="ultable" style="height: 30px; margin-top: 0px;">
+          <li class="subtitle">
+            {{clientName}}
+          </li>
+        </ul>
+
+        <ul class="ultable" style="margin: 0; float: left; width: 400px;">
+          <li style="width: 80px;"></li>
+          <li style="width: 290px;">
+            <!-- <jqxInput #txtemailsd
+                                [disabled]="isEditing()"
+                                [width]='260'                            
+                                [theme]="'bootstrap'"
+                                [height]='25'
+                                [minLength]='1'>
+                            </jqxInput> -->
+          </li>
+        </ul>
+
+        <ul class="ultable" style="margin-top: 10; float: left; width: 100%;">
+          <li style="width: 80px;">
+            Date
+          </li>
+
+          <li style="width: 320px;">
+            <!-- [culture]="getCurrentCulture()" -->
+            <!-- <jqxDateTimeInput #dateTimeFrom
+                                                [width]='262'                                                                                     
+                                                style="float:left;"
+                                                [theme]="'bootstrap'"
+                                                [formatString] ="'F'"   
+                                                [showTimeButton]='true' 
+                                                [culture]="getCurrentCulture()"
+                                                [showCalendarButton]="true"   
+                                                [height]='25'>
+                            </jqxDateTimeInput> -->
+
+            <!--  [(ngModel)]="dateTimeOfInjury"  -->
+
+            <jqxDateTimeInput
+              #dtTimeOfInjury
+              [width]="320"
+              [height]="25"
+              [theme]='"bootstrap"'
+              [disabled]="!canDeleteOrSave"
+              (onChange)="onAnyChange($event)"
+              [formatString]="'F'"
+              [culture]="getCurrentCulture()"
+              [showCalendarButton]="true"
+              style="float: left;"
+              [showTimeButton]="true"
+            ></jqxDateTimeInput>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+
+  <div class="bodySpace" style="padding: 10px; overflow-y: scroll;">
+    <div class="box50" style="height: 2000px;">
+      <ul class="ultable" style="margin-top: 20px;">
+        <li style="width: 10%;">
+          Program
+        </li>
+        <li style="width: 80%; height: 30px;">
+          <jqxDropDownList
+            #cmbProjects
+            [width]='"100%"'
+            [height]="25"
+            (onBindingComplete)="cmbProjectsBindingComplete($event)"
+            [autoDropDownHeight]="true"
+            [theme]='"bootstrap"'
+            [disabled]="!canDeleteOrSave"
+            (onChange)="onAnyChange($event)"
+            [displayMember]="'description'"
+            [valueMember]="'id'"
+            ([scrollBarSize])="5"
+            style="max-height: 100px !important; margin-top: 0px;"
+            [source]="dataAdapterProjects"
+          ></jqxDropDownList>
+        </li>
+      </ul>
+
+      <!-- <div style="overflow-y:scroll;"> -->
+      <!-- <div class="box50" > -->
+
+      <ul class="ultable" style="float: left; width: 100%;">
+        <!-- <li style="min-width: 395px; text-align: right;   margin-top:10px;  ">
+                                   
+                                        <ul class="ultable" style="float:left; margin:0px;width: 100%; " >
+
+                                            <li style="width: 120px; text-align: left;   line-height: 25px; ">
+                                                Date Time of Injury
+                                            </li>
+                                          
+                                            <li style="width: 'auto';   min-width: 270px;  ">
+                                                    <jqxDateTimeInput #dtTimeOfInjury
+                                                                        [width]='"100%"'                                                                        
+                                                                        [height]='25'
+                                                                        [theme]='"bootstrap"'   
+
+                                                                        [(ngModel)]="dateTimeOfInjury"
+                                                    
+                                                                        [formatString] ="'F'"                                             
+                                                                        [culture]="getCurrentCulture()"
+                                                                        [showCalendarButton]="true"
+                                                                        style="float:right;"
+                                                                        [showTimeButton]='true'>
+                                                    </jqxDateTimeInput> 
+                                                    
+                                            </li>
+
+                                        </ul>
+
+                                </li> -->
+
+        <li style="min-width: 395px; text-align: right; margin-top: 0px;">
+          <ul class="ultable" style="float: left; margin: 0px; width: 100%;">
+            <li style="width: 116px; text-align: left; line-height: 25px;">
+              Degree of Injury
+            </li>
+            <li style="width: 'auto'; min-width: 274px;">
+              <!-- [ngModel]="h_injuries.idfDegreeOfInjury" -->
+
+              <jqxDropDownList
+                #cmbDegreeOfInjury
+                [width]='"100%"'
+                [height]="25"
+                [disabled]="!canDeleteOrSave"
+                (onBindingComplete)="cmbDegreeOfInjuryBindingComplete($event)"
+                [autoDropDownHeight]="true"
+                [theme]='"bootstrap"'
+                (onChange)="onAnyChange($event)"
+                [displayMember]="'description'"
+                [valueMember]="'id'"
+                ([scrollBarSize])="5"
+                style="float: right;"
+                [source]="dataAdapterDegreeIncident"
+              ></jqxDropDownList>
+            </li>
+          </ul>
+        </li>
+      </ul>
+
+      <ul class="ultable" style="float: left; width: 100%;">
+        <li style="min-width: 395px; text-align: right; margin-top: 10px;">
+          <ul class="ultable" style="float: left; margin: 0px; width: 100%;">
+            <li style="width: 120px; float: left; text-align: left;">
+              Reported to Supervisor at
+            </li>
+
+            <!-- <li style="width: 65%; text-align: right; margin-right: 0%; line-height: 25px; "> -->
+            <li style="width: 'auto'; min-width: 270px;">
+              <jqxDateTimeInput
+                #dtdateReportedSupervisor
+                [width]='"100%"'
+                (onChange)="onAnyChange($event)"
+                [height]="25"
+                [theme]='"bootstrap"'
+                [disabled]="!canDeleteOrSave"
+                [(ngModel)]="dateReportedSupervisor"
+                [formatString]="'F'"
+                [culture]="getCurrentCulture()"
+                [showCalendarButton]="true"
+                style="float: right;"
+                [showTimeButton]="true"
+              ></jqxDateTimeInput>
+            </li>
+          </ul>
+        </li>
+
+        <!-- <div style="min-width: 400px; float:left; background: green; "> -->
+        <li style="min-width: 395px; text-align: right; margin-top: 10px;">
+          <ul class="ultable" style="float: left; margin: 0px; width: 100%;">
+            <li style="width: 116px; text-align: left;">
+              Supervisor
+            </li>
+
+            <li style="width: 'auto'; min-width: 274px;">
+              <jqxComboBox
+                #cmbSupervisor
+                [width]='"100%"'
+                (onBindingComplete)="BindingCompleteCmbSupervisor($event)"
+                [multiSelect]="false"
+                [height]="25"
+                [disabled]="!canDeleteOrSave"
+                (onChange)="onAnyChange($event)"
+                style="max-height: 100px !important;"
+                [displayMember]="'fullName'"
+                [valueMember]="'id'"
+                [searchMode]="'containsignorecase'"
+                [theme]="'bootstrap'"
+                [source]="dataAdapterStaffList"
+              ></jqxComboBox>
+            </li>
+          </ul>
+        </li>
+
+        <!-- </div> -->
+      </ul>
+
+      <!-- <ul class="ultable" style="float:right; width: 90%; margin-top:30px; " >
+                                <li style="width: 15%;">
+                                        Supervisor
+                                </li>
+                             
+                                <li style="min-width: 300; width:85%;  text-align: right;">  
+                                    
+                                    <jqxComboBox #cmbStaffInvolved
+                                                    [width]='"100%"'
+                                                    (onBindingComplete)="BindingCompleteCmbStaffInvolved($event)"
+                                                    [multiSelect]="true"
+                                                    [height]='25'                                                               
+                                                    style="max-height: 100px !important;"
+                                                    [displayMember]="'fullName'"
+                                                    [valueMember]="'id'"
+                                                    [searchMode]="'containsignorecase'"
+                                                    [theme]="'bootstrap'"                                                              
+                                                    [source]='dataAdapterStaffList_2'>
+                                    </jqxComboBox>
+                                </li>
+                         </ul> -->
+
+      <div class="subtitle1" style="margin-top: 20px;">
+        Type of Injury
+      </div>
+
+      <jqxListBox
+        #listBox_g4
+        [checkboxes]="true"
+        [width]="'90%'"
+        [height]="160"
+        [theme]='"bootstrap"'
+        [disabled]="!canDeleteOrSave"
+        [displayMember]="'display'"
+        (onCheckChange)="onAnyChange($event,'other')"
+        (onBindingComplete)="cmbTypeOfInjuryBindingComplete($event)"
+        [valueMember]="'id'"
+        style="margin-top: 20px; float: left;"
+        [source]="dataAdapterListBox_g4"
+      ></jqxListBox>
+
+      <ul class="ultable" style="float: left; width: 90%;">
+        <li style="width: 10%;">
+          Other
+        </li>
+
+        <li style="min-width: 300; width: 90%; text-align: right;">
+          <jqxInput
+            #g1_other
+            [width]='"100%"'
+            [theme]="'bootstrap'"
+            [height]="25"
+            [disabled]="!canDeleteOrSave"
+            (onChange)="onAnyChange($event)"
+            [(ngModel)]="st13_u"
+            [minLength]="1"
+          ></jqxInput>
+        </li>
+      </ul>
+
+      <div class="subtitle1" style="margin-top: 20px;">
+        Body Part Injured
+      </div>
+
+      <jqxListBox
+        #listBox_g5
+        [checkboxes]="true"
+        [width]="'90%'"
+        [height]="240"
+        [theme]='"bootstrap"'
+        [disabled]="!canDeleteOrSave"
+        (onCheckChange)="onAnyChange($event,'other')"
+        [displayMember]="'display'"
+        (onBindingComplete)="cmbBodyPartInjuryBindingComplete($event)"
+        [valueMember]="'id'"
+        style="margin-top: 20px; float: left;"
+        [source]="dataAdapterListBox_g5"
+      ></jqxListBox>
+
+      <ul class="ultable" style="float: left; width: 90%;">
+        <li style="width: 10%;">
+          Other
+        </li>
+
+        <li style="min-width: 300; width: 90%; text-align: right;">
+          <jqxInput
+            #g1_other
+            [width]='"100%"'
+            [theme]="'bootstrap'"
+            [disabled]="!canDeleteOrSave"
+            [height]="25"
+            (onChange)="onAnyChange($event)"
+            [(ngModel)]="st14_u"
+            [minLength]="1"
+          ></jqxInput>
+        </li>
+      </ul>
+
+      <div class="subtitle1" style="margin-top: 20px;">
+        Place of Occurrence
+      </div>
+
+      <jqxListBox
+        #listBox_g10
+        [checkboxes]="true"
+        [width]="'90%'"
+        [height]="280"
+        [disabled]="!canDeleteOrSave"
+        [theme]='"bootstrap"'
+        (onCheckChange)="onAnyChange($event,'other')"
+        [displayMember]="'display'"
+        (onBindingComplete)="cmbPlaceOfOccurrenceBindingComplete($event)"
+        [valueMember]="'id'"
+        style="margin-top: 20px; float: left;"
+        [source]="dataAdapterListBox_g10"
+      ></jqxListBox>
+
+      <ul class="ultable" style="float: left; width: 90%;">
+        <li style="width: 10%;">
+          Other
+        </li>
+
+        <li style="min-width: 300; width: 90%; text-align: right;">
+          <jqxInput
+            #g10_other
+            [width]='"100%"'
+            [theme]="'bootstrap'"
+            [disabled]="!canDeleteOrSave"
+            (onChange)="onAnyChange($event)"
+            [height]="25"
+            [(ngModel)]="st15_u"
+            [minLength]="1"
+          ></jqxInput>
+        </li>
+      </ul>
+
+      <ul class="ultable" style="float: left; width: 90%; margin-top: 30px;">
+        <li style="width: 90%;">
+          Apparent cause of Injury
+        </li>
+        <!-- style="min-width: 300px;"        -->
+        <li style="min-width: 300; width: 100%; text-align: right;">
+          <jqxTextArea
+            [width]="'100%'"
+            [height]="100"
+            [theme]='"bootstrap"'
+            [minLength]="1"
+            [disabled]="!canDeleteOrSave"
+            (onChange)="onAnyChange($event)"
+            [(ngModel)]="st16_u"
+            style="margin-top: 10px; float: left;"
+            [placeHolder]="''"
+          ></jqxTextArea>
+        </li>
+      </ul>
+
+      <ul class="ultable" style="float: left; width: 90%; margin-top: 30px;">
+        <li style="width: 90%;">
+          Supervisor Comments
+        </li>
+        <!-- style="min-width: 300px;"        -->
+        <li style="min-width: 300; width: 100%; text-align: right;">
+          <jqxTextArea
+            [width]="'100%'"
+            [height]="100"
+            [theme]='"bootstrap"'
+            [disabled]="!canDeleteOrSave"
+            [minLength]="1"
+            (onChange)="onAnyChange($event)"
+            [(ngModel)]="st17_u"
+            style="margin-top: 10px; float: left;"
+            [placeHolder]="''"
+          ></jqxTextArea>
+        </li>
+      </ul>
+
+      <ul class="ultable" style="float: left; width: 90%; margin-top: 30px;">
+        <li style="width: 90%;">
+          Physician's Comments
+        </li>
+        <!-- style="min-width: 300px;"        -->
+        <li style="min-width: 300; width: 100%; text-align: right;">
+          <jqxTextArea
+            [width]="'100%'"
+            [height]="100"
+            [theme]='"bootstrap"'
+            [disabled]="!canDeleteOrSave"
+            [minLength]="1"
+            (onChange)="onAnyChange($event)"
+            [(ngModel)]="st18_u"
+            style="margin-top: 10px; float: left;"
+            [placeHolder]="''"
+          ></jqxTextArea>
+        </li>
+      </ul>
+
+      <ul class="ultable" style="float: left; width: 90%; margin-top: 30px;">
+        <li style="width: 90%;">
+          Treatment Prescribed
+        </li>
+        <!-- style="min-width: 300px;"        -->
+        <li style="min-width: 300; width: 100%; text-align: right;">
+          <jqxTextArea
+            [width]="'100%'"
+            [height]="100"
+            [theme]='"bootstrap"'
+            [minLength]="1"
+            [disabled]="!canDeleteOrSave"
+            (onChange)="onAnyChange($event)"
+            [(ngModel)]="st19_u"
+            style="margin-top: 10px; float: left;"
+            [placeHolder]="''"
+          ></jqxTextArea>
+        </li>
+      </ul>
+
+      <ul class="ultable" style="float: left; width: 90%; margin-top: 30px;">
+        <li style="width: 90%;">
+          Name of Witnesses
+        </li>
+        <!-- style="min-width: 300px;"        -->
+        <li style="min-width: 300; width: 100%; text-align: right;">
+          <jqxTextArea
+            [width]="'100%'"
+            [height]="100"
+            [theme]='"bootstrap"'
+            [disabled]="!canDeleteOrSave"
+            [minLength]="1"
+            (onChange)="onAnyChange($event)"
+            [(ngModel)]="st20_u"
+            style="margin-top: 10px; float: left;"
+            [placeHolder]="''"
+          ></jqxTextArea>
+        </li>
+      </ul>
+    </div>
+
+    <div class="box50">
+      <h4>Use Mouse to Draw Injury Location</h4>
+
+      <div class="divToolBarbody">
+        <div class="blockMinRight" [hidden]="!canDeleteOrSave">
+          <i
+            class="icon ion-ios-close"
+            style="color: var(--first-color); float: left; margin-top: 5px;"
+          ></i>
+          <span
+            style="cursor: pointer;"
+            (click)="removeLastPoint()"
+            class="pagesSpan"
+          >
+            Undo last Drawing
+          </span>
+        </div>
+      </div>
+
+      <signature-pad
+        #SignaturePad
+        [options]="signaturePadOptions"
+        (onBeginEvent)="drawStart()"
+        (onEndEvent)="drawComplete(); onAnyChange($event,'other');"
+      ></signature-pad>
+
+      <!--
+
+                        [src]="imgpathbody"
+                        saveBtnText="Save"
+                        cancelBtnText="Cancel"
+                        outputMimeType="'image/png'"
+                        outputQuality="0.8"
+                        (save)="saveBody($event)"
+                        (cancel)="cancel()"  
+                        
+                      -->
+
+      <!-- <image-drawing
+                        #cosaDibujo
+                        [src]="''"                       
+                        saveBtnText="Save"
+                        cancelBtnText="Cancel"
+                        outputMimeType="'image/png'"
+                        outputQuality="0.8"
+                        (save)="saveBody($event)"
+                        (cancel)="cancel()" >
+                    </image-drawing> -->
+    </div>
+  </div>
+  <!-- </div>        -->
+</div>
+
+<!-- <jqxTabs #tabsReference
+            [initTabContent] = "initWidgets"
+         
+            [width]='"100%"'
+            [height]='"99%"'
+            [theme]='"bootstrap"'          
+            style="margin-top: 5px; float:left; "
+            [position]='"top"'
+            [animationType]='"none"'
+            [selectionTracker]='false'>
+            <ul style="list-style-type: none;">
+                <li>Injury</li>        
+            </ul>
+            <div>
+                   
+            </div>
+
+      
+            
+
+          </jqxTabs> -->
+
+<!-- </div>
+
+
+</div> -->

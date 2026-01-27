@@ -1,0 +1,238 @@
+﻿<glowmessages #glowmessage></glowmessages>
+
+<div class="menuContainer">
+  <menu [loaderReference]="myLoader"></menu>
+</div>
+
+<!-- 
+    [autorowheight]="true"
+    [pageable]='true'
+    [autoheight]='false' 
+-->
+
+<div class="appContainer">
+  <jqxLoader
+    #loaderReference
+    [width]="140"
+    [height]="140"
+    [isModal]="true"
+    [theme]="'bootstrap'"
+    [html]="'<div class=\'loadingdiv\'><div class=\'loader\'></div></div>'"
+    [imagePosition]='"top"'
+  ></jqxLoader>
+
+  <div class="auxMenuBar">
+    <div class="titleHeaderSpace">{{'staff_title' | translate}}</div>
+
+    <div class="blockMinRight">
+      <button
+        class="button buttonSave"
+        [routerLink]="['/staff/staff-forms']"
+        style="float: right;"
+      >
+        <i class="icon ion-ios-paper"></i>
+        &nbsp;{{'global_binders' | translate}}
+      </button>
+      <button
+        class="button buttonSave"
+        [hidden]="!canAddNew()"
+        (click)="openWindowManagePositions($event)"
+        style="float: right;"
+      >
+        <i class="icon ion-ios-briefcase"></i>
+        &nbsp;{{'global_positions' | translate}}
+      </button>
+
+      <button
+        class="button buttonSave"
+        [hidden]="!canAddNew()"
+        (click)="createNew($event)"
+        style="margin-right: 10px; float: right;"
+      >
+        <i class="icon ion-ios-add"></i>
+        {{'staff_create_new' | translate}}
+      </button>
+    </div>
+  </div>
+
+  <div class="headerSpace"></div>
+
+  <div class="bodySpace">
+    <!-- <jqxGrid #gridReference
+        [ready]="gridReady"
+        (onCellclick)='gridCellClick($event)'     
+        (onRowselect) = 'gridRowselect($event)'                      
+        [theme]='"bootstrap"'                            
+        [filterable]="true"                                                  
+      
+        [rowsheight]="70"     
+        [scrollbarsize]="5"     
+        [sortable]="true"    
+        [rendered]="renderedGrid"
+        (onSort)="OnGridGenericEvent($event)"
+        (onFilter)="OnGridGenericEvent($event)"    
+
+        [width]="'100%'"
+        [height]="'99%'"
+        [ready]="ready" 
+        [source]='dataAdapterTasks'
+        [columns]='columnsGridTasks'
+        [pageable]='false'
+        [editable]='false'
+        [autoheight]='false'
+        style="margin-top:0px !important;">
+    </jqxGrid> -->
+
+    <jqxGrid
+      #gridReference
+      [autoshowcolumnsmenubutton]="false"
+      [filterable]="true"
+      [ready]="ready"
+      [rowsheight]="70"
+      [scrollbarsize]="15"
+      (onRowselect)="gridRowselect($event)"
+      [rendered]="renderedGrid"
+      (onCellclick)="cellClick($event)"
+      [theme]='"bootstrap"'
+      [width]="'100%'"
+      [autoheight]="true"
+      [pageable]="true"
+      (onSort)="OnGridGenericEvent($event)"
+      (onFilter)="OnGridGenericEvent($event)"
+      [source]="dataAdapter"
+      ([scrollBarSize])="5"
+      [editable]="false"
+      [columns]="columns"
+    ></jqxGrid>
+    <!-- <jqxGrid #gridReference
+                 [filterable]="true"
+                 [autorowheight]="true"
+                 (onCellclick)='cellClick($event)'
+                 [theme]='"bootstrap"'
+                 [width]="'100%'"
+                 [height]="'99%'"
+            
+                 [source]='dataAdapter'
+                 [pageable]='false'
+                 [editable]='false'
+                 [autoheight]='true'
+                 [columns]='columns'>
+        </jqxGrid> -->
+  </div>
+
+  <jqxWindow
+    #positionsWindow
+    [width]="400"
+    [maxWidth]="400"
+    [minWidth]="400"
+    [height]="400"
+    [maxHeight]="400"
+    [minHeight]="400"
+    [theme]='"bootstrap"'
+    [autoOpen]="false"
+    [title]=""
+    [isModal]="true"
+  >
+    <div id="windowContent">
+      <ul class="ultable" [hidden]="!isInrol">
+        <li style="width: 60px;">
+          <div class="textTitle">
+            {{'projects_position_window'| translate }}
+          </div>
+        </li>
+        <li style="width: 234px;">
+          <jqxInput
+            #txtAddPosition
+            [width]="240"
+            [hidden]="!isInrol"
+            [theme]="'bootstrap'"
+            [height]="25"
+            [minLength]="1"
+          ></jqxInput>
+        </li>
+
+        <li style="width: 96px; text-align: right;">
+          <button
+            class="button buttonSave"
+            (click)="addPositionClick($event)"
+            style="margin-left: 10px; float: left;"
+          >
+            <i class="icon ion-ios-add"></i>
+            {{'global_add' | translate}}
+          </button>
+        </li>
+      </ul>
+
+      <div
+        style="
+          height: 200px;
+          margin-top: 40px;
+          width: 380px;
+          float: left;
+          overflow-y: scroll;
+        "
+      >
+        <ul
+          class="ultable"
+          *ngFor="let p of this.positions"
+          style="width: 98%;"
+          [hidden]="p.abm=='D'"
+        >
+          <li style="width: 70px;">
+            <jqxButton
+              [theme]='"bootstrap"'
+              [hidden]="!isInrol"
+              (onClick)="removePositionClick(p)"
+              style="margin-left: 0px;"
+            >
+              <i class="icon ion-ios-close"></i>
+            </jqxButton>
+          </li>
+
+          <li style="width: 80%px;" (click)="selectPosition(p)">
+            <div class="textTitle">{{p.name}}</div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- <div style="float:left; height:200px; margin-top:40px; width:500px;">
+                <ul class="ultable" style="float:left; padding:10px; padding-top:0;">
+                    <li>
+                        <strong [hidden]="selectedPositionTitle.length==0">{{selectedPositionTitle}} Roles<br /></strong>
+
+                        <jqxListBox #listBoxPositionsRoles
+                                    (onCheckChange)="ListBoxPositionsRolesCheckChange($event)"
+                                    [hidden]="selectedPositionTitle.length==0"
+                                    [checkboxes]="true"
+                                    [filterable]="false"
+                                    [scrollBarSize]="5"
+                                    [width]="'495px'"
+                                    [searchMode]="'containsignorecase'"
+                                    [height]='"200px"'
+                                    [theme]='"bootstrap"'
+                                    style="float:left;"
+                                    [displayMember]="'displayShortName'"
+                                    [valueMember]="'id'"
+                                    [source]='dataAdapterRolesList'>
+                        </jqxListBox>
+                    </li>
+                </ul>
+            </div> -->
+
+      <div class="buttonWindowDiv">
+        <button
+          class="button buttonSave"
+          (click)="cancelWindowPositions($event)"
+        >
+          <i class="icon ion-ios-arrow-dropleft"></i>
+          {{'global_cancel' | translate}}
+        </button>
+
+        <button class="button buttonSave" (click)="savePositions($event)">
+          <i class="icon ion-ios-checkmark-circle-outline"></i>
+          {{'global_save' | translate}}
+        </button>
+      </div>
+    </div>
+  </jqxWindow>
+</div>

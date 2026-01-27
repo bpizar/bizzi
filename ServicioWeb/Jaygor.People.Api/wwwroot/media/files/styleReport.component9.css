@@ -1,0 +1,357 @@
+
+/* Allways must be Copy to root */
+
+.containerToolbar {
+    width: 75%;
+    padding: 4px;
+    height: 25px;
+    padding-left: 40px;
+    position: fixed;
+    top: 58px;
+    left: 20%;
+    z-index: 1000000;
+    /* background-color:red; */
+}
+
+    .containerToolbar i {
+        font-size: 24px;
+    }
+
+.zoomValue {
+    font-size: 10px;
+    color: #b6b0b0;
+    line-height: 30px;
+    float: left;
+}
+
+.pagesSpan {
+    color: #5bc0de;
+    line-height: 30px;
+    float: left;
+    margin-left: 10px;
+    font-size: 12px;
+    margin-right: 4px;
+}
+
+body {
+    background: white;
+    overflow-y: no-display;
+}
+
+.contentReport {
+    overflow: no-display;
+    height: -webkit-calc(100% - 0px);
+    height: -moz-calc(100% - 0px);
+    height: calc(100% - 0px);
+    position: relative;
+    /* background: red; */
+}
+
+.page {
+    background: white;
+    display: block;
+    margin: 2cm auto;
+    margin-bottom: 0.5cm;
+    box-shadow: 0 0 0.5cm rgba(0,0,0,0.5);
+}
+
+.boldGroup {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 25px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+
+
+   
+}
+
+.boldGroupFirst {
+    width: 95%;   
+    height: 22px;
+    max-height: 22px; 
+
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis !important;
+}
+
+.pageA4 {
+    width: 21.5cm;
+    height: 27.94cm;
+    page-break-after: always;
+}
+
+.pageA4Portrait {
+    width: 29.7cm;
+    height: 21cm;
+}
+
+.titleReport {
+    width: 100%;
+    text-align: center;
+    margin-top: 1cm;
+    float: left;
+    font-size: 24px;
+    /* font-weight:bold; */
+    height: 70px;
+    line-height: 20px;
+    text-transform: uppercase;
+    /* background: red; */
+}
+
+    .titleReport .subtitle {
+        /* background: blue; */
+        text-align: left;
+        font-size: 14px;
+        text-transform: none;
+        margin-top: 4px;
+        overflow: hidden;
+        width: 95%;
+        height: 25px;
+        ;
+        float: left;
+        /* line-height: 15px; */
+        margin-left: 25px;
+        /* background: red; */
+
+
+       
+      
+        /* max-height: 22px;  */
+    
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis !important;
+
+    }
+
+.line {
+    width: 95%;
+    height: 2px;
+    background-color: #5bc0de;
+    float: left;
+    margin-top: 10px;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-bottom: 10px;
+}
+
+
+.reportMain100
+{
+  width:100% !important; 
+}
+
+.reportMainRight li {
+    /* color: #ffffff; */
+}
+
+
+.reportMainRight td {
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.reportMainRight table {
+    width: 95% !important;
+
+    width: 750px !important;
+
+    border: none !important;
+    float: left;
+    margin: 20px;
+
+    /* border:1px solid red !important; */
+    max-width: 750px !important;
+
+
+     /* overflow: hidden !important; */
+}
+
+
+.reportMainRight th, td {
+    border: none !important;
+    border-bottom: 1px solid #ddd !important;
+    
+    /* text-align: center; */
+
+    /* white-space: nowrap; */
+    /* overflow: hidden; */
+   
+    /* text-overflow: ellipsis !important; */
+    /* background: blue !important;
+    
+    white-space: nowrap;
+    overflow: hidden;
+   
+    text-overflow: ellipsis !important; */
+    max-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+ .reportMainRight td p {
+        display:inline;
+        
+        /* max-width: 90% !important; */
+        /* width: 90% !important; */
+        
+        /* width:380px !important;  */
+        /* max-width:380px !important; */
+
+        /* width: 99% !important; */
+        /* white-space: nowrap;
+        overflow: hidden;
+       
+        text-overflow: ellipsis !important; */
+        /* background: yellow !important; */
+    }
+
+.reportMainRight th {
+    background-color: #5bc0de !important;
+    color: white !important;
+}
+
+.scrollable {
+    height: 102%;
+    height: -webkit-calc(102% - 0px);
+    height: -moz-calc(102% - 0px);
+    height: calc(102% - 0px);
+    position: relative;
+}
+
+    .scrollable > div {
+        /* height:27.94cm; */
+        height: 30cm;
+    }
+
+    .scrollable.section {
+        overflow: auto;
+    }
+
+    .scrollable > div.zoom1 {
+        zoom: 0.25;
+        -ms-zoom: 0.25;
+        -webkit-zoom: 0.25;
+        -moz-transform: scale(0.25,0.25);
+        -moz-transform-origin: left center;
+    }
+
+    .scrollable > div.zoom2 {
+        zoom: 0.5;
+        -ms-zoom: 0.5;
+        -webkit-zoom: 0.5;
+        -moz-transform: scale(0.5,0.5);
+        -moz-transform-origin: left center;
+    }
+
+    .scrollable > div.zoom3 {
+        zoom: 0.75;
+        -ms-zoom: 0.75;
+        -webkit-zoom: 0.75;
+        -moz-transform: scale(0.75,0.75);
+        -moz-transform-origin: left center;
+    }
+
+    .scrollable > div.zoom5 {
+        zoom: 1.25;
+        -ms-zoom: 1.25;
+        -webkit-zoom: 1.25;
+        -moz-transform: scale(1.25,1.25);
+        -moz-transform-origin: left center;
+    }
+
+    .scrollable > div.zoom6 {
+        zoom: 1.5;
+        -ms-zoom: 1.5;
+        -webkit-zoom: 1.5;
+        -moz-transform: scale(1.5,1.5);
+        -moz-transform-origin: left center;
+    }
+
+
+
+[hidden] {
+    display: none !important;
+}
+
+
+
+
+.headerDailyLogPrint
+{
+    height: 300px;
+    width: 80%;
+    background: red;
+    float: left;
+}
+
+.headerDailyLogPrintLeft
+{
+    height: 200px;
+    width: 200px;
+  
+    float: left;
+    margin-left: 60px;
+   
+    display: flex;
+
+}
+
+
+ .headerDailyLogPrintLeft img {
+
+   width: 150px;  
+   height: 150px; 
+   margin: auto;  
+} 
+
+.headerDailyLogPrintRight
+{
+  height: 200px;
+  width: 500px;
+
+  float: left;
+  vertical-align: middle;
+}
+
+.ultable {
+    list-style: none outside none;
+    float: left;
+    width: 100%;
+    -webkit-margin-before: 10px;
+    -webkit-margin-after: 0px;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+    -webkit-padding-start: 0px;
+  
+  
+    /* border:1px solid red !important; */
+  }
+  
+    .ultable li {
+      float: left;
+      display: block;
+      font-size: 13px;
+      color: #555555;
+      
+      /* border:1px solid red !important; */
+    }
+
+
+
+@media print {
+    /* body, .page, .pageA4 { */
+    .page, .pageA4 {
+        margin: 0cm !important;
+        box-shadow: 0 0 0cm rgba(0,0,0,0) !important;
+    }
+
+    body {
+        /*background: red !important;*/
+    }
+}

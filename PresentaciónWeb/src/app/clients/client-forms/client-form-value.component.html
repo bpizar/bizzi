@@ -1,0 +1,312 @@
+<glowmessages #glowmessage></glowmessages>
+
+<div class="menuContainer">
+  <menu [loaderReference]="myLoader"></menu>
+</div>
+
+<div class="appContainer">
+  <jqxLoader
+    #loaderReference
+    [width]="140"
+    [height]="140"
+    [isModal]="true"
+    [theme]="'bootstrap'"
+    [html]="'<div class=\'loadingdiv\'><div class=\'loader\'></div></div>'"
+    [imagePosition]="'top'"
+  ></jqxLoader>
+
+  <div class="auxMenuBar">
+    <div class="titleHeaderSpace">
+      {{ 'client_forms_value_title' | translate }}
+    </div>
+    <div class="blockMinRight"></div>
+  </div>
+
+  <div class="headerSpace">
+    <div [hidden]="!clientName" class="form-header">
+      <div style="font-size: large;">Client: {{ clientName }}</div>
+      <div>Form Title: {{ clientFormName }}</div>
+    </div>
+  </div>
+
+  <div *ngIf="clientInformation" class="container-collapse-10">
+    <button type="button" class="collapsible" (click)="showInfo = !showInfo">
+      <div *ngIf="showInfo">
+        <i class="icon ion-ios-remove"></i>
+        Information
+      </div>
+      <div *ngIf="!showInfo">
+        <i class="icon ion-ios-add"></i>
+        Information
+      </div>
+    </button>
+    <div
+      class="content-info"
+      [ngClass]="{ 'show-info': showInfo, 'hide-info': !showInfo }"
+    >
+      <div [innerHTML]="clientInformation"></div>
+    </div>
+  </div>
+
+  <div style="display: flex; flex-wrap: wrap; margin: 5px;">
+    <div *ngIf="fileNameTD" style="width: 48%; margin: 5px;">
+      <button class="button" type="button" (click)="downloadTemplateFile()">
+        Download Template File
+        <i class="fa fa-download"></i>
+      </button>
+    </div>
+  </div>
+
+  <form #f="ngForm" [formGroup]="clientFormGroup" (ngSubmit)="save(f)">
+    <div class="form-container">
+      <div class="form-group">
+        <div class="textTitle form-label">
+          Form date
+          <i
+            *ngIf="true"
+            class="fa fa-info-circle icon-info"
+            title="Form filling date"
+          ></i>
+        </div>
+        <div class="form-input">
+          <jqxDateTimeInput
+            #cmbFormDateTime
+            [width]="200"
+            [theme]="'bootstrap'"
+            [formatString]="'d'"
+            [height]="25"
+            [placeHolder]=""
+          ></jqxDateTimeInput>
+        </div>
+      </div>
+      <div *ngFor="let formField of formFields">
+        <div *ngIf="formField.datatype == 'text'" class="form-group">
+          <div class="textTitle form-label">
+            {{ formField.name }}
+            <i
+              *ngIf="formField.description != ''"
+              class="fa fa-info-circle icon-info"
+              title="{{ formField.description }}"
+            ></i>
+          </div>
+          <div class="form-input">
+            <jqxInput
+              [width]="200"
+              [formControlName]="formField.id"
+              [theme]="'bootstrap'"
+              [height]="25"
+              [minLength]="1"
+              [placeHolder]="formField.placeholder"
+            ></jqxInput>
+          </div>
+        </div>
+
+        <div *ngIf="formField.datatype == 'number'" class="form-group">
+          <div class="textTitle form-label">
+            {{ formField.name }}
+            <i
+              *ngIf="formField.description != ''"
+              class="fa fa-info-circle icon-info"
+              title="{{ formField.description }}"
+            ></i>
+          </div>
+          <div class="form-input" style="width: 200px;">
+            <jqxNumberInput
+              [formControlName]="formField.id"
+              [width]="200"
+              [spinButtons]="true"
+              [decimalDigits]="0"
+              [inputMode]="'simple'"
+              [theme]="'bootstrap'"
+              [height]="25"
+              [placeHolder]="formField.placeholder"
+            ></jqxNumberInput>
+          </div>
+        </div>
+
+        <div *ngIf="formField.datatype == 'date'" class="form-group">
+          <div class="textTitle form-label">
+            {{ formField.name }}
+            <i
+              *ngIf="formField.description != ''"
+              class="fa fa-info-circle icon-info"
+              title="{{ formField.description }}"
+            ></i>
+          </div>
+          <div class="form-input" style="width: 200px;">
+            <jqxDateTimeInput
+              [formControlName]="formField.id"
+              [width]="200"
+              [theme]="'bootstrap'"
+              [formatString]="'d'"
+              [height]="25"
+              [placeHolder]=""
+            ></jqxDateTimeInput>
+          </div>
+        </div>
+
+        <div *ngIf="formField.datatype == 'time'" class="form-group">
+          <div class="textTitle form-label">
+            {{ formField.name }}
+            <i
+              *ngIf="formField.description != ''"
+              class="fa fa-info-circle icon-info"
+              title="{{ formField.description }}"
+            ></i>
+          </div>
+          <div class="form-input" style="width: 200px;">
+            <jqxDateTimeInput
+              [showTimeButton]="true"
+              [showCalendarButton]="false"
+              [formControlName]="formField.id"
+              [width]="200"
+              [theme]="'bootstrap'"
+              [formatString]="'HH:mm'"
+              [height]="25"
+              [placeHolder]=""
+            ></jqxDateTimeInput>
+          </div>
+        </div>
+
+        <div *ngIf="formField.datatype == 'decimal number'" class="form-group">
+          <div class="textTitle form-label">
+            {{ formField.name }}
+            <i
+              *ngIf="formField.description != ''"
+              class="fa fa-info-circle icon-info"
+              title="{{ formField.description }}"
+            ></i>
+          </div>
+          <div class="form-input" style="width: 200px;">
+            <jqxNumberInput
+              [formControlName]="formField.id"
+              [width]="200"
+              [spinButtons]="true"
+              [decimalDigits]="2"
+              [inputMode]="'simple'"
+              [theme]="'bootstrap'"
+              [height]="25"
+              [placeHolder]="formField.placeholder"
+            ></jqxNumberInput>
+          </div>
+        </div>
+
+        <div *ngIf="formField.datatype == 'check/no check'" class="form-group">
+          <div class="textTitle form-label">
+            {{ formField.name }}
+            <i
+              *ngIf="formField.description != ''"
+              class="fa fa-info-circle icon-info"
+              title="{{ formField.description }}"
+            ></i>
+          </div>
+          <div class="form-input" style="width: 200px;">
+            <jqxCheckBox
+              [formControlName]="formField.id"
+              style="float: left;"
+              [width]="120"
+              [height]="25"
+              [theme]="'bootstrap'"
+              [checked]="formField.isChecked"
+            ></jqxCheckBox>
+          </div>
+        </div>
+
+        <div *ngIf="formField.datatype == 'yes/no'" class="form-group">
+          <div class="textTitle form-label">
+            {{ formField.name }}
+            <i
+              *ngIf="formField.description != ''"
+              class="fa fa-info-circle icon-info"
+              title="{{ formField.description }}"
+            ></i>
+          </div>
+          <div class="form-input" style="width: 100px; display: flex;">
+            <jqxRadioButton
+              [formControlName]="formField.id"
+              style="float: left;"
+              [width]="120"
+              [height]="25"
+              [groupName]="formField.id"
+              [theme]="'bootstrap'"
+              [checked]="formField.isChecked ? formField.isChecked : 'false'"
+              (onChange)="onRadioChange($event, formField.id)"
+            >
+              <!--  formField.isChecked? formField.isChecked : 'false' -->
+              <span>Yes</span>
+            </jqxRadioButton>
+
+            <jqxRadioButton
+              style="float: left;"
+              [width]="120"
+              [height]="25"
+              [groupName]="formField.id"
+              [theme]="'bootstrap'"
+              [checked]="formField.isChecked ? !formField.isChecked : 'true'"
+            >
+              <span>No</span>
+            </jqxRadioButton>
+          </div>
+        </div>
+
+        <div *ngIf="formField.datatype == 'note'" class="form-note-input">
+          <div class="textTitle">
+            {{ formField.name }}
+            <i
+              *ngIf="formField.description != ''"
+              class="fa fa-info-circle icon-info"
+              title="{{ formField.description }}"
+            ></i>
+          </div>
+          <div style="width: 60%;">
+            <jqxTextArea
+              [formControlName]="formField.id"
+              [height]="100"
+              [placeHolder]="formField.placeholder"
+            ></jqxTextArea>
+          </div>
+        </div>
+      </div>
+      <div class="form-buttons">
+        <jqxButton
+          class="regular-button"
+          type="submit"
+          style="margin-right: 5px;"
+        >
+          <i class="fa fa-save"></i>
+          Save
+        </jqxButton>
+        <jqxButton
+          class="regular-button"
+          type="button"
+          class="btn btn-secondary waves-effect waves-light"
+          (click)="cancel()"
+        >
+          <i class="fa fa-cancel"></i>
+          Cancel
+        </jqxButton>
+      </div>
+    </div>
+  </form>
+</div>
+
+<!-- <form [formGroup]="myFormGroup" (ngSubmit)="onSubmit()">
+  <div *ngFor="let form_elem of formTemplate">
+  <div [ngSwitch]="form_elem.type">
+    <div *ngSwitchCase="'textBox'">
+      <input type="text" formControlName="{{form_elem.label}}"/>
+    </div>
+    <div *ngSwitchCase="'number'">
+      <input type="number" formControlName="{{form_elem.label}}"/>
+    </div>
+    <div *ngSwitchCase="'select'">
+      <select formControlName="{{form_elem.label}}">
+        <option *ngFor="let opt of form_elem.options">
+          {{opt}}
+        </option>
+      </select>
+    </div>
+  </div>  
+  </div>
+  <input type="submit" value="save"/>
+</form> -->

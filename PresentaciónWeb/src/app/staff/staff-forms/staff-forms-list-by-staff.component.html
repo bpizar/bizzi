@@ -1,0 +1,228 @@
+<table class="table-data">
+  <thead>
+    <tr>
+      <th>
+        <div class="filter-table-header">
+          Name
+          <input
+            class="input-table-filter"
+            [(ngModel)]="searchByName"
+            name="searchName"
+            type="text"
+            placeholder="Filter by Name"
+            (keyup)="search('name')"
+          />
+        </div>
+      </th>
+      <th>
+        <div class="filter-table-header">
+          Description
+          <input
+            class="input-table-filter"
+            [(ngModel)]="searchByDescription"
+            name="searchDescription"
+            type="text"
+            placeholder="Filter by Description"
+            (keyup)="search('description')"
+          />
+        </div>
+      </th>
+      <th style="vertical-align: top;">Date</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let staffFormbyStaff of staffFormsbyStaff">
+      <td>
+        {{ staffFormbyStaff.name }}
+      </td>
+      <td>
+        {{ staffFormbyStaff.description }}
+      </td>
+      <td>
+        {{
+          (staffFormbyStaff.idfStaffFormValue > 0
+            ? staffFormbyStaff.formDateTime
+            : ''
+          ) | date: 'MM-dd-yyyy'
+        }}
+      </td>
+      <td>
+        <jqxButton
+          *ngIf="
+            staffFormbyStaff.idfStaffFormValue > 0 &&
+            !staffFormbyStaff.template.startsWith('Image')
+          "
+          [routerLink]="[
+            '/staff/staff-form-value',
+            staffFormbyStaff.idfStaffFormValue
+          ]"
+          [theme]="'bootstrap'"
+        >
+          Edit
+          <i class="fa fa-edit"></i>
+        </jqxButton>
+        <jqxButton
+          *ngIf="
+            staffFormbyStaff.idfStaffFormValue > 0 &&
+            staffFormbyStaff.template.startsWith('Image')
+          "
+          [routerLink]="[
+            '/staff/staff-form-image-value',
+            staffFormbyStaff.idfStaffFormValue
+          ]"
+          [theme]="'bootstrap'"
+        >
+          Edit
+          <i class="fa fa-edit"></i>
+        </jqxButton>
+        <jqxButton
+          *ngIf="
+            staffFormbyStaff.idfStaffFormValue > 0 &&
+            !staffFormbyStaff.template.startsWith('Image')
+          "
+          (click)="print(staffFormbyStaff.idfStaffFormValue)"
+          [theme]="'bootstrap'"
+        >
+          Print
+          <i class="fa fa-print"></i>
+        </jqxButton>
+        <jqxButton
+          *ngIf="
+            staffFormbyStaff.idfStaffFormValue > 0 &&
+            staffFormbyStaff.template.startsWith('Image')
+          "
+          (click)="
+            printImage(
+              staffFormbyStaff.idfStaffFormValue,
+              staffFormbyStaff.template
+            )
+          "
+          [theme]="'bootstrap'"
+        >
+          Print
+          <i class="fa fa-print"></i>
+        </jqxButton>
+        <jqxButton
+          *ngIf="
+            !staffFormbyStaff.template.startsWith('Image') &&
+            (!staffFormbyStaff.idfStaffFormValue > 0 ||
+              staffFormbyStaff.idfRecurrence > 0)
+          "
+          [routerLink]="[
+            '/staff/staff-form-value',
+            staffFormbyStaff.id,
+            idStaff
+          ]"
+          [theme]="'bootstrap'"
+        >
+          Create
+          <i class="fa fa-plus"></i>
+        </jqxButton>
+        <jqxButton
+          *ngIf="
+            staffFormbyStaff.template.startsWith('Image') &&
+            (!staffFormbyStaff.idfStaffFormValue > 0 ||
+              staffFormbyStaff.idfRecurrence > 0)
+          "
+          [routerLink]="[
+            '/staff/staff-form-image-value',
+            staffFormbyStaff.id,
+            idStaff
+          ]"
+          [theme]="'bootstrap'"
+        >
+          Create
+          <i class="fa fa-plus"></i>
+        </jqxButton>
+        <jqxButton
+          (click)="showHistory(staffFormbyStaff.id)"
+          [theme]="'bootstrap'"
+        >
+          History
+          <i class="fa fa-list"></i>
+        </jqxButton>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<jqxWindow
+  #historyWindow
+  [width]="700"
+  [theme]="'bootstrap'"
+  [maxHeight]="400"
+  [resizable]="false"
+  [hidden]="true"
+  [autoOpen]="false"
+  [title]="'History'"
+  [isModal]="true"
+>
+  <div id="windowPeriodContent" style="overflow: hidden;">
+    <div style="height: 300px; margin: 5px 10px 0 10px; overflow-y: scroll;">
+      <table class="table-data">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Date</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let staffFormHistory of staffFormsHistory">
+            <td>
+              {{ staffFormHistory.name }}
+            </td>
+            <td>
+              {{ staffFormHistory.description }}
+            </td>
+            <td>
+              {{
+                (staffFormHistory.idfStaffFormValue > 0
+                  ? staffFormHistory.formDateTime
+                  : ''
+                ) | date: 'MM-dd-yyyy'
+              }}
+            </td>
+            <td>
+              <jqxButton
+                *ngIf="
+                  staffFormHistory.idfStaffFormValue > 0 &&
+                  !staffFormHistory.template.startsWith('Image')
+                "
+                (click)="print(staffFormHistory.idfStaffFormValue, true)"
+                [theme]="'bootstrap'"
+              >
+                Print
+                <i class="fa fa-print"></i>
+              </jqxButton>
+              <jqxButton
+                *ngIf="
+                  staffFormHistory.idfStaffFormValue > 0 &&
+                  staffFormHistory.template.startsWith('Image')
+                "
+                (click)="
+                  printImage(
+                    staffFormHistory.idfStaffFormValue,
+                    staffFormHistory.template
+                  )
+                "
+                [theme]="'bootstrap'"
+              >
+                Print
+                <i class="fa fa-print"></i>
+              </jqxButton>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="footerWindow">
+      <button class="button buttonSave" (click)="historyWindow.close()">
+        <i class="icon ion-ios-checkmark-circle-outline"></i>
+        {{ 'global_save' | translate }}
+      </button>
+    </div>
+  </div>
+</jqxWindow>

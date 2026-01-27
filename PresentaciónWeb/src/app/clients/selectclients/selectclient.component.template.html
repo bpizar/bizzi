@@ -1,0 +1,61 @@
+﻿<jqxLoader
+  #loaderReference
+  [width]="140"
+  [height]="140"
+  [isModal]="true"
+  [theme]="'bootstrap'"
+  [html]="'<div class=\'loadingdiv\'><div class=\'loader\'></div></div>'"
+  [imagePosition]='"top"'
+></jqxLoader>
+
+<jqxWindow
+  #selectClient
+  [width]="400"
+  [height]="360"
+  [maxHeight]="360"
+  [minHeight]="360"
+  [maxWidth]="400"
+  [resizable]="false"
+  [minWidth]="400"
+  [theme]='"bootstrap"'
+  [autoOpen]="false"
+  [isModal]="true"
+>
+  <div id="windowcontent">
+    <ul class="ultable">
+      <li style="width: 120px;">
+        <div class="textTitle">{{'global_clients' | translate}}</div>
+      </li>
+      <li style="width: 380px;">
+        <jqxListBox
+          #ClientListBox
+          [width]='"100%"'
+          [height]="200"
+          [checkboxes]="true"
+          [filterable]="true"
+          [theme]='"bootstrap"'
+          [displayMember]="'fullName'"
+          [valueMember]="'id'"
+          [searchMode]="'containsignorecase'"
+          [renderer]="rendererListBox"
+          [scrollBarSize]="5"
+          [filterPlaceHolder]="PlaceHolderLookingFor"
+          [source]="dataAdapterClientsListBox"
+        ></jqxListBox>
+      </li>
+    </ul>
+
+    <div class="buttonWindowDiv">
+      <button class="button buttonSave" (click)="CancelClick($event)">
+        <i class="icon ion-ios-arrow-dropleft"></i>
+        {{'global_cancel' | translate}}
+      </button>
+
+      <button class="button buttonSave" (click)="OkClick($event)">
+        <!-- <i class="icon ion-ios-checkmark" ></i> {{'global_ok' | translate}} -->
+        <i class="icon ion-ios-checkmark-circle-outline"></i>
+        {{'global_save' | translate}}
+      </button>
+    </div>
+  </div>
+</jqxWindow>

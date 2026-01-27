@@ -1,0 +1,34 @@
+<glowmessages #glowmessage></glowmessages>
+
+<div class="menuContainer">
+  <menu [loaderReference]="myLoader"></menu>
+</div>
+
+<div class="appContainer">
+  <jqxLoader
+    #loaderReference
+    [width]="140"
+    [height]="140"
+    [isModal]="true"
+    [theme]="'bootstrap'"
+    [html]="'<div class=\'loadingdiv\'><div class=\'loader\'></div></div>'"
+    [imagePosition]="'top'"
+  ></jqxLoader>
+
+  <div class="auxMenuBar">
+    <div class="titleHeaderSpace">Reports</div>
+    <div class="blockMinRight"></div>
+  </div>
+
+  <div class="headerSpace"></div>
+  <div id="print-section" [innerHTML]="report"></div>
+  <jqxButton
+    class="regular-button"
+    type="button"
+    class="btn btn-secondary waves-effect waves-light"
+    (click)="print()"
+  >
+    <i class="fa fa-print"></i>
+    Print
+  </jqxButton>
+</div>

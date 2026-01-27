@@ -1,0 +1,476 @@
+<glowmessages #glowmessage></glowmessages>
+
+<div class="menuContainer">
+  <menu></menu>
+</div>
+
+<jqxLoader
+  #loaderReference
+  [width]="140"
+  [height]="140"
+  [isModal]="true"
+  [theme]="'bootstrap'"
+  [html]="'<div class=\'loadingdiv\'><div class=\'loader\'></div></div>'"
+  [imagePosition]='"top"'
+></jqxLoader>
+
+<div class="appContainer">
+  <!-- IS PRINTING SECTION -->
+
+  <div class="auxMenuBar">
+    <div class="titleHeaderSpace">
+      {{'report_title' | translate}} - DailyLog
+    </div>
+
+    <!-- <button class="button buttonSave"                 
+            (click)="closeWindow($event)"
+            style="margin-right:10px; float:left;">
+            <i class="icon ion-ios-close" ></i> Close
+         </button> -->
+
+    <div class="blockMinRight">
+      <button
+        class="button buttonSave"
+        (click)="closeWindow($event)"
+        style="margin-right: 10px; float: left;"
+      >
+        <i class="icon ion-ios-close"></i>
+        Close
+      </button>
+
+      <i
+        class="icon ion-ios-search"
+        style="color: var(--first-color); float: left; margin-top: 5px;"
+      ></i>
+
+      <jqxButton
+        #lessZoom
+        [width]='"25px"'
+        [height]='"27px"'
+        style="float: left; margin-left: 4px;"
+        (onClick)="LessZoom($event)"
+        [theme]='"metro"'
+      >
+        <i class="icon ion-ios-remove" style="color: var(--first-color);"></i>
+      </jqxButton>
+
+      <jqxButton
+        #moreZoom
+        [width]='"25px"'
+        [height]='"27px"'
+        (onClick)="MoreZoom($event)"
+        style="float: left; margin-left: 4px;"
+        [theme]='"metro"'
+      >
+        <i class="icon ion-ios-add" style="color: var(--first-color);"></i>
+      </jqxButton>
+
+      <span class="zoomValue" style="margin-left: 4px;">{{getZommText()}}</span>
+
+      <!-- <span class="pagesSpan">{{'report_print_bar' | translate}}</span> -->
+
+      <jqxButton
+        #PrintButton
+        [width]='"25px"'
+        [height]='"27px"'
+        style="float: left; margin-left: 4px;"
+        (onClick)="Print($event)"
+        [theme]='"metro"'
+      >
+        <i class="icon ion-ios-print" style="color: var(--first-color);"></i>
+      </jqxButton>
+    </div>
+  </div>
+
+  <div class="reportMainRight reportMain100">
+    <div id="vscrollable" [ngClass]="'contentReport scrollable section'">
+      <div
+        id="page1"
+        [ngClass]="layout=='portrait'? 'page pageA4Portrait ' + zoom() : 'page pageA4 ' + zoom()"
+      >
+        <div class="titleReport">Daily Log</div>
+        <div class="headerDailyLogPrintLeft">
+          <img src="./assets/hs.png" />
+        </div>
+        <div class="headerDailyLogPrintRight">
+          <ul class="ultable" style="height: 30px; margin-top: 30px;">
+            <li class="subtitle" style="width: 200px;">
+              NAME OF CLIENT
+            </li>
+            <li>
+              {{clientName}}
+            </li>
+          </ul>
+
+          <ul class="ultable" style="height: 30px; margin-top: 0px;">
+            <li class="subtitle" style="width: 200px;">
+              DATE
+            </li>
+            <li>
+              <!-- {{dateTimeDailyLog}}  -->
+              {{ dateTimeDailyLog | date:'EEEE, MMMM dd, y, h:mm a' }}
+            </li>
+          </ul>
+
+          <ul class="ultable" style="height: 30px; margin-top: 0px;">
+            <li class="subtitle" style="width: 200px;">
+              PLACEMENT
+            </li>
+            <li>
+              {{dailyLog.placement}}
+            </li>
+          </ul>
+
+          <ul class="ultable" style="height: 30px; margin-top: 0px;">
+            <li class="subtitle" style="width: 200px;">
+              WHITTEN BY
+            </li>
+            <li>
+              ___________________
+            </li>
+          </ul>
+
+          <ul class="ultable" style="height: 30px; margin-top: 0px;">
+            <li class="subtitle" style="width: 200px;">
+              WORKERS ON SHIFT
+            </li>
+            <li style="width: 280px;">
+              <jqxComboBox
+                #cmbWorkersOnShift
+                [width]='"100%"'
+                [multiSelect]="true"
+                (onBindingComplete)="BindingCompleteCmbStaffWorkersOnShift($event)"
+                [height]="25"
+                [showArrow]="false"
+                [showCloseButtons]="false"
+                [disabled]="true"
+                style="
+                  max-height: 100px !important;
+                  margin-top: 0px;
+                  border: 0 !important;
+                "
+                [displayMember]="'fullName'"
+                [valueMember]="'id'"
+                [searchMode]="'containsignorecase'"
+                [theme]="'bootstrap'"
+                [source]="dataAdapterStaffList_1"
+              ></jqxComboBox>
+            </li>
+          </ul>
+        </div>
+
+        <ul
+          class="ultable"
+          style="
+            margin-top: 30px;
+            width: 90%;
+            margin-left: 5%;
+            margin-right: 5%;
+          "
+        >
+          <li class="subtitle" style="width: 100%;">
+            GENERAL MOOD AND DISPOSITIONS
+          </li>
+          <li
+            style="
+              margin-top: 10px;
+              width: 100%;
+              height: 100px;
+              max-height: 100px;
+              overflow-y: scroll;
+              text-align: justify;
+            "
+          >
+            {{dailyLog.generalMood}}
+          </li>
+        </ul>
+
+        <ul
+          class="ultable"
+          style="
+            margin-top: 30px;
+            width: 90%;
+            margin-left: 5%;
+            margin-right: 5%;
+          "
+        >
+          <li class="subtitle" style="width: 100%;">
+            INTERACTIONS WITH STAFF
+          </li>
+          <li
+            style="
+              margin-top: 10px;
+              width: 100%;
+              text-align: justify;
+              height: 100px;
+              max-height: 100px;
+              overflow-y: scroll;
+            "
+          >
+            {{dailyLog.interactionStaff}}
+          </li>
+        </ul>
+
+        <ul
+          class="ultable"
+          style="
+            margin-top: 30px;
+            width: 90%;
+            margin-left: 5%;
+            margin-right: 5%;
+          "
+        >
+          <li class="subtitle" style="width: 100%;">
+            INTERACTIONS WITH PEERS
+          </li>
+          <li
+            style="
+              margin-top: 10px;
+              width: 100%;
+              text-align: justify;
+              height: 100px;
+              max-height: 100px;
+              overflow-y: scroll;
+            "
+          >
+            {{dailyLog.interactionPeers}}
+          </li>
+        </ul>
+
+        <ul
+          class="ultable"
+          style="
+            margin-top: 30px;
+            width: 90%;
+            margin-left: 5%;
+            margin-right: 5%;
+          "
+        >
+          <li class="subtitle" style="width: 100%;">
+            SCHOOL
+          </li>
+          <li
+            style="
+              margin-top: 10px;
+              width: 100%;
+              text-align: justify;
+              height: 100px;
+              max-height: 100px;
+              overflow-y: scroll;
+            "
+          >
+            {{dailyLog.school}}
+          </li>
+        </ul>
+
+        <ul
+          class="ultable"
+          style="
+            margin-top: 30px;
+            width: 90%;
+            margin-left: 5%;
+            margin-right: 5%;
+          "
+        >
+          <li class="subtitle" style="width: 100%;">
+            COMMENTS
+          </li>
+          <li
+            style="
+              margin-top: 10px;
+              width: 100%;
+              text-align: justify;
+              height: 100px;
+              max-height: 100px;
+              overflow-y: scroll;
+            "
+          >
+            {{dailyLog.comments}}
+          </li>
+        </ul>
+      </div>
+
+      <div
+        id="page2"
+        [ngClass]="layout=='portrait'? 'page pageA4Portrait ' + zoom() : 'page pageA4 ' + zoom()"
+      >
+        <ul
+          class="ultable"
+          style="
+            margin-top: 30px;
+            width: 90%;
+            margin-left: 5%;
+            margin-right: 5%;
+          "
+        >
+          <li class="subtitle" style="width: 100%;">
+            HEALTH
+          </li>
+          <li
+            style="
+              margin-top: 10px;
+              width: 100%;
+              text-align: justify;
+              height: 100px;
+              max-height: 100px;
+              overflow-y: scroll;
+            "
+          >
+            {{dailyLog.health}}
+          </li>
+        </ul>
+
+        <ul
+          class="ultable"
+          style="
+            margin-top: 30px;
+            width: 90%;
+            margin-left: 5%;
+            margin-right: 5%;
+          "
+        >
+          <li class="subtitle" style="width: 100%;">
+            CONTACT FAMILY
+          </li>
+          <li
+            style="
+              margin-top: 10px;
+              width: 100%;
+              text-align: justify;
+              height: 100px;
+              max-height: 100px;
+              overflow-y: scroll;
+            "
+          >
+            {{dailyLog.contactFamily}}
+          </li>
+        </ul>
+
+        <ul
+          class="ultable"
+          style="
+            margin-top: 30px;
+            width: 90%;
+            margin-left: 5%;
+            margin-right: 5%;
+          "
+        >
+          <li class="subtitle" style="width: 100%;">
+            OTHERS
+          </li>
+          <li
+            style="
+              margin-top: 10px;
+              width: 100%;
+              text-align: justify;
+              height: 100px;
+              max-height: 100px;
+              overflow-y: scroll;
+            "
+          >
+            {{dailyLog.other}}
+          </li>
+        </ul>
+
+        <ul
+          class="ultable"
+          style="
+            margin-top: 550px;
+            width: 90%;
+            margin-left: 5%;
+            margin-right: 5%;
+          "
+        >
+          <li class="subtitle" style="width: 15%;">
+            SIGNATURE
+          </li>
+          <li style="margin-top: 10px; width: 75%; text-align: justify;">
+            ___________________________________________________________________
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- fin div appcontainer -->
+</div>
+
+<!-- </div>
+
+</div> -->
+
+<!-- <div [ngClass]="{'appContainer': !isPrinting, 'reportMainRight reportMain100' : isPrinting }"> -->
+
+<!-- <div *ngIf="!isPrinting" class="auxMenuBar">
+
+           <div class="titleHeaderSpace" [hidden]="CurrentItem<0" style="float:left;">{{'clients_edit' | translate}} > Edit Daily Log</div>                              
+           <div class="titleHeaderSpace" [hidden]="CurrentItem>=0" style="float:left;">{{'clients_edit' | translate}} > New Daily Log </div>
+
+            <div class="blockMinRight">
+                    <button class="button buttonSave"
+                            (click)="Save($event)">
+                            <i class="icon ion-ios-save" style=""></i> {{'global_save'| translate}}
+                    </button>                   
+              </div>            
+    </div> -->
+
+<!-- <div [ngClass]="layout=='portrait' ? 'page pageA4Portrait ' : 'page pageA4 ' + zoom()">  -->
+
+<!-- <div *ngIf="isPrinting && report.pages.length==0" [ngClass]="'contentReport scrollable section'">
+        <div [ngClass]="layout=='portrait'? 'page pageA4Portrait ' + zoom() : 'page pageA4 ' + zoom()">        
+            <p class="centerMiddle">
+                {{'report_no_data_display' | translate}}
+            </p>
+        </div>
+    </div>  -->
+
+<!-- <div *ngIf="isPrinting && report.pages.length>0" id="vscrollable" [ngClass]="'contentReport scrollable section'"> -->
+
+<!-- <div id="page{i+1}" *ngFor="let p of report.pages; let i = index" [ngClass]="layout=='portrait'? 'page pageA4Portrait ' + zoom() : 'page pageA4 ' + zoom()"> -->
+
+<!-- <div id="page1" [ngClass]="layout=='portrait' ? 'page pageA4Portrait ' : 'page pageA4 '"> -->
+
+<!-- <div *ngIf="p.title.length>0" class="titleReport">
+                    cosa
+                </div>  -->
+
+<!-- <div class="titleReport"> -->
+<!-- {{p.title}}  -->
+<!-- Daily Log -->
+
+<!-- <div class="subtitle"> {{subtitleReport}}</div> <br/>
+                    <div class="subtitle"> {{subtitleReport2}}</div> -->
+
+<!-- </div> -->
+
+<!-- <div *ngIf="p.title.length>0" class="line"></div>
+                <div *ngIf="p.groupLabels.length>0">
+                    <div *ngFor="let gl of p.groupLabels;let ix = index">
+                        <div [ngClass]="ix==0? 'boldGroup boldGroupFirst':'boldGroup'">{{gl }} : {{p.groupsValues[ix]}}</div>
+                    </div>
+                </div>
+                <table>
+                    <tr>
+                        <th *ngFor="let item of columns; let i = index">
+                        {{item}} 
+                        </th>
+                    </tr>
+                    <tr *ngFor="let item of p.rows; let ci = index">
+                        <td [style.width.px]="columnsWidth[cn]" *ngFor="let c of item.cells; let cn = index">
+                        <p> {{c.value}}</p>
+                        </td>
+                    </tr>
+                </table> -->
+
+<!-- <div *ngIf="isPrinting" class="headerDailyLogPrintLeft">    
+                    aqui XXXXX
+                </div> -->
+
+<!-- </div>
+
+
+
+        <br />
+        <br />
+        <br />
+    </div> -->
