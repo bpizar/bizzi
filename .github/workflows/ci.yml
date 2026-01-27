@@ -61,10 +61,10 @@ jobs:
         run: npm run build --if-present
 
   flutter:
-    needs: changes
-    if: needs.changes.outputs.flutter == 'true'
+    if: false
     runs-on: ubuntu-latest
     steps:
+      - run: echo "Flutter FE temporarily disabled"
       - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
         with:
