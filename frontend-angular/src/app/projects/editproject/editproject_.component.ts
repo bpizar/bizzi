@@ -81,6 +81,8 @@ export class EditProject implements OnInit, OnDestroy, AfterViewInit {
     @ViewChild(SaveActionDisplay) saveActionDisplay: SaveActionDisplay;
     imagePipe = new ImagePipe();
     isInrolAdmin: boolean = false;
+    tasks: TaskModel[] = [];
+    project: ProjectModel = new ProjectModel();
 
     hiddenWhenIsNew = (): boolean => {
         return !this.isEditing();
@@ -1064,28 +1066,62 @@ export class EditProject implements OnInit, OnDestroy, AfterViewInit {
     //         }
     //     }
     // }
-    periodsBindingComplete = (event: any) => {
-        let found = false;
-        if (this.sourcePeriodsListBox.localData != undefined) {
-            if (this.sourcePeriodsListBox.localData.length > 0) {
-                let i = 0;
-                this.sourcePeriodsListBox.localData.forEach(element => {
-                    let dtf = new Date(element.from);
-                    let dtt = new Date(element.to);
-                    if (this.serverDateTime > dtf && this.serverDateTime < dtt) {
-                        this.periodsDropDown.selectedIndex(i);
-                        found = true;
-                    }
-                    i++;
-                });
-                if (!found) {
-                    this.periodsDropDown.selectedIndex(0);
-                }
-            }
-        }
-    }
+    // periodsBindingComplete = (event: any) => {
+    //     let found = false;
+    //     if (this.sourcePeriodsListBox.localData != undefined) {
+    //         if (this.sourcePeriodsListBox.localData.length > 0) {
+    //             let i = 0;
+    //             this.sourcePeriodsListBox.localData.forEach(element => {
+    //                 let dtf = new Date(element.from);
+    //                 let dtt = new Date(element.to);
+    //                 if (this.serverDateTime > dtf && this.serverDateTime < dtt) {
+    //                     this.periodsDropDown.selectedIndex(i);
+    //                     found = true;
+    //                 }
+    //                 i++;
+    //             });
+    //             if (!found) {
+    //                 this.periodsDropDown.selectedIndex(0);
+    //             }
+    //         }
+    //     }
+    // }
+  periodsBindingComplete = (event: any) => {
+    let found = false;
 
-    loadPeriods = (): void => {
+    if (this.sourcePeriodsListBox.localData != undefined) {
+      if (this.sourcePeriodsListBox.localData.length > 0) {
+
+        let selectedIndex = 0;
+
+        for (let i = 0; i < this.sourcePeriodsListBox.localData.length; i++) {
+          const element = this.sourcePeriodsListBox.localData[i];
+          const dtf = new Date(element.from);
+          const dtt = new Date(element.to);
+
+          if (this.serverDateTime > dtf && this.serverDateTime < dtt) {
+            selectedIndex = i;
+            found = true;
+            break;
+          }
+        }
+
+        this.periodsDropDown.selectedIndex(selectedIndex);
+
+        // ensure the backing state is set even if onSelect doesn't fire
+        const selected = this.sourcePeriodsListBox.localData[selectedIndex];
+        this.currentPeriod = selected.id;
+        this.periodClosed = selected.state == "CL";
+        this.EnabledDisableForm();
+
+        // Optional (only if you want tasks to load immediately)
+        // this.loadTasks();
+      }
+    }
+  }
+
+
+  loadPeriods = (): void => {
         this.myLoader.open();
         this.schedulingService.GetPeriods()
             .subscribe(
@@ -1185,9 +1221,6 @@ export class EditProject implements OnInit, OnDestroy, AfterViewInit {
         //     // this.gridReference.localizestrings(this.translate.currentLang == "en" ? this.jqxHelper.getGridLocation_en : this.jqxHelper.getGridLocation_es);
         // }
     }
-
-    tasks: TaskModel[] = [];
-    project: ProjectModel = new ProjectModel();
 
     getTextElementByColor(color: any): any {
         if (color == 'transparent' || color.hex == "") {
@@ -1560,6 +1593,8 @@ export class EditProject implements OnInit, OnDestroy, AfterViewInit {
                             // this.Owners = <OwnerModel[]>data.owners;
                             this.sourceClientsAllPeriods.localdata = data.clientsAllPeriods;
                             this.dataAdapterClientsAllPeriods = new jqx.dataAdapter(this.sourceClientsAllPeriods);
+                            this.loadedControl[4] = true;
+
                         }
                         else {
                             this.project.id = -1;
@@ -1571,6 +1606,7 @@ export class EditProject implements OnInit, OnDestroy, AfterViewInit {
                             this.myDropDown.setContent(this.getTextElementByColor({ hex: "FFFFFF" }));
                             this.sourceStaff.localData = data.staffs;
                             this.dataAdapterStaffListBox = new jqx.dataAdapter(this.sourceStaff);
+                            this.loadedControl[4] = true;
                         }
 
                         setTimeout(() => {
@@ -1624,11 +1660,11 @@ export class EditProject implements OnInit, OnDestroy, AfterViewInit {
             this.glowMessage.ShowGlow("warn", "glow_invalid", "glow_project_type_project_name");
             result = false;
         }
-        // if (projectDescription.trim().length <= 0) {
-        //     //alert("sdf")
-        //     this.glowMessage.ShowGlow("warn","glow_invalid","glow_project_type_project_description");
-        //     result = false;
-        // }
+        if (projectDescription.trim().length <= 0) {
+            //alert("sdf")
+            this.glowMessage.ShowGlow("warn","glow_invalid","glow_project_type_project_description");
+            result = false;
+        }
         if (date1 == null) {
             this.glowMessage.ShowGlow("warn", "glow_invalid", "glow_project_select_valid_date");
             result = false;
@@ -1784,24 +1820,51 @@ export class EditProject implements OnInit, OnDestroy, AfterViewInit {
         // }, 2000);
     }
 
-    SaveProject(event: any): void {
-        console.log(this.sourceClients.localData.filter(x => x.abm != ''));
-        let body = {
-            Project: this.project,
-            Tasks: this.tasks.filter(x => x.abm != '' && !(x.id <= 0 && x.abm == "D")),
-            Staffs: this.sourceStaff.localData == undefined ? null : this.sourceStaff.localData.filter(x => x.abm != ''),
-            Owners: this.getCheckedOwners(),
-            IdPeriod: this.currentPeriod,
-            tasksReminders: this.tasksReminders.filter(c => c.state == "true" || c.state == "false"),
-            clients: this.sourceClients.localData == undefined ? null : this.sourceClients.localData.filter(x => x.abm != '')
-        }
+  SaveProject(event: any): void {
+    const clientsLocal = this.sourceClients?.localData ?? [];
+    const staffLocal   = this.sourceStaff?.localData ?? [];
+    const tasks        = this.tasks ?? [];
+    const reminders    = this.tasksReminders ?? [];
 
-        body.Project.abm = this.isEditing() ? "U" : "I";
-        body.Project.beginDate = this.dateTimeFrom.getDate();
-        body.Project.endDate = this.dateTimeTo.getDate();
-        console.log(body);
-        this.Save(body);
+    // Optional: remove this log or keep it safe
+    console.log(clientsLocal.filter(x => x.abm != ''));
+
+    const body = {
+      Project: this.project,
+      Tasks: tasks.filter(x => x.abm != '' && !(x.id <= 0 && x.abm == "D")),
+      Staffs: staffLocal.length ? staffLocal.filter(x => x.abm != '') : null,
+      Owners: this.getCheckedOwners(),
+      IdPeriod: this.currentPeriod,
+      tasksReminders: reminders.filter(c => c.state == "true" || c.state == "false"),
+      clients: clientsLocal.length ? clientsLocal.filter(x => x.abm != '') : null
     };
+
+    body.Project.abm = this.isEditing() ? "U" : "I";
+    body.Project.beginDate = this.dateTimeFrom.getDate();
+    body.Project.endDate = this.dateTimeTo.getDate();
+
+    console.log(body);
+    this.Save(body);
+  }
+
+  // SaveProject(event: any): void {
+    //     console.log(this.sourceClients.localData.filter(x => x.abm != ''));
+    //     let body = {
+    //         Project: this.project,
+    //         Tasks: this.tasks.filter(x => x.abm != '' && !(x.id <= 0 && x.abm == "D")),
+    //         Staffs: this.sourceStaff.localData == undefined ? null : this.sourceStaff.localData.filter(x => x.abm != ''),
+    //         Owners: this.getCheckedOwners(),
+    //         IdPeriod: this.currentPeriod,
+    //         tasksReminders: this.tasksReminders.filter(c => c.state == "true" || c.state == "false"),
+    //         clients: this.sourceClients.localData == undefined ? null : this.sourceClients.localData.filter(x => x.abm != '')
+    //     };
+    //
+    //     body.Project.abm = this.isEditing() ? "U" : "I";
+    //     body.Project.beginDate = this.dateTimeFrom.getDate();
+    //     body.Project.endDate = this.dateTimeTo.getDate();
+    //     console.log(body);
+    //     this.Save(body);
+    // }
 
     ngOnInit(): void {
         this.sub = this.route.params.subscribe(params => {
